@@ -42,23 +42,35 @@ const config = {
   sraAccession: '2492428'
 }
 
-// task(props, cb, next)
-const samples = task(
-  // these params are then made available to the cb
-  {
-    input: {
-      db: 'sra',
-      accession: config.sraAccession
+// thunk'it here or inside task?
+// const/let does not get hoisted, and it is unnatural to describe pipelines
+// in reverse order:
+// const task2 = task(...)
+// const task1 = task(,,task2)
+// functions do get hoisted, but then we have a somewhat less pretty indented
+// return task(...) boilerplate
+
+// const samples = task(...)
+// const samples = () => task(...)
+function samples() {
+  // task(props, cb, next)
+  return task(
+    // these params are then made available to the cb
+    {
+      input: {
+        db: 'sra',
+        accession: config.sraAccession
+      },
+      // will be globby'ed after cb completes
+      output: '**/*.sra'
     },
-    // will be globby'ed after cb completes
-    output: '**/*.sra'
-  },
-  // the cb for this task
-  ( ({ input }) => ncbi.download(input.db, input.accession) ),
-  // the next task for this task
-  // data is the resolved output
-  (data) => shell(`fastq-dump --split-files --skip-technical --gzip ${data[0]}`)
-)
+    // the cb for this task
+    ( ({ input }) => ncbi.download(input.db, input.accession) ),
+    // the next task for this task
+    // data is the resolved output
+    (data) => shell(`fastq-dump --split-files --skip-technical --gzip ${data[0]}`)
+  )
+}
 
 // wip
 // function dumps() {
@@ -70,11 +82,6 @@ const samples = task(
 
 const pipeline = samples
 
-pipeline
+pipeline()
   .on('data', console.log)
   .on('end', () => console.log('Finished SRA download'))
-
-// ncbi.download('sra', config.sraAccession)
-//   .on('data', console.log)
-// samples
-//   .on('end', path => console.log(`File saved at ${path}`))
