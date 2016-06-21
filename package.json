@@ -27,5 +27,9 @@
   "bugs": {
     "url": "https://github.com/bionode/bionode-waterwheel/issues"
   },
-  "homepage": "https://github.com/bionode/bionode-waterwheel#readme"
+  "homepage": "https://github.com/bionode/bionode-waterwheel#readme",
+  "devDependencies": {
+    "bionode-ncbi": "^1.6.1",
+    "globby": "^5.0.0"
+  }
 }
