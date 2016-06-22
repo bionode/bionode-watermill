@@ -12,6 +12,7 @@ class File {
 }
 
 const task = (props, cb) => (next) => () => {
+  console.log('Starting a task')
   let { input, output } = props
 
   // TODO recursively traverse object
@@ -38,13 +39,26 @@ const task = (props, cb) => (next) => () => {
       if (!ended) {
         ended = true
       } else {
-        console.log("Don't start shell process twice")
+        // Don't start shell process more than once
         return null
       }
 
-      console.log('Gonna check we got all files')
-      globby(output.value || output).then((data) => {
-        console.log(data.length === 1 ? 'we did' : 'we didnt')
+      let length = 1
+
+      if (typeof(output) === 'string') {
+        length = 1
+      } else if (output instanceof File) {
+        output = output.value
+        length = 1
+      } else if (output instanceof Array && output[0] instanceof File) {
+        output = output.map(file => file.value)
+        length = output.length
+      }
+
+      globby(output).then((data) => {
+        console.log('Wanted: ')
+        console.log(output)
+        console.log(data.length === length ? 'File(s) produced as expected: ' : 'File(s) not created: ')
         console.log(data)
         next()
       })
@@ -53,17 +67,10 @@ const task = (props, cb) => (next) => () => {
     // Check current dir for files matching the pattern provided to the task
     // Then call next task in the pipeline with the resolved files
     stream.on('end', handleFinish)
-    // FS throws finish
-    // Do we need to globby output? can be used to say: "task did not produce
-    // everything as expected" - but the next task can globby its input before
-    // running
-    // stream.on('finish', () => {
-    //   globby(output.value).then((data) => {
-    //     console.log('globby data: ' +  data)
-    //   })
-    //   globby(output.value).then(next)
-    // })
+    // fs.createWriteStream throws finish
     stream.on('finish', handleFinish)
+    // bash processes
+    stream.on('close', handleFinish)
 
     return stream
   }
@@ -72,6 +79,7 @@ const task = (props, cb) => (next) => () => {
 function join(...tasks) {
   // return tasks[0](tasks[1]())
   return tasks.reduce( (prev, curr) => prev(curr()) )
+  // combined({}, () => console.log('after'))
 }
 
 const shell = (cmd) => {
@@ -133,9 +141,10 @@ function samples(next) {
 }
 
 function fastqDump() {
-  return task({
+  return task(
+  {
     input: new File('**/*.sra'),
-    output: [1, 2].map(n => `*_${n}.fastq.gz`)
+    output: [1, 2].map(n => new File(`*_${n}.fastq.gz`))
   },
   ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`)
   )()
@@ -155,7 +164,7 @@ function bwaIndex(next) {
   return task(
   {
     input: new File('*_genomic.fna.gz'),
-    output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => new File(`*.genomic.fna.gz.${suffix}`))
+    output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => new File(`*_genomic.fna.gz.${suffix}`))
   },
   ({ input }) => shell(`bwa index ${input}`)
   )(next)
@@ -167,7 +176,7 @@ function bwaIndex(next) {
 // const pipeline = samples()
 
 // join will populate the nexts
-const pipeline = join(samples, fastqDump)
+// const pipeline = join(samples, fastqDump)
 
 // pipeline()
 //   .on('data', console.log)
@@ -175,6 +184,4 @@ const pipeline = join(samples, fastqDump)
 
 
 const downloadAndIndex = join(downloadReference, bwaIndex)
-
 downloadAndIndex()
-  .on('close', () => console.log('got close'))
