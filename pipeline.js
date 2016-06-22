@@ -4,7 +4,8 @@
 const { spawn } = require('child_process')
 const globby = require('globby')
 
-const task = (props, cb, next) => {
+const task = (props, cb) => (next) => {
+// const task = (props, cb, next) => {
   const { output } = props
 
   const stream = cb(props)
@@ -15,6 +16,14 @@ const task = (props, cb, next) => {
 
   return stream
 }
+
+// function join(...tasks) {
+//   tasks.map((t, i) => {
+//     if (i !== tasks.length-1) {
+//       return task()
+//     }
+//   })
+// }
 
 const shell = (cmd) => {
   console.log('Starting: ' + cmd)
@@ -65,20 +74,27 @@ function samples() {
       output: '**/*.sra'
     },
     // the cb for this task
-    ( ({ input }) => ncbi.download(input.db, input.accession) ),
-    // the next task for this task
+    ( ({ input }) => ncbi.download(input.db, input.accession) )
+
+    // the next task for this task is curried
     // data is the resolved output
-    (data) => shell(`fastq-dump --split-files --skip-technical --gzip ${data[0]}`)
-  )
+  )( (data) => shell(`fastq-dump --split-files --skip-technical --gzip ${data[0]}`) )
+  // can do () to have next be undefined in the task manager and it will end
 }
 
 // wip
 // function dumps() {
 //   return task({
 //     input: '*.sra',
+//     // input: stdin('*.sra')
 //     output: [1, 2].map(n => `*_${n}.fastq.gz`)
-//   }, )
+//   }, ( { input }) => {
+//     console.log(input)
+//     // shell(`fastq-dump --split-files --skip-technical --gzip ${input}`)
+//   })
 // }
+
+// join(samples, dumps)
 
 const pipeline = samples
 
