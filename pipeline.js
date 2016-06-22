@@ -77,8 +77,21 @@ const task = (props, cb) => (next) => () => {
 }
 
 function join(...tasks) {
-  // return tasks[0](tasks[1]())
-  return tasks.reduce( (prev, curr) => prev(curr()) )
+  // return tasks.reduceRight((prev, curr) => curr(prev()))
+  let result = tasks[tasks.length-1]()
+  for (let i=tasks.length-2; i>=0; i--) {
+    result = tasks[i](result)
+  }
+  return result
+
+  // return tasks[0](tasks[1](tasks[2]()))
+  // // return tasks.reduce( (prev, curr) => prev(curr()) )
+  // return tasks.reduce((prev, curr, index, arr) => {
+  //   console.log(prev)
+  //   console.log(curr)
+  //   console.log(index)
+  //   return prev(curr())
+  // })
   // combined({}, () => console.log('after'))
 }
 
@@ -140,14 +153,14 @@ function samples(next) {
   )(next)
 }
 
-function fastqDump() {
+function fastqDump(next) {
   return task(
   {
     input: new File('**/*.sra'),
     output: [1, 2].map(n => new File(`*_${n}.fastq.gz`))
   },
   ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`)
-  )()
+)(next)
 }
 
 function downloadReference(next) {
@@ -170,18 +183,25 @@ function bwaIndex(next) {
   )(next)
 }
 
-// pass in next which is given globbied output
-// const pipeline = samples( (data) => shell(`fastq-dump --split-files --skip-technical --gzip ${data[0]}`) )
-// or nothing to stop the pipeline
-// const pipeline = samples()
+function after(next) {
+  return task(
+  {
+    input: null,
+    output: null
+  },
+  () => shell('echo AFTER')
+  )(next)
+}
+
 
 // join will populate the nexts
-// const pipeline = join(samples, fastqDump)
+const pipeline = join(samples, fastqDump, after)
 
-// pipeline()
+pipeline()
 //   .on('data', console.log)
 //   .on('end', () => console.log('Finished SRA download'))
 
 
-const downloadAndIndex = join(downloadReference, bwaIndex)
-downloadAndIndex()
+// const downloadAndIndex = join(downloadReference, bwaIndex, after)
+// downloadAndIndex()
+  // .on('close', () => console.log('sdsds'))
