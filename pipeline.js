@@ -155,6 +155,31 @@ const shell = (cmd, opts = {}) => {
   return process
 }
 
+const shellPipe = (cmds) => {
+  const processes = cmds.map((cmd, i) => {
+    console.log('Starting: ' + cmd)
+    cmd = cmd.split(' ')
+    // needs shell:true for bcftools call > variant.vcf to work
+    const process = spawn(cmd[0], cmd.slice(1), { shell: true })
+
+    process.stderr.on('data', (data) => console.log(`stderr-${i}: ${data}`) )
+
+    process.on('close', (code) => console.log(`child process-${i} exited with code ${code}`) )
+
+    return process
+  })
+
+  for (let i=0; i < processes.length-1; i++) {
+    const current = processes[i]
+    const next = processes[i+1]
+
+    current.stdout.on('data', data => next.stdin.write(data))
+    current.on('close', () => next.stdin.end())
+  }
+
+  return processes[processes.length-1]
+}
+
 // === UTILS ===
 const last = (str, sep) => {
   const splitted = str.split(sep)
@@ -171,15 +196,6 @@ const config = {
   sraAccession: '2492428',
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz'
 }
-
-
-// thunk'it here or inside task?
-// const/let does not get hoisted, and it is unnatural to describe pipelines
-// in reverse order:
-// const task2 = task(...)
-// const task1 = task(,,task2)
-// functions do get hoisted, but then we have a somewhat less pretty indented
-// return task(...) boilerplate
 
 // const samples = task(...)
 // const samples = () => task(...)
@@ -236,10 +252,11 @@ function alignAndSort(next) {
     input: [new File('*_genomic.fna.gz'), new File('*.fastq.gz')],
     output: new File('reads.bam')
   },
-  ({ input }) => shell(`
-bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | \
-samtools view -Sbh - | \
-samtools sort - -o reads.bam `)
+  ({ input }) => shellPipe([
+    `bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]}`,
+    'samtools view -Sbh -',
+    'samtools sort - -o reads.bam'
+  ])
   )(next)
 }
 
@@ -269,10 +286,10 @@ function mpileupAndCall(next) {
     input: [new File('*_genomic.fna'), new File('*.bam'), new File('*.bam.bai')],
     output: new File('variants.vcf')
   },
-  ({ input }) => shell(`
-samtools mpileup -uf ${input[0]} ${input[1]} | \
-bcftools call -c - > variants.vcf
-    `)
+  ({ input }) => shellPipe([
+    `samtools mpileup -uf ${input[0]} ${input[1]}`,
+    'bcftools call -c - > variants.vcf'
+  ])
   )(next)
 }
 
@@ -288,6 +305,7 @@ bcftools call -c - > variants.vcf
 
 const pipeline = parallel({
   taskLists: [[samples], [downloadReference, bwaIndex]],
+  // next: alignAndSort
   next: join(alignAndSort, samtoolsIndex, decompressReference, mpileupAndCall)
 })
 pipeline()
