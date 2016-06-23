@@ -26,6 +26,13 @@ const task = (props, cb) => (next) => () => {
         props.input = data[0]
         return ready()
       })
+  } else if (input instanceof Array && input[0] instanceof File) {
+    input = input.map(file => file.value)
+    globby(input).then((data) => {
+      console.log(data)
+      props.input = data
+      return ready()
+    })
   } else {
     return ready()
   }
@@ -100,11 +107,11 @@ function join(...tasks) {
   // combined({}, () => console.log('after'))
 }
 
-function parallel(...taskLists) {
+function parallel({ taskLists, next }) {
   let max = taskLists.length
   let count = 0
 
-  function after(next) {
+  function after() {
     return task(
     {
       input: null,
@@ -114,9 +121,10 @@ function parallel(...taskLists) {
       count++
       if (count === max) {
         console.log('PARALLEL FINISHED')
+        next()()
       }
     }
-    )(next)
+    )()
   }
 
   const joinedTasks = []
@@ -158,10 +166,12 @@ const fs = require('fs')
 const ncbi = require('bionode-ncbi')
 const request = require('request')
 
+const THREADS = 4
 const config = {
   sraAccession: '2492428',
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz'
 }
+
 
 // thunk'it here or inside task?
 // const/let does not get hoisted, and it is unnatural to describe pipelines
@@ -220,6 +230,19 @@ function bwaIndex(next) {
   )(next)
 }
 
+function bwaMem(next) {
+  return task(
+  {
+    input: [new File('*_genomic.fna.gz'), new File('*.fastq.gz')],
+    output: 'reads.sam'
+  },
+  // this write stream will be empty
+  ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]}`).pipe(fs.createWriteStream('reads.sam'))
+  // ha. won't work.
+  // ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | samtools view -Sbh - -o reads.sam`)
+  )(next)
+}
+
 function after(next) {
   return task(
   {
@@ -230,21 +253,8 @@ function after(next) {
   )(next)
 }
 
-
-// join will populate the nexts
-// const pipeline = join(samples, fastqDump, after)
-//
-// pipeline()
-//   .on('data', console.log)
-//   .on('end', () => console.log('Finished SRA download'))
-
-
-const downloadAndIndex = join(downloadReference, bwaIndex, after)
-// downloadAndIndex()
-  // .on('close', () => console.log('sdsds'))
-
-// const pipeline = join([downloadReference, bwaIndex, after])
-// pipeline()
-
-const pipeline = parallel([samples, fastqDump], [downloadReference, bwaIndex])
+const pipeline = parallel({
+  taskLists: [[samples, fastqDump], [downloadReference, bwaIndex]],
+  next: bwaMem
+})
 pipeline()
