@@ -140,11 +140,11 @@ function parallel({ taskLists, next }) {
   }
 }
 
-const shell = (cmd) => {
+const shell = (cmd, opts) => {
   console.log('Starting: ' + cmd)
   cmd = cmd.split(' ')
 
-  const process = spawn(cmd[0], cmd.slice(1))
+  const process = spawn(cmd[0], cmd.slice(1), opts)
 
   process.stdout.on('data', (data) => console.log(`stdout: ${data}`) )
 
@@ -237,9 +237,11 @@ function bwaMem(next) {
     output: 'reads.sam'
   },
   // this write stream will be empty
-  ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]}`).pipe(fs.createWriteStream('reads.sam'))
+  // ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]}`).pipe(fs.createWriteStream('reads.sam'))
   // ha. won't work.
-  // ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | samtools view -Sbh - -o reads.sam`)
+  ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | samtools view -Sbh - -o reads.sam`, {
+    shell: true
+  })
   )(next)
 }
 
