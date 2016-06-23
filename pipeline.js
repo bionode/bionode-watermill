@@ -140,11 +140,11 @@ function parallel({ taskLists, next }) {
   }
 }
 
-const shell = (cmd, opts) => {
+const shell = (cmd, opts = {}) => {
   console.log('Starting: ' + cmd)
   cmd = cmd.split(' ')
 
-  const process = spawn(cmd[0], cmd.slice(1), opts)
+  const process = spawn(cmd[0], cmd.slice(1), Object.assign(opts, { shell: true }))
 
   process.stdout.on('data', (data) => console.log(`stdout: ${data}`) )
 
@@ -230,33 +230,64 @@ function bwaIndex(next) {
   )(next)
 }
 
-function bwaMem(next) {
+function alignAndSort(next) {
   return task(
   {
     input: [new File('*_genomic.fna.gz'), new File('*.fastq.gz')],
-    output: 'reads.sam'
+    output: new File('reads.bam')
   },
-  // this write stream will be empty
-  // ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]}`).pipe(fs.createWriteStream('reads.sam'))
-  // ha. won't work.
-  ({ input }) => shell(`bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | samtools view -Sbh - -o reads.sam`, {
-    shell: true
-  })
+  ({ input }) => shell(`
+bwa mem -t ${THREADS} ${input[0]} ${input[1]} ${input[2]} | \
+samtools view -Sbh - | \
+samtools sort - -o reads.bam `)
   )(next)
 }
 
-function after(next) {
+function samtoolsIndex(next) {
   return task(
   {
-    input: null,
-    output: null
+    input: new File('*.bam'),
+    output: new File('*.bam.bai')
   },
-  () => shell('echo AFTER')
+  ({ input }) => shell(`samtools index ${input}`)
   )(next)
 }
 
+function decompressReference(next) {
+  return task(
+  {
+    input: new File('*_genomic.fna.gz'),
+    output: new File('*_genomic.fna')
+  },
+  ({ input }) => shell(`bgzip -d ${input}`)
+  )(next)
+}
+
+function mpileupAndCall(next) {
+  return task(
+  {
+    input: [new File('*_genomic.fna'), new File('*.bam'), new File('*.bam.bai')],
+    output: new File('variants.vcf')
+  },
+  ({ input }) => shell(`
+samtools mpileup -uf ${input[0]} ${input[1]} | \
+bcftools call -c - > variants.vcf
+    `)
+  )(next)
+}
+
+// function after(next) {
+//   return task(
+//   {
+//     input: null,
+//     output: null
+//   },
+//   () => shell('echo AFTER')
+//   )(next)
+// }
+
 const pipeline = parallel({
-  taskLists: [[samples, fastqDump], [downloadReference, bwaIndex]],
-  next: bwaMem
+  taskLists: [[samples], [downloadReference, bwaIndex]],
+  next: join(alignAndSort, samtoolsIndex, decompressReference, mpileupAndCall)
 })
 pipeline()
