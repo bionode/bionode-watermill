@@ -77,6 +77,11 @@ const task = (props, cb) => (next) => () => {
 }
 
 function join(...tasks) {
+  // hack to work for parallel
+  if (tasks[0] instanceof Array) {
+    tasks = tasks[0]
+  }
+
   // return tasks.reduceRight((prev, curr) => curr(prev()))
   let result = tasks[tasks.length-1]()
   for (let i=tasks.length-2; i>=0; i--) {
@@ -93,6 +98,38 @@ function join(...tasks) {
   //   return prev(curr())
   // })
   // combined({}, () => console.log('after'))
+}
+
+function parallel(...taskLists) {
+  let max = taskLists.length
+  let count = 0
+
+  function after(next) {
+    return task(
+    {
+      input: null,
+      output: null
+    },
+    () => {
+      count++
+      if (count === max) {
+        console.log('PARALLEL FINISHED')
+      }
+    }
+    )(next)
+  }
+
+  const joinedTasks = []
+
+  taskLists.forEach(taskList => {
+    taskList.push(after)
+    joinedTasks.push(join(taskList))
+  })
+
+  // Start parallel tasks
+  return () => {
+    joinedTasks.forEach(task => task())
+  }
 }
 
 const shell = (cmd) => {
@@ -195,13 +232,19 @@ function after(next) {
 
 
 // join will populate the nexts
-const pipeline = join(samples, fastqDump, after)
-
-pipeline()
+// const pipeline = join(samples, fastqDump, after)
+//
+// pipeline()
 //   .on('data', console.log)
 //   .on('end', () => console.log('Finished SRA download'))
 
 
-// const downloadAndIndex = join(downloadReference, bwaIndex, after)
+const downloadAndIndex = join(downloadReference, bwaIndex, after)
 // downloadAndIndex()
   // .on('close', () => console.log('sdsds'))
+
+// const pipeline = join([downloadReference, bwaIndex, after])
+// pipeline()
+
+const pipeline = parallel([samples, fastqDump], [downloadReference, bwaIndex])
+pipeline()
