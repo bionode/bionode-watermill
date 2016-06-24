@@ -10,8 +10,9 @@ const { shell, shellPipe } = waterwheel.wrappers
 const fs = require('fs')
 const ncbi = require('bionode-ncbi')
 const request = require('request')
+const yaml = require('js-yaml')
 
-const multiline = require('multiline')
+const defs = yaml.safeLoad(fs.readFileSync('pipeline.yaml', 'utf-8'))
 
 const THREADS = 4
 const config = {
@@ -36,25 +37,7 @@ const samples = task({
 //   output: [1, 2].map(n => new File(`*_${n}.fastq.gz`))
 // }, ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`) )
 
-const fastqDump = taskYAML(multiline(function(){/*
-input: "***.sra"
-output:
-  - "*_1.fastq.gz"
-  - "*_2.fastq.gz"
-task: "`fastq-dump --split-files --skip-technical --gzip ${input}`"
-*/}))
-const pipeline = join(fastqDump)
-pipeline()
-
-// const fastqDump = taskHackfile(({ input }) => `
-// fastqDump
-//   input new File('**/*.sra')
-//   output
-//     *_1.fastq.gz
-//     *_2.fastq.gz
-//   task shell
-//     fastq-dump --split-files --skip-technical --gzip ${input}
-// `)
+const fastqDump = taskYAML(defs.fastqDump)
 
 const downloadReference = task({
   input: config.referenceURL,
@@ -93,8 +76,8 @@ const mpileupAndCall = task({
   'bcftools call -c - > variants.vcf'
 ]) )
 
-// const pipeline = parallel({
-//   taskLists: [[samples], [downloadReference, bwaIndex]],
-//   next: join(alignAndSort, samtoolsIndex, decompressReference, mpileupAndCall)
-// })
-// pipeline()
+const pipeline = parallel({
+  taskLists: [[samples, fastqDump], [downloadReference, bwaIndex]],
+  next: join(alignAndSort, samtoolsIndex, decompressReference, mpileupAndCall)
+})
+pipeline()
