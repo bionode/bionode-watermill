@@ -1,6 +1,6 @@
 {
   "name": "bionode-waterwheel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Streaming workflow engine for bionformatics pipelines",
   "main": "index.js",
   "scripts": {
