@@ -30,11 +30,10 @@
   "homepage": "https://github.com/bionode/bionode-waterwheel#readme",
   "devDependencies": {
     "bionode-ncbi": "^1.6.1",
-    "globby": "^5.0.0",
     "request": "^2.72.0"
   },
   "dependencies": {
-    "hackfile": "^4.0.0",
-    "js-yaml": "^3.6.1",
+    "globby": "^5.0.0",
+    "js-yaml": "^3.6.1"
   }
 }
