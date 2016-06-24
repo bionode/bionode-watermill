@@ -1,0 +1,8 @@
+tasks:
+  samples:
+    input:
+      db: sra
+      accession: 2492428
+    output: "**/*.sra"
+    action: !!js/function >
+      ({ input }) => ncbi.download(input.db, input.accession)
