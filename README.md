@@ -1,4 +1,7 @@
 # bionode-waterwheel
+
+[![Build Status](https://travis-ci.org/bionode/bionode-waterwheel.svg?branch=master)](https://travis-ci.org/bionode/bionode-waterwheel)
+
 *Waterwheel: A Streaming Workflow Engine*
 
 See this [draft blog post](https://github.com/thejmazz/jmazz.me/blob/master/content/post/ngs-workflow.md) for an introduction to why this tool was developed, specifically with respect to improving upon ideas introduced by [Snakemake](https://bitbucket.org/snakemake/snakemake/wiki/Home) and [Nextflow](http://www.nextflow.io/) while introducing the notion of *streaming data* via [Stream](https://nodejs.org/api/stream.html).
