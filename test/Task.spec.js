@@ -17,12 +17,29 @@ describe('Task', function() {
 
   describe('when provided with a Promise', function() {
     describe('that resolves to a value', function() {
-      it('should return a readable stream', function() {
+      it('should return a readable stream', function(done) {
         const task = Task(null, () => new Promise((resolve, reject) => resolve('datums')))
 
         assert.isOk(isReadable(task))
         assert.isNotOk(isWritable(task))
+
+        task
+          .on('data', noop)
+          .on('end', () => done())
       })
+    })
+  })
+
+  describe('when provided with a curried callback(err, data)', function() {
+    it('should return a readable stream', function(done) {
+      const task = Task(null, (props) => (cb) => cb(null, 'datums'))
+
+      assert.isOk(isReadable(task))
+      assert.isNotOk(isWritable(task))
+
+      task
+        .on('data', noop)
+        .on('end', () => done())
     })
   })
 })
