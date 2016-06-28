@@ -31,10 +31,13 @@
   "devDependencies": {
     "bionode-ncbi": "^1.6.1",
     "chai": "^3.5.0",
+    "duplexify": "^3.4.3",
+    "into-stream": "^2.0.1",
     "isstream": "^0.1.2",
     "mocha": "^2.5.3",
     "request": "^2.72.0",
-    "stream-assert": "^2.0.3"
+    "stream-assert": "^2.0.3",
+    "through2": "^2.0.1"
   },
   "dependencies": {
     "globby": "^5.0.0",
