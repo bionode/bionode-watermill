@@ -4,7 +4,8 @@
   "description": "Streaming workflow engine for bionformatics pipelines",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.js"
+    "test": "mocha test/**/*.spec.js",
+    "coverage": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,11 @@
   "devDependencies": {
     "bionode-ncbi": "^1.6.1",
     "chai": "^3.5.0",
+    "codecov": "^1.0.1",
     "duplexify": "^3.4.3",
     "into-stream": "^2.0.1",
     "isstream": "^0.1.2",
+    "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "request": "^2.72.0",
     "stream-assert": "^2.0.3",
