@@ -23,7 +23,10 @@ const downloadReference = Task({
 
 const bwaIndex = Task({
   input: new File('*_genomic.fna.gz'),
-  output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => new File(`*_genomic.fna.gz.${suffix}`))
+  output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => new File(`*_genomic.fna.gz.${suffix}`)),
+  name: 'bwa index *_genomic.fna.gz'
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-downloadReference()
+// downloadReference()
+
+bwaIndex()
