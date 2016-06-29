@@ -22,14 +22,17 @@ describe('Task', function() {
   describe('when provided with a Promise', function() {
     describe('that resolves to a value', function() {
       it('should return a readable stream', function(done) {
-        const task = Task(null, () => new Promise((resolve, reject) => resolve('datums')))()
+        Task(null, () => new Promise((resolve, reject) => resolve('datums')))().then((task) => {
+          console.log('task: ' + task)
 
-        assert.isOk(isReadable(task))
-        assert.isNotOk(isWritable(task))
+          assert.isOk(isReadable(task))
+          assert.isNotOk(isWritable(task))
 
-        task
-          .on('data', noop)
-          .on('end', () => done())
+          task
+            .on('data', noop)
+            .on('end', () => done())
+        })
+    
       })
     })
   })
