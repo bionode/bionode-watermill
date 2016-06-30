@@ -27,6 +27,7 @@ const bwaIndex = Task({
   name: 'bwa index *_genomic.fna.gz'
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-// downloadReference()
+downloadReference()
+  .on('finish', () => console.log('Got finish here too'))
 
-bwaIndex()
+// bwaIndex()
