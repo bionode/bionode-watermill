@@ -45,6 +45,7 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "co": "^4.6.0",
+    "eventemitter2": "^1.0.5",
     "globby": "^5.0.0",
     "js-yaml": "^3.6.1",
     "multimatch": "^2.1.0",

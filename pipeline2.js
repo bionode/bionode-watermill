@@ -34,3 +34,10 @@ const bwaIndex = Task({
 // bwaIndex()
 
 const pipeline = Join(downloadReference, bwaIndex)
+
+pipeline()
+  .on('task.done', (output) => {
+    console.log('Join emitted a task.done')
+    console.log(output)
+  })
+  
