@@ -7,6 +7,7 @@ const Task = require('./lib/Task.js')
 const waterwheel = require('./lib/waterwheel')
 const { File } = waterwheel.types
 const { shell, shellPipe } = waterwheel.wrappers
+const Join = require('./lib/Join.js')
 
 const THREADS = 4
 const config = {
@@ -27,7 +28,9 @@ const bwaIndex = Task({
   name: 'bwa index *_genomic.fna.gz'
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-downloadReference()
-  .on('task.done', (output) => console.log(output))
+// downloadReference()
+//   .on('task.done', (output) => console.log(output))
 
 // bwaIndex()
+
+const pipeline = Join(downloadReference, bwaIndex)
