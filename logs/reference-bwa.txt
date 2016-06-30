@@ -1,0 +1,62 @@
+Running task Download reference genome for Salmonella enterica
+  Resolving input
+    input: http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz from value
+  Creating a stream from stream
+  Stream has finished
+  Resolving output
+    Looking for GCA_000988525.2_ASM98852v2_genomic.fna.gz
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz
+Running task bwa index *_genomic.fna.gz
+  Resolving input
+    input: GCA_000988525.2_ASM98852v2_genomic.fna.gz from passed in File
+  Starting: bwa index GCA_000988525.2_ASM98852v2_genomic.fna.gz
+  Creating a child process
+    stderr: [bwa_index] Pack FASTA... 
+    stderr: 0.06 sec
+    stderr: [bwa_index] Construct BWT for the packed sequence...
+    stderr: 
+    stderr: [bwa_index] 1.86 seconds elapse.
+    stderr: [bwa_index] Update BWT... 
+    stderr: 0.04 sec
+    stderr: [bwa_index] Pack forward-only FASTA... 
+    stderr: 0.04 sec
+    stderr: [bwa_index] Construct SA from BWT and Occ... 
+    stderr: 0.61 sec
+    stderr: 
+    stderr: [main] Version: 0.7.14-r1136
+    stderr: [main] CMD: bwa index GCA_000988525.2_ASM98852v2_genomic.fna.gz
+    stderr: [main] Real time: 2.628 sec; CPU: 2.612 sec
+    stderr: 
+  Child process finished
+  Resolving output
+    Looking for *_genomic.fna.gz.amb
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb
+    Looking for *_genomic.fna.gz.ann
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann
+    Looking for *_genomic.fna.gz.bwt
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt
+    Looking for *_genomic.fna.gz.pac
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac
+    Looking for *_genomic.fna.gz.sa
+       found GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa
+Join emitted a task.done
+[ File {
+    value: '*_genomic.fna.gz.amb',
+    resolved: 'GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb',
+    resolve: [Function: bound resolve] },
+  File {
+    value: '*_genomic.fna.gz.ann',
+    resolved: 'GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann',
+    resolve: [Function: bound resolve] },
+  File {
+    value: '*_genomic.fna.gz.bwt',
+    resolved: 'GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt',
+    resolve: [Function: bound resolve] },
+  File {
+    value: '*_genomic.fna.gz.pac',
+    resolved: 'GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac',
+    resolve: [Function: bound resolve] },
+  File {
+    value: '*_genomic.fna.gz.sa',
+    resolved: 'GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa',
+    resolve: [Function: bound resolve] } ]
