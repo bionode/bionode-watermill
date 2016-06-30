@@ -28,6 +28,6 @@ const bwaIndex = Task({
 }, ({ input }) => shell(`bwa index ${input}`) )
 
 downloadReference()
-  .on('finish', () => console.log('Got finish here too'))
+  .on('task.done', (output) => console.log(output))
 
 // bwaIndex()
