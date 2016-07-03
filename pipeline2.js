@@ -2,6 +2,7 @@
 
 const fs = require('fs')
 const request = require('request')
+const ncbi = require('bionode-ncbi')
 
 const Task = require('./lib/Task.js')
 const waterwheel = require('./lib/waterwheel')
@@ -16,6 +17,10 @@ const config = {
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz'
 }
 
+
+
+// Reference
+
 const downloadReference = Task({
   input: config.referenceURL,
   output: new File(config.referenceURL.split('/').pop()),
@@ -28,10 +33,6 @@ const bwaIndex = Task({
   name: 'bwa index *_genomic.fna.gz'
 }, ({ input }) => new Process(`bwa index ${input}`) )
 
-// downloadReference()
-//   .on('task.done', (output) => console.log(output))
-
-// bwaIndex()
 
 const pipeline = Join(downloadReference, bwaIndex)
 
@@ -41,3 +42,16 @@ pipeline()
     console.log(output)
   })
   
+
+// Samples
+
+// const samples = Task({
+//   input: {
+//     db: 'sra',
+//     accession: config.sraAccession
+//   },
+//   output: new File('*|)}>#*.sra'),
+//   name: `Download SRA ${config.sraAccession}`
+// }, ({ input }) => ncbi.download(input.db, input.accession) )
+//
+// samples()
