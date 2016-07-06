@@ -5,8 +5,10 @@ const { isReadable, isWritable, isDuplex } = isStream
 const intoStream = require('into-stream')
 const through = require('through2')
 const duplexify = require('duplexify')
+const split = require('split')
 
 const Task = require('../lib/Task.js')
+const join = require('../lib/Join.js')
 
 const noop = () => {}
 const fs = require('fs')
@@ -29,9 +31,50 @@ describe('Task', function() {
 
         task
           .on('data', noop)
-          .on('end', () => done()) 
+          .on('end', done)
       })
     })
+
+    it('should return a readable stream given a string', function(done) {
+      const task = Task({
+        input: {
+          one: { value: 5 },
+          two: { value: 2 }
+        },
+        name: 'testing promise stream with string'
+      }, () => new Promise((resolve, reject) => resolve('42')))
+      
+
+      task()
+        .on('data', (data) => {
+          assert(data.toString() === '42')
+          
+          done() 
+        })
+        // .on('end', done)
+        .on('error', done)
+    })
+
+
+    it('should return a readable stream given an object', function(done) {
+      const task = Task({
+        input: {
+          one: { value: 5 },
+          two: { value: 2 }
+        },
+        output: { stream: 'object' },
+        name: 'testing promise stream with object' 
+      }, () => new Promise((resolve, reject) => resolve({ foo: 'bar' })))
+      
+
+      task()
+        .on('data', (data) => {
+          assert.deepEqual(data, { foo: 'bar' })
+          
+          done()  
+        })
+        .on('error', done)
+    }) 
   })
 
   describe('when provided with a curried callback(err, data)', function() {
@@ -91,5 +134,41 @@ describe('Task', function() {
         //.on('end', () => done())
         .on('finish', () => done())
     })
+  })
+})
+
+describe('Join', function() {
+  it.skip('should join two tasks', function(done) {
+    const task1 = Task({
+      input: { value: ['1\n', '2\n'] },
+      output: { file: 'foo.txt' },
+      name: 'Write numbers to file'
+    }, ({ input }) => intoStream(input).pipe(fs.createWriteStream('foo.txt')) )
+
+    const task2 = Task({
+      input: { file: 'foo.txt' },
+      output: { file: 'sum.txt' },
+      name: 'Sum numbers in file'
+    }, ({ input }) => new Promise((resolve, reject) => {
+      resolve(42)
+
+      let sum = 0
+
+      fs.createReadStream(input)
+        .pipe(split())
+        .on('data', function(line) {
+          if (line !== '') {
+            sum += parseInt(line)
+          } else {
+            resolve(sum)
+          }
+        })
+    }))
+
+    // task2.on('data', noop)
+
+    join(task1, task2)()
+      .on('data', (data) => console.log('data: ', data.toString()))
+      .on('end', () => console.log('end'))
   })
 })

@@ -39,6 +39,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "request": "^2.72.0",
+    "split": "^1.0.0",
     "stream-assert": "^2.0.3",
     "through2": "^2.0.1"
   },
