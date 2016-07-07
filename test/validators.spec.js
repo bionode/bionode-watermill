@@ -6,10 +6,12 @@ const path = require('path')
 const task = require('../lib/Task.js')
 const validators = require('../lib/validators.js')
 
+const existsAndNonEmptyFile = path.resolve(__dirname, 'exists.txt')
+
 describe('validators', function() {
   describe('existence check', function() {
     it('should resolve if the specific file exists', function() {
-      let myFile = { file: path.resolve(__dirname, 'exists.txt') }
+      let myFile = { file: existsAndNonEmptyFile }
       myFile = validators.existenceCheck(myFile)
 
       assert.isOk(myFile.resolved, 'file did not resolve as expected')
@@ -38,5 +40,25 @@ describe('validators', function() {
 
       assert.isOk(Object.keys(shoulds).map(key => shoulds[key]).every(item => item === true), 'Did not match expected files')
     })
-  }) 
+  })
+
+  describe('null check', function() {
+    it('should gracefully handle a non-existent file', function() {
+      const result = validators.nullCheck('the-future.txt')
+
+      assert.isNotOk(result)
+    })
+
+    it('should return false for an empty file', function() {
+      const result = validators.nullCheck(path.resolve(__dirname, 'empty.txt'))
+
+      assert.isNotOk(result)
+    })
+
+    it('should return true for a non-empty file', function() {
+      const result = validators.nullCheck(existsAndNonEmptyFile)
+
+      assert.isOk(result)
+    })
+  })
 })
