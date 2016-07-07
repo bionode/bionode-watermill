@@ -12,33 +12,34 @@ describe('validators', function() {
   describe('existence check', function() {
     it('should resolve if the specific file exists', function() {
       let myFile = { file: existsAndNonEmptyFile }
-      myFile = validators.existenceCheck(myFile)
+      const result = validators.existenceCheck(myFile)
 
       assert.isOk(myFile.resolved, 'file did not resolve as expected')
+      assert.isOk(result)
     })
 
     it('should not resolve if the file does not exist', function() {
-      let myFile = validators.existenceCheck({ file: 'nowhere-to-be-found.txt' })
+      const myFile = { file: 'nowhere-to-be-found.txt' }
+      const result = validators.existenceCheck(myFile)
 
       assert.isNotOk(myFile.resolved, 'non-existent file was resolved incorrectly')
+      assert.isNotOk(result)
     })
 
     it('should resolve files matching a pattern', function() {
       let myFiles = { file: '*_foo.txt', globOpts: { cwd: __dirname } }
 
-      myFiles = validators.existenceCheck(myFiles)
+      const result = validators.existenceCheck(myFiles)
 
       const shoulds = {
         '1_foo.txt': false,
         '2_foo.txt': false
       }
 
-      myFiles.file.forEach((file) => {
-        shoulds[file] = true
-      })
-
+      myFiles.file.forEach((file) => shoulds[file] = true)
 
       assert.isOk(Object.keys(shoulds).map(key => shoulds[key]).every(item => item === true), 'Did not match expected files')
+      assert.isOk(result)
     })
   })
 
