@@ -31,7 +31,7 @@ const bwaIndex = Task({
 }, ({ input }) => new Process(`bwa index ${input}`) )
 
 
-const pipeline = Join(downloadReference, bwaIndex)
+const pipeline = Join(/*downloadReference,*/ bwaIndex)
 
 pipeline()
   .on('task.done', (output) => {

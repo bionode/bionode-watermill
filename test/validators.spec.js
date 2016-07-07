@@ -43,23 +43,37 @@ describe('validators', function() {
     })
   })
 
-  describe('null check', function() {
+  describe('null check helper', function() {
     it('should gracefully handle a non-existent file', function() {
-      const result = validators.nullCheck('the-future.txt')
+      const result = validators.isFileNull('the-future.txt')
 
       assert.isNotOk(result)
     })
 
     it('should return false for an empty file', function() {
-      const result = validators.nullCheck(path.resolve(__dirname, 'empty.txt'))
+      const result = validators.isFileNull(path.resolve(__dirname, 'empty.txt'))
 
       assert.isNotOk(result)
     })
 
     it('should return true for a non-empty file', function() {
-      const result = validators.nullCheck(existsAndNonEmptyFile)
+      const result = validators.isFileNull(existsAndNonEmptyFile)
 
       assert.isOk(result)
+    })
+  })
+
+  describe('null check', function() {
+    it.skip('should gracefully handle a non-resolved file', function() {
+
+    })
+
+    it.skip('should return false for an empty file', function() {
+
+    })
+
+    it.skip('should return true for a non-empty file', function() {
+
     })
   })
 })
