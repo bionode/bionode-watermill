@@ -29,7 +29,7 @@ const bwaIndex = Task({
   input: { file: '*_genomic.fna.gz' },
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => ({ file: `*_genomic.fna.gz.${suffix}` })),
   name: 'bwa index *_genomic.fna.gz',
-  skippable: true
+  skippable: false
 }, ({ input }) => new Process(`bwa index ${input}`) )
 
 
