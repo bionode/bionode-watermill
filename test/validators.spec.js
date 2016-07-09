@@ -2,6 +2,8 @@
 
 const { assert } = require('chai')
 const path = require('path')
+const intoStream = require('into-stream')
+const fs = require('fs')
 
 const task = require('../lib/Task.js')
 const validators = require('../lib/validators.js')
@@ -75,5 +77,62 @@ describe('validators', function() {
     it.skip('should return true for a non-empty file', function() {
 
     })
+  })
+})
+
+const onlyNumbers = ({ file }) => {
+  const contents = fs.readFileSync(file[0], 'utf-8')
+  for (let line of contents.split('\n')) {
+    const code = line.charCodeAt(0)
+
+    // Not 0-9
+    if (code < 48 || code > 57 ) {
+      return false
+    }
+  }
+
+  return true
+}
+
+describe('custom validators', function() {
+  describe('custom file validators', function() {
+    it('should invalidate a task', function(done) {
+      const task1 = task({
+        input: { value: intoStream(['1', '2', 'a', '3'].map(i => i + '\n')) },
+        output: { file: 'validators.spec.1.txt' },
+        skippable: false,
+        validators: {
+          file: [ onlyNumbers ]
+        }
+      }, ({ input }) => input.pipe(fs.createWriteStream('validators.spec.1.txt')) )
+
+      task1().on('finish', function() {
+        const output = this.output()
+
+        assert.isNotOk(output.resolved)
+
+        done()
+      })
+    })
+    
+    it('should validate a task', function(done) {
+      const task1 = task({
+        input: { value: intoStream(['1', '2', '5', '3'].map(i => i + '\n')) },
+          output: { file: 'validators.spec.2.txt' },
+        skippable: false,
+        validators: {
+          file: [ onlyNumbers ]
+        }
+      }, ({ input }) => input.pipe(fs.createWriteStream('validators.spec.2.txt')) )
+
+      task1().on('finish', function() {
+        const output = this.output()
+
+        assert.isOk(output.resolved)
+
+        done()
+      })
+    })
+
   })
 })
