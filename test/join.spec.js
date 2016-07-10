@@ -48,7 +48,7 @@ describe('Join', function() {
     )
 
     join(task1, task2)()
-      .on('task.done', done)
+      .on('close', done)
       .on('error', done)  
   })
 

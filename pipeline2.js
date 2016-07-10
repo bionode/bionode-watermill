@@ -22,7 +22,7 @@ const downloadReference = Task({
   input: { value: config.referenceURL },
   output: { file: config.referenceURL.split('/').pop() },
   name: `Download reference genome for ${config.name}`,
-  skippable: false
+  // skippable: false
 }, ({ input }) => request(input).pipe(fs.createWriteStream(input.split('/').pop())) )
 
 const bwaIndex = Task({
@@ -35,11 +35,11 @@ const bwaIndex = Task({
 const pipeline = Join(downloadReference, bwaIndex)
 
 pipeline()
-  .on('task.done', (output) => {
-    console.log('Join emitted a task.done')
+  .on('close', function() {
+    console.log('Join emitted close')
+    const output = this.output()
     console.log(output)
   })
-
 
 // Samples
 
