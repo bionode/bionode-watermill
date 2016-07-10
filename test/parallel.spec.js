@@ -16,7 +16,9 @@ describe('Parallel', function() {
     }))
 
     parallel(task1, task2)()
-      .on('task.done', (data) => {
+      .on('close', function() {
+        const data = this.output()
+
         assert(data[0].toString() === 'bar')
         assert(data[1].toString() === 'foo') 
         
