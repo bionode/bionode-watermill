@@ -6,7 +6,7 @@ const ncbi = require('bionode-ncbi')
 
 const Task = require('./lib/Task.js')
 const waterwheel = require('./lib/waterwheel')
-const { shell, shellPipe, Process } = waterwheel.wrappers
+const { shell } = waterwheel.wrappers
 const Join = require('./lib/Join.js')
 
 const THREADS = 4
@@ -29,8 +29,8 @@ const bwaIndex = Task({
   input: { file: '*_genomic.fna.gz' },
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => ({ file: `*_genomic.fna.gz.${suffix}` })),
   name: 'bwa index *_genomic.fna.gz',
-  // skippable: false
-}, ({ input }) => new Process(`bwa index ${input}`) )
+  skippable: false
+}, ({ input }) => shell(`bwa index ${input}`) )
 
 
 const pipeline = Join(downloadReference, bwaIndex)
