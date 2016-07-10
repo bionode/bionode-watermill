@@ -22,14 +22,14 @@ const downloadReference = Task({
   input: { value: config.referenceURL },
   output: { file: config.referenceURL.split('/').pop() },
   name: `Download reference genome for ${config.name}`,
-  skippable: false
+  // skippable: false
 }, ({ input }) => request(input).pipe(fs.createWriteStream(input.split('/').pop())) )
 
 const bwaIndex = Task({
   input: { file: '*_genomic.fna.gz' },
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => ({ file: `*_genomic.fna.gz.${suffix}` })),
   name: 'bwa index *_genomic.fna.gz',
-  skippable: false
+  // skippable: false
 }, ({ input }) => new Process(`bwa index ${input}`) )
 
 
