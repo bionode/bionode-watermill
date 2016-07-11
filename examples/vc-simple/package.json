@@ -1,0 +1,12 @@
+{
+  "name": "variant-calling-simple",
+  "version": "1.0.0",
+  "description": "",
+  "main": "variant-calling-simple.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node variant-calling-simple.js"
+  },
+  "author": "",
+  "license": "MIT"
+}

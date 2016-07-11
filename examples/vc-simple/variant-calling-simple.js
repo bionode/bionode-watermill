@@ -7,11 +7,13 @@ const parallel = require('../../lib/parallel.js')
 const { shell } = require('../../lib/wrappers.js')
 
 // === MODULES ===
+const fs = require('fs')
+
 const request = require('request')
 const ncbi = require('bionode-ncbi')
 
 // === CONFIG ===
-const THREADS = 4
+const THREADS = parseInt(process.env.WATERWHEEL_THREADS) || 4
 const config = {
   name: 'Salmonella enterica',
   sraAccession: '2492428',
@@ -71,7 +73,7 @@ const getSamples = task({
  */
 const fastqDump = task({
   input: { file: '**/*.sra' },
-  output: [1, 2].map(n => { file: `*_${n}.fastq.gz` }),
+  output: [1, 2].map(n => ({ file: `*_${n}.fastq.gz` })),
   name: 'fastq-dump **/*.sra'
 }, ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`) )
 
@@ -93,11 +95,12 @@ const alignAndSort = task({
     }
   },
   output: { file: 'reads.bam' },
-  name: 'bwa mem | samtools view | samtools sort'
+  name: 'bwa mem | samtools view | samtools sort',
+  skipPassed: true
 }, ({ input }) => shell(`
-  bwa mem -t ${THREADS} ${input.reference} ${input.reads.1} ${input.reads.2} | \
-  samtools view -Sbh - \
-  samtools sort - -o reads.bam
+bwa mem -t ${THREADS} ${input.reference} ${input.reads['1']} ${input.reads['2']} | \
+samtools view -@ ${THREADS} -Sbh - | \
+samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `))
 
 
@@ -108,8 +111,8 @@ const alignAndSort = task({
  * @action {shell}
  */
 const samtoolsIndex = task({
-  input: { file: 'reads.bam' }
-  output: { file: '*.bam.bai' }
+  input: { file: 'reads.bam' },
+  output: { file: '*.bam.bai' },
   name: 'samtools index'
 }, ({ input }) => shell(`samtools index ${input}`))
 
@@ -124,7 +127,7 @@ const decompressReference = task({
   input: { file: '*_genomic.fna.gz' },
   output: { file: '*_genomic.fna' },
   name: 'Decompress reference'
-}, ({ input }) => shell(`bgzip -d ${input}`) )
+}, ({ input }) => shell(`bgzip -d ${input} --stdout > ${input.slice(0, -('.gz'.length))}`) )
 
 
 /**
@@ -135,37 +138,39 @@ const decompressReference = task({
  * @output {file} variant calling format
  * @action {shell}
  */
-const mpileupAndCall = task({
+const mpileupandcall = task({
   input: {
     reference: { file: '*_genomic.fna' },
     bam: { file: '*.bam' },
     _bai: { file: '*.bam.bai' }
   },
-  output: { file: 'variants.vcf' }
-  name: 'samtools mpileup | bcftools call'
+  output: { file: 'variants.vcf' },
+  name: 'samtools mpileup | bcftools call',
+  skipPassed: true
 }, ({ input }) => shell(`
-  samtools mpileup -uf ${input.reference} ${input.bam} \
-  bcftools call -c - > variants.vcf
+samtools mpileup -uf ${input.reference} ${input.bam} | \
+bcftools call -c - > variants.vcf
 `))
 
-// === TASK ORCHESTRATION ===
+// === task orchestration ===
 
-// getReference
-// bwaIndex
-// getSamples
-// fastqDump
-// alignAndSort
-// samtoolsIndex
-// decompressReference
-// mpileupAndCall
+// getreference
+// bwaindex
+// getsamples
+// fastqdump
+// alignandsort
+// samtoolsindex
+// decompressreference
+// mpileupandcall
 
 const reads = join(getSamples, fastqDump)
 const reference = join(getReference, parallel(bwaIndex, decompressReference))
-const call = join(alignAndSort, samtoolsIndex, mpileupAndCall)
+const call = join(alignAndSort, samtoolsIndex, mpileupandcall)
 
 const pipeline = join(parallel(reads, reference), call)
 
 pipeline()
   .on('close', function() {
+    this.output()
     console.log('Pipeline has finished')
   })
