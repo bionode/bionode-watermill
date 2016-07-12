@@ -58,7 +58,7 @@ const bwaIndex = task({
 const getSamples = task({
   input: {
     db: { value: 'sra' },
-    accession: { value: config.sraAccession } 
+    accession: { value: config.sraAccession }
   },
   output: { file: '**/*.sra' },
   name: `Download SRA ${config.sraAccession}`
@@ -94,7 +94,7 @@ const alignAndSort = task({
       2: { file: '*_2.fastq.gz' }
     }
   },
-  output: { file: 'reads.bam' },
+  output: [{ file: 'reads.bam' }, { file: '*_genomic.fna' }], // NOTE forced genomic.fna into here
   name: 'bwa mem | samtools view | samtools sort',
   skipPassed: true
 }, ({ input }) => shell(`
@@ -146,22 +146,15 @@ const mpileupandcall = task({
   },
   output: { file: 'variants.vcf' },
   name: 'samtools mpileup | bcftools call',
-  skipPassed: true
+  // skipPassed: true
 }, ({ input }) => shell(`
-samtools mpileup -uf ${input.reference} ${input.bam} | \
+samtools mpileup -uf ${input[1]} ${input[0]} | \
 bcftools call -c - > variants.vcf
 `))
+// NOTE the input[0] and input[1] is highly hardcoded and sketchy and based on
+// console.log output
 
 // === task orchestration ===
-
-// getreference
-// bwaindex
-// getsamples
-// fastqdump
-// alignandsort
-// samtoolsindex
-// decompressreference
-// mpileupandcall
 
 const reads = join(getSamples, fastqDump)
 const reference = join(getReference, parallel(bwaIndex, decompressReference))
@@ -169,7 +162,7 @@ const call = join(alignAndSort, samtoolsIndex, mpileupandcall)
 
 const pipeline = join(parallel(reads, reference), call)
 
-pipeline()
+call()
   .on('close', function() {
     this.output()
     console.log('Pipeline has finished')
