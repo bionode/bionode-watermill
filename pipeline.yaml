@@ -1,6 +1,0 @@
-fastqDump:
-  input: "**/*.sra"
-  output:
-    - "*_1.fastq.gz"
-    - "*_2.fastq.gz"
-  task: "`fastq-dump --split-files --skip-technical --gzip ${input}`"

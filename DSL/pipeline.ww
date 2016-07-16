@@ -1,8 +1,0 @@
-fastqDump
-  input new File('**/*.sra')
-  output
-    [1,2].map(num=>`*_${num}.fastq.gz`)
-    *_1.fastq.gz
-    *_2.fastq.gz
-  task shell
-    fastq-dump --split-files --skip-technical --gzip ${input}
