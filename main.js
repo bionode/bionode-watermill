@@ -22,16 +22,7 @@ const myTask = task({
   name: 'My Task'
 }, ({ input }) => intoStream(input).pipe(fs.createWriteStream('file.txt')))
 
-const myTask2 = task({
-  input: { value: 'bar' },
-  output: { file: 'file2.txt' },
-  name: 'Another task'
-}, ({ input }) => intoStream(input).pipe(fs.createWriteStream('file2.txt')))
-
 myTask()
-myTask2()
-
-// myTask()
-//   .on('close' , function () {
-//     this.output()
-//   })
+  .on('close' , function () {
+    this.output()
+  })
