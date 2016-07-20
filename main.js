@@ -11,9 +11,6 @@ const myTask = task({
 }, ({ input }) => intoStream(input).pipe(fs.createWriteStream('file.txt')))
 
 myTask()
-  .on('bunja', () => console.log('got bunja'))
-  .on('finish', () => console.log('externally received finish'))
-  .on('wow', (uid) => console.log('got wow', uid))
   .on('close' , function () {
     console.log('============== GOT CLOSE =======================')
     // creating output on close
