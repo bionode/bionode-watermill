@@ -13,7 +13,7 @@ const delayedResolve = (str, time) => task({
 }))
 
 describe('Parallel', function() {
-  it('should run two tasks in parallel', function(done) {
+  it.skip('should run two tasks in parallel', function(done) {
     const task1 = delayedResolve('foo', 1000)
     const task2 = delayedResolve('bar', 500)
 
@@ -22,13 +22,13 @@ describe('Parallel', function() {
         const data = this.output()
 
         assert(data[0].toString() === 'bar')
-        assert(data[1].toString() === 'foo') 
-        
+        assert(data[1].toString() === 'foo')
+
         done()
       })
   })
 
-  it('should parallel parallel', function(done) {
+  it.skip('should parallel parallel', function(done) {
     const taskA1 = delayedResolve('A1', 100)
     const taskA2 = delayedResolve('A2', 500)
     const taskB1 = delayedResolve('B1', 200)
@@ -50,7 +50,7 @@ describe('Parallel', function() {
       })
   })
 
-  it('should arrive in proper order', function(done) {
+  it.skip('should arrive in proper order', function(done) {
     const taskA1 = delayedResolve('A1', 100)
     const taskA2 = delayedResolve('A2', 500)
     const taskB1 = delayedResolve('B1', 200)

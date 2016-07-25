@@ -58,7 +58,7 @@ describe('Join', function() {
   })
 
   it.skip('should join two tasks with promise, stream', function(done) {
-    
+
   })
 
   it.skip('should join two tasks with stream, promise', function(done) {
