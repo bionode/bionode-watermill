@@ -6,7 +6,7 @@ const intoStream = require('into-stream')
 const fs = require('fs')
 const myTask = task({
   input: { value: 'foo' },
-  output: { file: 'file.txt' },
+  output: { file: '*ile.txt' },
   name: 'My Task'
 // }, ({ input }) => shell(`echo "${input}\n${input}" > file.txt`))
 }, ({ input }) => intoStream(input).pipe(fs.createWriteStream('file.txt')))
