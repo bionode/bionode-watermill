@@ -1,3 +1,3 @@
 # Capitalize
 
-Simple pipeline which takes source files and transforms their contents to become capitalized.
+Simple pipeline which takes a source file and transforms its contents to become capitalized.
