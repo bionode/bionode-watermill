@@ -5,7 +5,7 @@ const { task, shell } = require('.')
 const intoStream = require('into-stream')
 const fs = require('fs')
 const myTask = task({
-  input: { value: 'foo' },
+  input: 'foos',
   output: '*ile.txt',
   name: 'My Task'
 // }, ({ input }) => shell(`echo "${input}\n${input}" > file.txt`))
