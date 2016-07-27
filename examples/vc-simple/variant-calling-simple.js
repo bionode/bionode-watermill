@@ -1,10 +1,11 @@
 'use strict'
 
 // === WATERWHEEL ===
-const task = require('../../lib/Task.js')
-const join = require('../../lib/Join.js')
-const parallel = require('../../lib/parallel.js')
-const { shell } = require('../../lib/wrappers.js')
+const {
+  task,
+  join,
+  shell
+} = require('../..')
 
 // === MODULES ===
 const fs = require('fs')
@@ -29,10 +30,22 @@ const config = {
  * @action http request | writable
  */
 const getReference = task({
-  input: { value: config.referenceURL },
-  output: { file: config.referenceURL.split('/').pop() },
+  params: { url: config.referenceURL },
+  input: null,
+  output: '*_genomic.fna.gz',
   name: `Download reference genome for ${config.name}`
-}, ({ input }) => request(input).pipe(fs.createWriteStream(input.split('/').pop())) )
+}, ({ params }) => {
+  const { url } = params
+  const outfile = url.split('/').pop()
+
+  // essentially curl -O
+  return request(url).pipe(fs.createWriteStream(outfile))
+})
+
+// getReference()
+//   .on('close', function() {
+//     console.log('output: ', this._output)
+//   })
 
 
 /**
@@ -42,10 +55,21 @@ const getReference = task({
  * @action {shell}
  */
 const bwaIndex = task({
-  input: { file: '*_genomic.fna.gz' },
-  output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => ({ file: `*_genomic.fna.gz.${suffix}` })),
+  input: '*_genomic.fna.gz',
+  output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`),
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
+
+// bwaIndex()
+//   .on('destroy', function() {
+//     console.log('output: ', this._output)
+//   })
+
+
+join(getReference, bwaIndex)()
+  .on('destroy', function() {
+    console.log('output: ', this._output)
+  })
 
 
 /**
@@ -57,7 +81,7 @@ const bwaIndex = task({
  */
 const getSamples = task({
   input: {
-    db: { value: 'sra' },
+    db: 'sra',
     accession: { value: config.sraAccession }
   },
   output: { file: '**/*.sra' },
@@ -156,14 +180,14 @@ bcftools call -c - > variants.vcf
 
 // === task orchestration ===
 
-const reads = join(getSamples, fastqDump)
-const reference = join(getReference, parallel(bwaIndex, decompressReference))
-const call = join(alignAndSort, samtoolsIndex, mpileupandcall)
-
-const pipeline = join(parallel(reads, reference), call)
-
-call()
-  .on('close', function() {
-    this.output()
-    console.log('Pipeline has finished')
-  })
+// const reads = join(getSamples, fastqDump)
+// const reference = join(getReference, parallel(bwaIndex, decompressReference))
+// const call = join(alignAndSort, samtoolsIndex, mpileupandcall)
+//
+// const pipeline = join(parallel(reads, reference), call)
+//
+// call()
+//   .on('close', function() {
+//     this.output()
+//     console.log('Pipeline has finished')
+//   })
