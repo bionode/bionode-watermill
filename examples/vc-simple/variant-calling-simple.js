@@ -56,10 +56,10 @@ const bwaIndex = task({
 }, ({ input }) => shell(`bwa index ${input}`) )
 
 
-join(getReference, bwaIndex)()
-  .on('destroy', function() {
-    console.log('output: ', JSON.stringify(this._output, null, 2))
-  })
+// join(getReference, bwaIndex)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 
 /**
@@ -70,14 +70,19 @@ join(getReference, bwaIndex)()
  * @action {readable} the stream returned by ncbi.download
  */
 const getSamples = task({
-  input: {
+  params: {
     db: 'sra',
-    accession: { value: config.sraAccession }
+    accession: config.sraAccession
   },
-  output: { file: '**/*.sra' },
+  input: null,
+  output: '**/*.sra',
   name: `Download SRA ${config.sraAccession}`
-}, ({ input }) => ncbi.download(input.db, input.accession) )
+}, ({ params }) => ncbi.download(params.db, params.accession) )
 
+getSamples()
+  .on('destroy', function() {
+    console.log('output: ', JSON.stringify(this._output, null, 2))
+  })
 
 /**
  * Extracts SRA into fastq using fastq-dump.
