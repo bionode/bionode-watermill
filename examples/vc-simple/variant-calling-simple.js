@@ -79,10 +79,10 @@ const getSamples = task({
   name: `Download SRA ${config.sraAccession}`
 }, ({ params }) => ncbi.download(params.db, params.accession) )
 
-getSamples()
-  .on('destroy', function() {
-    console.log('output: ', JSON.stringify(this._output, null, 2))
-  })
+// getSamples()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Extracts SRA into fastq using fastq-dump.
@@ -91,11 +91,15 @@ getSamples()
  * @action {shell}
  */
 const fastqDump = task({
-  input: { file: '**/*.sra' },
-  output: [1, 2].map(n => ({ file: `*_${n}.fastq.gz` })),
+  input: '**/*.sra',
+  output: [1, 2].map(n => (`*_${n}.fastq.gz`)),
   name: 'fastq-dump **/*.sra'
 }, ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`) )
 
+// join(getSamples, fastqDump)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Align reads and sort.
@@ -107,21 +111,24 @@ const fastqDump = task({
  */
 const alignAndSort = task({
   input: {
-    reference: { file: '*_genomic.fna.gz' },
+    reference: '*_genomic.fna.gz',
     reads: {
-      1: { file: '*_1.fastq.gz' },
-      2: { file: '*_2.fastq.gz' }
+      1: '*_1.fastq.gz',
+      2: '*_2.fastq.gz'
     }
   },
-  output: [{ file: 'reads.bam' }, { file: '*_genomic.fna' }], // NOTE forced genomic.fna into here
-  name: 'bwa mem | samtools view | samtools sort',
-  skipPassed: true
+  output: ['reads.bam'], // NOTE forced genomic.fna into here
+  name: 'bwa mem | samtools view | samtools sort'
 }, ({ input }) => shell(`
 bwa mem -t ${THREADS} ${input.reference} ${input.reads['1']} ${input.reads['2']} | \
 samtools view -@ ${THREADS} -Sbh - | \
 samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `))
 
+// alignAndSort()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Index bam.
@@ -130,11 +137,16 @@ samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
  * @action {shell}
  */
 const samtoolsIndex = task({
-  input: { file: 'reads.bam' },
-  output: { file: '*.bam.bai' },
+  input: 'reads.bam',
+  output: '*.bam.bai',
   name: 'samtools index'
 }, ({ input }) => shell(`samtools index ${input}`))
 
+
+// join(alignAndSort, samtoolsIndex)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Decompress a reference genome.
@@ -143,11 +155,16 @@ const samtoolsIndex = task({
  * @action {shell}
  */
 const decompressReference = task({
-  input: { file: '*_genomic.fna.gz' },
-  output: { file: '*_genomic.fna' },
+  input: '*_genomic.fna.gz',
+  output: '*_genomic.fna',
   name: 'Decompress reference'
 }, ({ input }) => shell(`bgzip -d ${input} --stdout > ${input.slice(0, -('.gz'.length))}`) )
 
+
+// join(decompressReference, alignAndSort, samtoolsIndex)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Multipileup bam and call variants.
@@ -159,19 +176,22 @@ const decompressReference = task({
  */
 const mpileupandcall = task({
   input: {
-    reference: { file: '*_genomic.fna' },
-    bam: { file: '*.bam' },
-    _bai: { file: '*.bam.bai' }
+    reference: '*_genomic.fna',
+    bam: '*.bam',
+    _bai: '*.bam.bai'
   },
-  output: { file: 'variants.vcf' },
+  output: 'variants.vcf',
   name: 'samtools mpileup | bcftools call',
   // skipPassed: true
 }, ({ input }) => shell(`
-samtools mpileup -uf ${input[1]} ${input[0]} | \
+samtools mpileup -uf ${input.reference} ${input.bam} | \
 bcftools call -c - > variants.vcf
 `))
-// NOTE the input[0] and input[1] is highly hardcoded and sketchy and based on
-// console.log output
+
+join(decompressReference, alignAndSort, samtoolsIndex, mpileupandcall)()
+  .on('destroy', function() {
+    console.log('output: ', JSON.stringify(this._output, null, 2))
+  })
 
 // === task orchestration ===
 
