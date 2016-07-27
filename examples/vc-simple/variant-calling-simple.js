@@ -42,11 +42,6 @@ const getReference = task({
   return request(url).pipe(fs.createWriteStream(outfile))
 })
 
-// getReference()
-//   .on('close', function() {
-//     console.log('output: ', this._output)
-//   })
-
 
 /**
  * Indexes a reference genome with bwa.
@@ -60,15 +55,10 @@ const bwaIndex = task({
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-// bwaIndex()
-//   .on('destroy', function() {
-//     console.log('output: ', this._output)
-//   })
-
 
 join(getReference, bwaIndex)()
   .on('destroy', function() {
-    console.log('output: ', this._output)
+    console.log('output: ', JSON.stringify(this._output, null, 2))
   })
 
 
