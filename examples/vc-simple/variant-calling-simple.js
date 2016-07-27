@@ -42,6 +42,44 @@ const getReference = task({
   return request(url).pipe(fs.createWriteStream(outfile))
 })
 
+// To run one task by itself:
+getReference()
+  .on('destroy', () => {
+    console.log('Task was finished, produced: ')
+    console.log(JSON.stringify(output, null, 2))
+  })
+
+// ===============================================================
+// Task takes input and output as glob patterns exclusively.
+// Join is still WIP. It will work if the input can be found from
+// the last output. The workaround to run a bunch of tasks in
+// sequence:
+// task1().on('destroy', () => {
+//   task2().on('destroy', () => {
+//     task3().on('destroy', ...)
+//   })
+// })
+// this is messy, but each task will look to the cwd for files
+// that match the glob pattern.
+//
+// What I ask:
+// try simple sequences of tasks with the messy method,
+// or run each task after eachother,
+// I will have join working ASAP (2 days maybe) - but in the meantime
+// finding issues with tasks on their own is valuable:
+// unexpected input resolve issues?
+// expected output?
+// runs child process properly?
+// runs unix pipes properly?
+// etc... issues to do with one task at a time
+//
+// while I finish up making a Join of tasks work.
+//
+//
+// commented joins after each task except if noted should work
+// ===============================================================
+
+
 
 /**
  * Indexes a reference genome with bwa.
@@ -55,11 +93,18 @@ const bwaIndex = task({
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-
+// Can join two tasks as long as the input for task 2 comes from output of task
+// 1
 // join(getReference, bwaIndex)()
 //   .on('destroy', function() {
 //     console.log('output: ', JSON.stringify(this._output, null, 2))
 //   })
+//
+//   OR
+//   to take input from fs:
+//  task1().on('destroy', () => {
+//    task2().on('destroy', ...)
+//  })
 
 
 /**
@@ -161,10 +206,10 @@ const decompressReference = task({
 }, ({ input }) => shell(`bgzip -d ${input} --stdout > ${input.slice(0, -('.gz'.length))}`) )
 
 
-// join(decompressReference, alignAndSort, samtoolsIndex)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
+join(getReference, decompressReference, alignAndSort, samtoolsIndex)()
+  .on('destroy', function() {
+    console.log('output: ', JSON.stringify(this._output, null, 2))
+  })
 
 /**
  * Multipileup bam and call variants.
@@ -188,10 +233,12 @@ samtools mpileup -uf ${input.reference} ${input.bam} | \
 bcftools call -c - > variants.vcf
 `))
 
-join(decompressReference, alignAndSort, samtoolsIndex, mpileupandcall)()
-  .on('destroy', function() {
-    console.log('output: ', JSON.stringify(this._output, null, 2))
-  })
+// this fails b/c mpileupandcall needs reference *_genomic.fna and wont
+// find it in the output of samtoolsindex
+// join(decompressReference, alignAndSort, samtoolsIndex, mpileupandcall)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 // === task orchestration ===
 
