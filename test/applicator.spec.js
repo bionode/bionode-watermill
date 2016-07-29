@@ -6,7 +6,7 @@ chai.use(chaiAsPromised)
 const { assert, should } = chai
 should()
 
-const applicator = require('../lib/applicator.js')
+const applicator = require('../lib/utils/applicator.js')
 
 const tuc = (str) => new Promise(resolve => resolve(str.toUpperCase()))
 

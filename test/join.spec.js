@@ -7,8 +7,7 @@ const through = require('through2')
 const intoStream = require('into-stream')
 const split = require('split')
 
-const Task = require('../lib/Task.js')
-const join = require('../lib/Join.js')
+const { task, join } = require('../')
 
 const writeNumbers = (file) => Task({
   input: { value: ['1\n', '2\n'] },

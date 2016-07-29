@@ -7,8 +7,7 @@ const through = require('through2')
 const duplexify = require('duplexify')
 const split = require('split')
 
-const Task = require('../lib/Task.js')
-const join = require('../lib/Join.js')
+const { task, join } = require('../')
 
 const noop = () => {}
 const fs = require('fs')

@@ -2,8 +2,7 @@
 
 const { assert } = require('chai')
 
-const task = require('../lib/Task.js')
-const parallel = require('../lib/parallel.js')
+const { task, parallel } = require('../')
 
 
 const delayedResolve = (str, time) => task({

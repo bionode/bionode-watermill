@@ -13,7 +13,7 @@ should()
 const twd = path.resolve(__dirname, 'files', 'match-to-fs')
 
 const matchToFs = require('../lib/matchers/match-to-fs.js')
-const applicator = require('../lib/applicator.js')
+const applicator = require('../lib/utils/applicator.js')
 
 describe('match-to-fs', function() {
   it('should resolve a single pattern', () =>
