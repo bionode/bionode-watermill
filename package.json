@@ -50,6 +50,7 @@
     "chalk": "^1.1.3",
     "checksum": "^0.1.1",
     "duplexify": "^3.4.5",
+    "end-of-stream": "^1.1.0",
     "eventemitter2": "^2.0.1",
     "globby": "^5.0.0",
     "js-yaml": "^3.6.1",
