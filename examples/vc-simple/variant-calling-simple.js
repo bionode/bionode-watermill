@@ -44,9 +44,8 @@ const getReference = task({
 
 // To run one task by itself:
 // getReference()
-//   .on('task.finish', () => {
-//     console.log('Task was finished, produced: ')
-//     console.log(JSON.stringify(output, null, 2))
+//   .on('task.finish', (task) => {
+//     console.log('output: ', task.output)
 //   })
 
 // ===============================================================
@@ -93,11 +92,10 @@ const bwaIndex = task({
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
 
-
-bwaIndex()
-  .on('task.finish', function(task) {
-    console.log('output: ', task.resolvedOutput)
-  })
+// bwaIndex()
+//   .on('task.finish', function(task) {
+//     console.log('output: ', task.resolvedOutput)
+//   })
 
 // Can join two tasks as long as the input for task 2 comes from output of task
 // 1
@@ -131,8 +129,8 @@ const getSamples = task({
 }, ({ params }) => ncbi.download(params.db, params.accession) )
 
 // getSamples()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   .on('task.finish', function(task) {
+//     console.log('output: ', task.resolvedOutput)
 //   })
 
 /**
@@ -147,10 +145,15 @@ const fastqDump = task({
   name: 'fastq-dump **/*.sra'
 }, ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`) )
 
-// join(getSamples, fastqDump)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
+// fastqDump()
+//   .on('task.finish', (task) => {
+//     console.log('output: ', task.resolvedOutput)
 //   })
+
+join(getSamples, fastqDump)()
+  .on('task.finish', function(task) {
+    console.log('output: ', task.resolvedOutput)
+  })
 
 /**
  * Align reads and sort.
