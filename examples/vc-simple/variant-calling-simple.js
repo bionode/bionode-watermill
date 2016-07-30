@@ -43,11 +43,11 @@ const getReference = task({
 })
 
 // To run one task by itself:
-getReference()
-  .on('destroy', () => {
-    console.log('Task was finished, produced: ')
-    console.log(JSON.stringify(output, null, 2))
-  })
+// getReference()
+//   .on('task.finish', () => {
+//     console.log('Task was finished, produced: ')
+//     console.log(JSON.stringify(output, null, 2))
+//   })
 
 // ===============================================================
 // Task takes input and output as glob patterns exclusively.
@@ -92,6 +92,12 @@ const bwaIndex = task({
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`),
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
+
+
+bwaIndex()
+  .on('task.finish', function(task) {
+    console.log('output: ', task.resolvedOutput)
+  })
 
 // Can join two tasks as long as the input for task 2 comes from output of task
 // 1
@@ -206,10 +212,10 @@ const decompressReference = task({
 }, ({ input }) => shell(`bgzip -d ${input} --stdout > ${input.slice(0, -('.gz'.length))}`) )
 
 
-join(getReference, decompressReference, alignAndSort, samtoolsIndex)()
-  .on('destroy', function() {
-    console.log('output: ', JSON.stringify(this._output, null, 2))
-  })
+// join(getReference, decompressReference, alignAndSort, samtoolsIndex)()
+//   .on('destroy', function() {
+//     console.log('output: ', JSON.stringify(this._output, null, 2))
+//   })
 
 /**
  * Multipileup bam and call variants.
