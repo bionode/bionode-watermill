@@ -150,10 +150,10 @@ const fastqDump = task({
 //     console.log('output: ', task.resolvedOutput)
 //   })
 
-join(getSamples, fastqDump)()
-  .on('task.finish', function(task) {
-    console.log('output: ', task.resolvedOutput)
-  })
+// join(getSamples, fastqDump)()
+//   .on('task.finish', function(task) {
+//     console.log('output: ', task.resolvedOutput)
+//   })
 
 /**
  * Align reads and sort.
@@ -178,6 +178,11 @@ bwa mem -t ${THREADS} ${input.reference} ${input.reads['1']} ${input.reads['2']}
 samtools view -@ ${THREADS} -Sbh - | \
 samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `))
+
+join(getReference, bwaIndex, getSamples, fastqDump, alignAndSort)()
+  .on('task.finish', function(task) {
+    console.log('output: ', task.resolvedOutput)
+  })
 
 // alignAndSort()
 //   .on('destroy', function() {
