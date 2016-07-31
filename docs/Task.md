@@ -13,29 +13,87 @@ const { task } = waterwheel
 
 ## API
 
-`task` takes two parameters: **props** and **actionCreator**:
+`task` takes two parameters: **props** and **operationCreator**:
 
 ```javascript
-const myTask = task(props, actionCreator)
+const myTask = task(props, operationCreator)
 ```
 
 **props** is an object with the following structure:
 
 ```javascript
 const props = {
-  input: 'foo', // valid input, see below
-  output: { file: 'bar.txt' }, // valid output, see below
+  input: 'foo.txt', // valid input, see below
+  output: 'bar.txt', // valid output, see below
   name: 'My Task',
-  alwaysRun: true // other options, see options
+  alwaysRun: true // force rerun even if output already exists
+  // other options, see options
 }
 ```
 
-*input* and *output* **are required**. It is fine to run with no task name, a hashed one will be made for you. However, properly named tasks will help greatly reading pipeline output
-
-**actionCreator** is a function that will be provided with a **resolved props object**. `actionCreator` should return a **stream**, **promise**, **curried callback**,  or **value**. If the action creator does not return a stream, it will be wrapped into a stream internal (e.g. `StreamFromPromise`). An example action creator is
+*input* and *output* are required for tasks that deal with files. If either is not provided, it will be assumed the task is then a *streaming task* - i.e., it is a duplex stream with writable and/or readable portions. Consider: 
 
 ```javascript
-function actionCreator(resolvedProps) {
+const throughCapitalize = through(function (chunk, env, next) {
+  // through = require('through2') - a helper to create through streams
+  // takes chunk, its encoding, and a callback to notify when complete pushing
+  // push a chunk to the readable portion of this through stream with
+  this.push(chunk.toString().toUpperCase())
+  // then call next so that next chunk can be handled
+  next()
+})
+
+const capitalize = task({
+  name: 'Capitalize Through Stream'
+}, 
+// Here, input is a readable stream that came from the previous task
+// Let's return a through stream that takes the input and capitalizes it                 
+({ input }) => input.pipe(throughCapitalize) )
+```
+
+You could connect `capitalize` to a readable and writable file stream with:
+
+```javascript
+const readFile = ({
+  input: '*.lowercase',
+  name: 'Read from *.lowercase'
+}, ({ input }) => {
+  const rs = fs.createReadStream(input)
+  // Add file information to stream object so we have it later
+  rs.inFile = input
+})
+
+const writeFile = ({
+  output: '*.uppercase',
+  name: 'Write to *.uppercase'
+}, ({ input }) => fs.createWriteStream(input.inFile.swapExt('uppercase')))
+
+// Can now connect the three:
+join(readFile, capitalize, writeFile)
+```
+
+Of course, this could be written as one single task. This is somewhat simpler, but the power of splitting up the read, transform, and write portions of a task will become apparent once we can provide multiple sets of parameters to the transform and observe the effect, *without having to manually rewire input and output filenames*. As a single task the above would become:
+
+TODO introduce single task version first
+
+```javascript
+const capitalize = task({
+  input: '*.lowercase',
+  output: '*.uppercase',
+  name: 'Capitalize *.lowercase -> *.uppercase'
+}, ({ input }) =>
+	fs.createReadStream(input)
+	.pipe(throughCapitalize)
+	.pipe(fs.createWriteStream(input.swapExt('lowercase')))                       
+)
+```
+
+It is fine to run with no task name, a hashed one will be made for you. However, properly named tasks will help greatly reading pipeline output
+
+**operationCreator** is a function that will be provided with a **resolved props object**. `operationCreator` should return a **stream** or a **promise**. If the operation creator does not return a stream, it will be wrapped into a stream internally (e.g. `StreamFromPromise`). An example operation creator is
+
+```javascript
+function operationCreator(resolvedProps) {
    const fs = require('fs')
    const intoStream = require('into-stream')
    const ws = intoStream(resolvedProps.input).pipe( fs.createWriteStream('bar.txt') )
@@ -45,92 +103,64 @@ function actionCreator(resolvedProps) {
 
 > *Note*
 >
-> With assignment destructuring and arrow functions, you can write cleaner action creators:
+> With assignment destructuring and arrow functions, you can write cleaner operation creators:
 
 ```javascript
-const actionCreator = ({ input }) => intoStream(input).pipe(fs.createWriteStream('bar.txt'))
+const operationCreator = ({ input }) => intoStream(input).pipe(fs.createWriteStream('bar.txt'))
 ```
 
 ## Input and Output
 
-The `input` and `output` objects can be a **value**, **file**, or **stream**  (or an array, object of these). These are **types**.
+The `input` and `output` objects can be a **string glob pattern**, or a plain object of them. TODO an array will introduce task forking. The glob will be **resolved to an absolute path** when it is passed to the `operationCreator`.
 
-### Types
-
-#### value
-Pass something in directly, as it is, with **no resolution**. Could be a `boolean`, `string`, `number`, `Array`, `Function`, `Promise`, ...
+For example,
 
 ```javascript
-{ value: 'foo' }
+{ input: '**/*.sra' }
 ```
 
-**TODO**: in v0.3, this will be refactored into just
+will resolve to something like:
 
 ```javascript
-'foo'
+{ input: '/data/ERR1229296.sra' }
 ```
 
-That is, value is the default type, unless a *file* or *stream* is specified.
-
-#### file
-
-a *glob expression*/*regex* to be **resolved to a full path** before/after task
-
-
-*as glob*:
+And
 
 ```javascript
-{ file: '**/*.sra' }
+{ 
+  input: {
+    reference: '*_genomic.fna.gz',
+    reads: ['*_1.fastq.gz', '*_2.fastq.gz']
+  }
+}
 ```
 
-*as regex*:
+will resolve to something like:
 
 ```javascript
-{ file: /\.bam$/ }
+{
+  input: {
+    reference: '/data/GCA_000988525.2_ASM98852v2_genomic.fna.gz',
+    reads: ['/data/ERR1229296_1.fastq.gz', '/data/ERR1229296_2.fastq.gz']
+  }
+}
 ```
 
+If `input` is not provided, the `operation` will be a duplexify stream with the writable portion set. Similarly, if `output` is not provided, the `operation` will be a duplexify stream with the readable portion set. If neither is provided, both the readable and writable portions will be set: the task becomes a *through task*.
 
-
-**TODO**: potentially enforce only regex, then can be done with the `file` keyed object and just have
-
-```javascript
-/\.bam$/
-```
-
-at the expense of a somewhat more verbose syntax.
-
-#### stream
-
-Use this if the task should take a stream as input, output, or both.
-
-*task 1*
-```javascript
-{ input: { value: '2492428' }, output: { stream: 'stdout' } }
-```
-*task 2*
-```javascript
-{ input: { stream: 'stdin' }, output: { file: '*_genomic.fna.gz' } }
-```
-This will take the `output` stream of the preceding task and pipe it into the `input` of this task.
-
-It is also possible to stream out an existing (or as it is created) file:
+An example *through task*:
 
 ```javascript
-{ input: { 'stream-file': '*.sam' }, output: { stream: 'stdout' } }
-```
-
-
-
-**TODO**: potentially assume stream if **input and output are not provided**. Then *through tasks* could be defined like:
-
-```javascript
-const filterSpecies = task(
-  { name: 'Filter species by taxonomy ', params: { taxonomy: 'plantae' } },
-  ({ input, params }) => input.pipe(through(function(chunk, enc, cb) {
+const filterSpecies = task({
+  name: 'Filter species by taxonomy',
+  params: { taxonomy: 'plantae' }
+},
+({ input, params }) => input.pipe(through.obj(function (chunk, enc, next) {
     if (chunk.taxonomy === params.taxonomy) {
       this.push(chunk)
     }
-    cb()
+    next()
   }))
 )
 ```
@@ -141,116 +171,75 @@ Input resolution is  a **reduction over the task props**.
 
 ### Input Resolution
 
-
+Match to filesystem if in first task in pipeline, otherwise glob patterns are matched to the **collection**.
 
 ### Output Resolution
 
-The resolved values can be accessed from `myTask.output()` after the task has emitted a `close` event. (**TODO**: verify this, not only that event).
-
-> **NOTE**
->
-> Input and output in these examples are not input and output from task. The input is the original output, and the output is the resolved output.
+The resolved values can be accessed from `myTask.resolvedOutput` after the task has emitted a `task.finish` event.
 
 ```javascript
 // Atomic item
-// Input
-{ file: '*.sra' }
 // Output
-'human.sra'
+'*.sra'
+// Resolved Output
+'/data/human.sra'
 
 // Array of items
-// Input
-[{ file: '*.bam' }, { file: '*.fastq.gz' }]
 // Output
-['reads.bam', 'human.fastq.gz']
+['*.bam', '*.fastq.gz']
+// Resolved Output
+['/data/reads.bam', '/data/human.fastq.gz']
 
-// Can mix files and values
-// Input
-[{ file: '*.bam' }, 'foo', { file: '*.fastq.gz' }]
+// Plain object of items
 // Output
-['reads.bam', 'foo', 'human.fastq.gz']
-
-// Object of items, arrays of items,  arrays of objects of items, ...
-// PS. playing with idea of file being only a regex in `alignment`
-// Input
 {
-  reads: [1, 2].map( num => ({ file: `*_${num}.fastq.gz`}) ),
-  alignment: /\.bam$/
+  reads: [1, 2].map(n => `*_${n}.fastq.gz`),
+  alignment: '*.bam'
 }
-// Output
+// Resolved Output
 {
   reads: ['human_1.fastq.gz', 'human_2.fastq.gz'],
   alignment: 'reads.bam'
 }
-
 ```
 
 
 
 ## Task Lifecycle
 
-1. Check if skippable (resolve output and validate)
-2. Resolve input via store and/or fs -> `resolvedProps`
-3. `action = actionCreator(resolvedProps)` -> stream, promise, curry cb, value
-4. action -> readable and/or writable duplexify (if `output !== stream`, wait until end/finish/close, else, pump stream through)
-5. resolve output, validate output, store somewhere
+1. Creating -> new entry in store w/ defaults + input/output/params
 
-### Check if skippable
+2. is resumable -> **on** or **off** -> set status in store -> skip to 7
 
-- traverse output, run validators (existing, non-null, time, hash, custom, etc)
+3. resolve input -> set `task.resolvedInput`
+   - from filesystem if first task in pipeline
+   - from **collection** otherwise
 
-- if it passes:
+4. `operation = operationCreator(resolvedInput)` -> { child process, promise, stream } -> set `task.operation`
 
-  - produced the exact same `task.output()` as if it ran
+5. set writable and/or readable of duplexify from operation
 
-- else:
+6. catch end/finish/close of duplex (end-of-stream)
 
-  - go to the next step
+7. resolve output -> set `task.resolvedOutput`
 
-### Resolve Input
+   - traverse over output, over validators
 
-####  *via store*
+### 1. Creating
 
-The store is a saved state between tasks. This lets you use files from tasks more than just the previous task. 
+Add a `task` entry to the `tasks` object of the redux store, by applying `Object.assign({}, defaultTask, userTask)` and creating a `uid` based on hashing the input, output, and params. Thus, if an identical `uid` appears, we can escape creating duplicates.
 
-```javascript
-// store
-['human.sra']
-// input
-'*.sra'
-// resolved
-'human.sra'
+### 2. Check if resumable
 
-// Only takes what is needed
-// store
-['human.sra', 'reference.fastq.gz']
-// input
-'*.fastq.gz'
-// resolved
-'reference.fastq.gz'
+Checks `task.resumable`, if **on** skips to step 7, if **off** continue to step 3
 
-// Can return an array of matches
-// store
-['reads_1.fastq.gz', 'reads_2.fastq.gz']
-// input
-'*.fastq.gz'
-// resolved
-['reads_1.fastq.gz', 'reads_2.fastq.gz']
-// In cases like this, try to be as explicit as possible, using input like
-[1, 2].map(num => `*_${num}.fastq.gz`)
+### 3. Resolve Input
 
-// Potentially match keys from store, but that hinders task modularity. Instead, store can be reduced down to its filenames only, and input patterns matched to that
-// store
-{ ref: 'reference.fastq.gz', reads: 'humans.sra' }
-// is effectively: ['reference.fastq.gz', 'humans.sra']
-// TODO how did store end up with keys like this?
-// input
-{ ref: /\.fastq.gz$/, reads: { file: '*.sra' } }
-// resolved
-{ ref: 'reference.fastq.gz', reads; 'human.sra' }
-// TODO potentially match input key `ref` to store key `ref`
-// Breaks modularity a bit, but also improves specificity to an extent
-```
+####  *via c*ollecton
+
+The `collection` is a saved state between tasks. This lets you match a glob pattern to the output of any previous task in the same *task lineage*. Arrays of parameters can introduce new task lineages.
+
+This lets you use files from tasks more than just the previous task. 
 
 #### Issues to Watch Out For
 
@@ -261,24 +250,37 @@ The store is a saved state between tasks. This lets you use files from tasks mor
 
 Should be OK overall if user is considerate, going to write example pipelines to flesh this issues out:
 
-* use same filename (e.g. `reads.sra`) for different species, but because **store has objects hashed by task lineage parameters**, it only resolves to the correct file
+* use same filename (e.g. `reads.sra`) for different species, but because **collection has objects scoped by task lineage parameters**, it only resolves to the correct file
   * should also validate header of resolved file to see if it matches expected specie, etc
 * go backwards through state, when conflicts arise (e.g. two tasks produce the same output file name with different contents), throw an error (user needs to write pipeline better), or pick the most recent one?
 * iterative processing on same file, improving results each time (the trinity example)
 
 #### via filesystem
 
-TODO, may be removed as an option once each task runs in its own folder. This is same as above, but instead of file paths in the store, uses files from current directory.
+This is how input is resolved for the first task in a pipeline.
 
+TODO option to fallback to this if resolving from collection fails?
 
-### Create Action
+TODO becomes somewhat useless once tasks run in their own folder.
 
-TODO. Wraps promise into readable stream that emits one chunk for example.
+### 4. Create Operation
 
-### Duplexify from Action
+By this point, input has been resolved to the filesystem of the collection. Then we call the `operationCreatore` with `resolvedProps`, where `resolvedProps` has `input` replaced with `resolvedInput`:
 
-TODO. Set readable/writable streams asynchronously, as appropiate.
+```javascript
+operation = operationCreator(resolvedProps)
+```
 
-### Resolve Output
+This should create a stream, child process, or promise.
 
-TODO. Similar to examples above for input resolution, but to the filesystem. Can run custom validators (e.g. are `reads_1` and `reads_2` correct siblings?).
+### 5. Set Duplexify Readable and/or Writable from Operation
+
+Wraps the `operation` into a duplexify stream. This is so that streams, child processes, and promises are all handled the same way, and so that you could apply stream operations, like forking (multi-write-stream) to promises.
+
+### 6. End of Stream
+
+Catch the completion of the duplexify stream with end-of-stream, or `.on('close')` if it was a child process. This is so we can start resolving output only once the operation is actually finished.
+
+### 7. Resolve Output
+
+Resolve output glob patterns to filesystem. Run validators over resolved absolute paths. If all validators succeed, can emit a `task.finish` event.
