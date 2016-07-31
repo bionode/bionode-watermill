@@ -53,6 +53,7 @@
     "end-of-stream": "^1.1.0",
     "eventemitter2": "^2.0.1",
     "globby": "^5.0.0",
+    "graph.js": "^1.20.10",
     "js-yaml": "^3.6.1",
     "json-stable-stringify": "^1.0.1",
     "lodash": "^4.14.0",
