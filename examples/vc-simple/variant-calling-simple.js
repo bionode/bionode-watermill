@@ -126,7 +126,8 @@ const getSamples = task({
   input: null,
   output: '**/*.sra',
   name: `Download SRA ${config.sraAccession}`
-}, ({ params }) => ncbi.download(params.db, params.accession) )
+// }, ({ params }) => ncbi.download(params.db, params.accession) )
+}, ({ params }) => ncbi.download(params.db, params.accession).resume() )
 
 // getSamples()
 //   .on('task.finish', function(task) {
