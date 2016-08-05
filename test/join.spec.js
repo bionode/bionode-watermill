@@ -9,21 +9,19 @@ const split = require('split')
 
 const { task, join } = require('../')
 
-const writeNumbers = (file) => Task({
-  input: { value: ['1\n', '2\n'] },
-  output: { file },
-  name: 'Write numbers to file',
-  skippable: false
-}, ({ input }) =>
-  intoStream(input)
-    .pipe(fs.createWriteStream(file))
-)
+const writeNumbers = (file) => task({
+  input: null,
+  output: file,
+  name: `Write numbers to ${file}`,
+  params: { numbers: ['1\n', '2\n'] },
+  resume: 'off'
+}, ({ params }) => intoStream(params.numbers).pipe(fs.createWriteStream(file)) )
 
-const sumNumbers = (numbers, sum) => Task({
-  input: { file: numbers },
-  output: { file: sum },
-  name: 'Sum numbers in file',
-  skippable: false
+const sumNumbers = (numbers, sum) => task({
+  input: numbers,
+  output: sum,
+  name: `Sum numbers in ${numbers}`,
+  resume: 'off'
 }, ({ input }) =>
   fs.createReadStream(input)
     .pipe(split())
@@ -46,10 +44,11 @@ const sumNumbers = (numbers, sum) => Task({
 )
 
 describe('Join', function() {
-  it.skip('should join two tasks with stream, stream', function(done) {
+  it('should join two tasks with stream, stream', function(done) {
     join(writeNumbers('numbers.1.txt'), sumNumbers('numbers.1.txt', 'sum.1.txt'))()
-      .on('close', done)
-      .on('error', done)
+      .on('task.finish', (task) => {
+        done()
+      })
   })
 
   it.skip('should join two tasks with promise, promise', function(done) {
@@ -64,12 +63,12 @@ describe('Join', function() {
 
   })
 
-  it.skip('should join joins', function(done) {
+  it.only('should join joins', function(done) {
     const task1 = join(writeNumbers('numbers.2.txt'))
-    const task2 = join(sumNumbers('numbers.2.txt', 'sum.2.txt'))
+    // const task2 = join(sumNumbers('numbers.2.txt', 'sum.2.txt'))
+    const task2 = sumNumbers('numbers.2.txt', 'sum.2.txt')
 
     join(task1, task2)()
-      .on('close', done)
-      .on('error', done)
+      .on('task.finish', () => done())
   })
 })
