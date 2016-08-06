@@ -12,7 +12,7 @@ const through = require('through2')
 const duplexify = require('duplexify')
 const split = require('split')
 
-const { task, join, store } = require('../')
+const { task, join, store } = require('../')()
 const switchExt = require('../lib/utils/switch-ext.js')
 
 const noop = () => {}

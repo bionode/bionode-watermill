@@ -5,7 +5,7 @@ const {
   task,
   join,
   shell
-} = require('../..')
+} = require('../..')()
 
 // === MODULES ===
 const fs = require('fs')

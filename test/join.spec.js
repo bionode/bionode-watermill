@@ -7,7 +7,8 @@ const through = require('through2')
 const intoStream = require('into-stream')
 const split = require('split')
 
-const { task, join } = require('../')
+// const { task, join } = require('../')()
+let task, join
 
 const writeNumbers = (file) => task({
   input: null,
@@ -44,8 +45,14 @@ const sumNumbers = (numbers, sum) => task({
 )
 
 describe('Join', function() {
+  beforeEach(function() {
+    const waterwheelInstance = require('../')()
+    task = waterwheelInstance.task
+    join = waterwheelInstance.join
+  })
+
   // Skipping b/c breaks when more than one are ran
-  it.skip('should join two tasks with stream, stream', function(done) {
+  it('should join two tasks with stream, stream', function(done) {
     join(writeNumbers('numbers.1.txt'), sumNumbers('numbers.1.txt', 'sum.1.txt'))()
       .on('task.finish', (task) => {
         done()

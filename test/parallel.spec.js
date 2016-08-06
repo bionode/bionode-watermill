@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { assert } = require('chai')
 
-const { task, parallel } = require('../')
+const { task, parallel } = require('../')()
 
 const twd = path.resolve(__dirname, 'files', 'parallel')
 

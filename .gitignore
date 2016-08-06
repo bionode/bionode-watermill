@@ -4,6 +4,13 @@ node_modules
 *.swp
 *.swo
 waterwheel.json
+
 # test files
 test/**/*.sink*
 *.txt
+
+# pipeline examples output files
+*.fastq*
+*.bam
+*.sra
+*.fna*
