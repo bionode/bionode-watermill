@@ -1,3 +1,8 @@
+'use strict'
+
+const fs = require('fs')
+const path = require('path')
+
 const { assert, expect, should } = require('chai')
 const streamAssert = require('stream-assert')
 const isStream = require('isstream')
@@ -7,16 +12,45 @@ const through = require('through2')
 const duplexify = require('duplexify')
 const split = require('split')
 
-const { task, join } = require('../')
+const { task, join, store } = require('../')
+const switchExt = require('../lib/utils/switch-ext.js')
 
 const noop = () => {}
-const fs = require('fs')
-const path = require('path')
+
+const twd = path.resolve(__dirname, 'files', 'task')
 
 describe('Task', function() {
   describe('checking parameters', function(done) {
     it.skip('should error if not provided with a function', function() {
 
+    })
+  })
+
+  describe('should interact with collection', function() {
+    it('with no parameters', function(done) {
+      const capitalize = task({
+        input: '*.lowercase',
+        output: '*.uppercase',
+        name: `Capitalize *.lowercase -> *.uppercase`,
+        dir: twd,
+        resume: 'off'
+      }, ({ input, dir }) =>
+        fs.createReadStream(input)
+          .pipe(through((chunk, enc, next) => next(null, chunk.toString().toUpperCase())))
+          .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
+      )
+
+      join(capitalize)().on('task.finish', (results) => {
+        const collection = store.getState().collection
+
+        for (const uid of results.joined) {
+          const task = store.getState().tasks[uid]
+
+          assert.equal(collection.vertexValue(uid), task.resolvedOutput)
+        }
+
+        done()
+      })
     })
   })
 
