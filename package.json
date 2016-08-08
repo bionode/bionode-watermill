@@ -46,6 +46,7 @@
     "through2": "^2.0.1"
   },
   "dependencies": {
+    "async-done": "^1.2.2",
     "bluebird": "^3.4.1",
     "chalk": "^1.1.3",
     "checksum": "^0.1.1",
