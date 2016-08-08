@@ -42,6 +42,11 @@ const task = (props) => (trajectory = []) => {
   return emitter
 }
 
+/**
+ * === JOIN ===
+ *
+ * task1 -> task2
+ */
 function join (...tasks) {
   return (trajectory = []) => {
     const emitter = new EventEmitter2()

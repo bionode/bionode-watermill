@@ -52,6 +52,36 @@ describe('Task', function() {
         done()
       })
     })
+
+    it('with parameters', function(done) {
+      const capitalize = task({
+        input: '*.lowercase',
+        output: '*.uppercase',
+        params: { foo: 'bar' },
+        name: `Capitalize *.lowercase -> *.uppercase`,
+        dir: twd,
+        resume: 'off'
+      }, ({ input, dir }) =>
+        fs.createReadStream(input)
+          .pipe(through((chunk, enc, next) => next(null, chunk.toString().toUpperCase())))
+          .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
+      )
+
+      join(capitalize)().on('task.finish', (results) => {
+        const collection = store.getState().collection
+
+        for (const uid of results.joined) {
+          const task = store.getState().tasks[uid]
+
+          assert(collection.hasVertex(JSON.stringify(task.params)))
+          assert(collection.hasEdge(JSON.stringify(task.params), uid))
+
+          assert.equal(collection.vertexValue(uid), task.resolvedOutput)
+        }
+
+        done()
+      })
+    })
   })
 
   describe('when provided with a Promise', function() {
