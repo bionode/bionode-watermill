@@ -7,6 +7,7 @@ describe('Task', function() {
     const waterwheelInstance = require('../')()
     task = waterwheelInstance.task
     join = waterwheelInstance.join
+    shell = waterwheelInstance.shell
   })
 
   describe('on finish event', function() {

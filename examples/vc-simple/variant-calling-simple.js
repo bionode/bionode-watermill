@@ -149,8 +149,8 @@ samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `))
 
 join(getReference, bwaIndex, getSamples, fastqDump, alignAndSort)()
-  .on('task.finish', function(task) {
-    console.log('task: ', task)
+  .on('join.finish', function(task) {
+    console.log('join finished: ', task)
   })
 
 // alignAndSort()

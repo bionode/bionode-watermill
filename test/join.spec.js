@@ -54,7 +54,7 @@ describe('Join', function() {
   // Skipping b/c breaks when more than one are ran
   it('should join two tasks with stream, stream', function(done) {
     join(writeNumbers('numbers.1.txt'), sumNumbers('numbers.1.txt', 'sum.1.txt'))()
-      .on('task.finish', (task) => {
+      .on('join.finish', (task) => {
         done()
       })
   })
@@ -77,6 +77,6 @@ describe('Join', function() {
     const task2 = sumNumbers('numbers.2.txt', 'sum.2.txt')
 
     join(task1, task2)()
-      .on('task.finish', () => done())
+      .on('join.finish', () => done())
   })
 })

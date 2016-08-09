@@ -40,14 +40,11 @@ describe('Task', function() {
           .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
       )
 
-      join(capitalize)().on('task.finish', (results) => {
+      capitalize().on('task.finish', (results) => {
         const collection = store.getState().collection
 
-        for (const uid of results.joined) {
-          const task = store.getState().tasks[uid]
-
-          assert.equal(collection.vertexValue(uid), task.resolvedOutput)
-        }
+        const { uid, resolvedOutput } = results
+        assert.equal(collection.vertexValue(uid), resolvedOutput)
 
         done()
       })
@@ -67,17 +64,14 @@ describe('Task', function() {
           .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
       )
 
-      join(capitalize)().on('task.finish', (results) => {
+      capitalize().on('task.finish', (results) => {
         const collection = store.getState().collection
+        const { uid, params, resolvedOutput } = results
 
-        for (const uid of results.joined) {
-          const task = store.getState().tasks[uid]
+        assert(collection.hasVertex(JSON.stringify(params)))
+        assert(collection.hasEdge(JSON.stringify(params), uid))
 
-          assert(collection.hasVertex(JSON.stringify(task.params)))
-          assert(collection.hasEdge(JSON.stringify(task.params), uid))
-
-          assert.equal(collection.vertexValue(uid), task.resolvedOutput)
-        }
+        assert.equal(collection.vertexValue(uid), resolvedOutput)
 
         done()
       })
