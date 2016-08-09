@@ -4,6 +4,7 @@
 const {
   task,
   join,
+  parallel,
   shell
 } = require('../..')()
 
@@ -42,11 +43,6 @@ const getReference = task({
   return request(url).pipe(fs.createWriteStream(outfile))
 })
 
-// To run one task by itself:
-// getReference()
-//   .on('task.finish', (task) => {
-//     console.log('output: ', task.output)
-//   })
 
 /**
  * Indexes a reference genome with bwa.
@@ -59,24 +55,6 @@ const bwaIndex = task({
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`),
   name: 'bwa index *_genomic.fna.gz',
 }, ({ input }) => shell(`bwa index ${input}`) )
-
-// bwaIndex()
-//   .on('task.finish', function(task) {
-//     console.log('output: ', task.resolvedOutput)
-//   })
-
-// Can join two tasks as long as the input for task 2 comes from output of task
-// 1
-// join(getReference, bwaIndex)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
-//
-//   OR
-//   to take input from fs:
-//  task1().on('destroy', () => {
-//    task2().on('destroy', ...)
-//  })
 
 
 /**
@@ -97,10 +75,6 @@ const getSamples = task({
 // }, ({ params }) => ncbi.download(params.db, params.accession) )
 }, ({ params }) => ncbi.download(params.db, params.accession).resume() )
 
-// getSamples()
-//   .on('task.finish', function(task) {
-//     console.log('output: ', task.resolvedOutput)
-//   })
 
 /**
  * Extracts SRA into fastq using fastq-dump.
@@ -114,15 +88,6 @@ const fastqDump = task({
   name: 'fastq-dump **/*.sra'
 }, ({ input }) => shell(`fastq-dump --split-files --skip-technical --gzip ${input}`) )
 
-// fastqDump()
-//   .on('task.finish', (task) => {
-//     console.log('output: ', task.resolvedOutput)
-//   })
-
-// join(getSamples, fastqDump)()
-//   .on('task.finish', function(task) {
-//     console.log('output: ', task.resolvedOutput)
-//   })
 
 /**
  * Align reads and sort.
@@ -148,15 +113,6 @@ samtools view -@ ${THREADS} -Sbh - | \
 samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `))
 
-join(getReference, bwaIndex, getSamples, fastqDump, alignAndSort)()
-  .on('join.finish', function(task) {
-    console.log('join finished: ', task)
-  })
-
-// alignAndSort()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
 
 /**
  * Index bam.
@@ -171,11 +127,6 @@ const samtoolsIndex = task({
 }, ({ input }) => shell(`samtools index ${input}`))
 
 
-// join(alignAndSort, samtoolsIndex)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
-
 /**
  * Decompress a reference genome.
  * @input {file} the reference genome
@@ -189,11 +140,6 @@ const decompressReference = task({
 }, ({ input }) => shell(`bgzip -d ${input} --stdout > ${input.slice(0, -('.gz'.length))}`) )
 
 
-// join(getReference, decompressReference, alignAndSort, samtoolsIndex)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
-
 /**
  * Multipileup bam and call variants.
  * @input.reference {file} the reference genome
@@ -202,7 +148,7 @@ const decompressReference = task({
  * @output {file} variant calling format
  * @action {shell}
  */
-const mpileupandcall = task({
+const mpileupAndCall = task({
   input: {
     reference: '*_genomic.fna',
     bam: '*.bam',
@@ -210,29 +156,19 @@ const mpileupandcall = task({
   },
   output: 'variants.vcf',
   name: 'samtools mpileup | bcftools call',
-  // skipPassed: true
 }, ({ input }) => shell(`
 samtools mpileup -uf ${input.reference} ${input.bam} | \
 bcftools call -c - > variants.vcf
 `))
 
-// this fails b/c mpileupandcall needs reference *_genomic.fna and wont
-// find it in the output of samtoolsindex
-// join(decompressReference, alignAndSort, samtoolsIndex, mpileupandcall)()
-//   .on('destroy', function() {
-//     console.log('output: ', JSON.stringify(this._output, null, 2))
-//   })
+// === PIPELINE ===
 
-// === task orchestration ===
+join(
+  parallel(
+    join(getReference, bwaIndex),
+    join(getSamples, fastqDump)
+  ),
+  decompressReference, // only b/c mpileup did not like fna.gz
+  join(alignAndSort, samtoolsIndex, mpileupAndCall)
+)().async.then((results) => console.log('PIPELINE RESULTS: ', results))
 
-// const reads = join(getSamples, fastqDump)
-// const reference = join(getReference, parallel(bwaIndex, decompressReference))
-// const call = join(alignAndSort, samtoolsIndex, mpileupandcall)
-//
-// const pipeline = join(parallel(reads, reference), call)
-//
-// call()
-//   .on('close', function() {
-//     this.output()
-//     console.log('Pipeline has finished')
-//   })

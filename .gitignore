@@ -11,6 +11,7 @@ test/**/*.sink*
 
 # pipeline examples output files
 *.fastq*
-*.bam
+*.bam*
 *.sra
 *.fna*
+*.vcf
