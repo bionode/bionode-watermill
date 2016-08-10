@@ -4,4 +4,5 @@
     - [Lifecycle](TaskLifecycle.md)
 * [Orchestration](Orchestration.md)
 * [Comparison](Comparison.md)
+* [Internals](Internals.md)
 
