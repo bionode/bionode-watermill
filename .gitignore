@@ -4,6 +4,8 @@ node_modules
 *.swp
 *.swo
 waterwheel.json
+# GitBook
+_book
 
 # test files
 test/**/*.sink*
