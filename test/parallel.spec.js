@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { assert } = require('chai')
 
-let task, parallel
+let task, parallel, join
 
 const twd = path.resolve(__dirname, 'files', 'parallel')
 
@@ -35,6 +35,7 @@ describe('Parallel', function() {
     const waterwheelInstance = require('../')()
     task = waterwheelInstance.task
     parallel = waterwheelInstance.parallel
+    join = waterwheelInstance.join
   })
 
   it('should run two tasks in parallel', function(done) {
@@ -47,43 +48,56 @@ describe('Parallel', function() {
     })
   })
 
-  it.skip('should parallel parallel', function(done) {
-    const taskA1 = delayedWrite('A1', 100)
-    const taskA2 = delayedWrite('A2', 500)
-    const taskB1 = delayedWrite('B1', 200)
-    const taskB2 = delayedWrite('B2', 400)
+  it('should parallel on join', function (done) {
+    const taskA = delayedWrite('A', 100)
+    const taskB = delayedWrite('B', 200)
+    const taskC = delayedWrite('C', 150)
+    const taskD = delayedWrite('D', 125)
 
-    const p1 = parallel(taskA1, taskA2)
-    const p2 = parallel(taskB1, taskB2)
+    const pipeline = parallel(
+      join(taskA, taskB),
+      join(taskC, taskD)
+    )
 
-    parallel(p1, p2)().async.then((results) => {
-      const data = results.trajectory
-
-      assert(data[0][0].toString() === 'B1')
-      assert(data[0][1].toString() === 'B2')
-      assert(data[1][0].toString() === 'A1')
-      assert(data[1][1].toString() === 'A2')
-
+    pipeline().async.then((results) => {
+      console.log('results: ', results)
       done()
     })
   })
 
-  it.skip('should arrive in proper order', function(done) {
-    const taskA1 = delayedResolve('A1', 100)
-    const taskA2 = delayedResolve('A2', 500)
-    const taskB1 = delayedResolve('B1', 200)
-    const taskB2 = delayedResolve('B2', 400)
+  it('should parallel on parallel', function (done) {
+    const taskA = delayedWrite('A', 100)
+    const taskB = delayedWrite('B', 200)
+    const taskC = delayedWrite('C', 150)
+    const taskD = delayedWrite('D', 125)
 
-    parallel(taskA1, taskA2, taskB1, taskB2)()
-      .on('close', function() {
-        const data = this.output()
+    const pipeline = parallel(
+      parallel(taskA, taskB),
+      parallel(taskC, taskD)
+    )
 
-        assert(data[0].toString() === 'A1')
-        assert(data[1].toString() === 'B1')
-        assert(data[2].toString() === 'B2')
-        assert(data[3].toString() === 'A2')
-
-        done()
-      })
+    pipeline().async.then((results) => {
+      console.log('results: ', results)
+      done()
+    })
   })
+
+  it('should parallel on join+parallel', function (done) {
+    const taskA = delayedWrite('A', 100)
+    const taskB = delayedWrite('B', 200)
+    const taskC = delayedWrite('C', 150)
+    const taskD = delayedWrite('D', 125)
+
+    const pipeline = parallel(
+      parallel(taskA, taskB),
+      join(taskC, taskD)
+    )
+
+    pipeline().async.then((results) => {
+      console.log('results: ', results)
+      done()
+    })
+  })
+
+  it('should arrive in proper order')
 })
