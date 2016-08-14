@@ -13,6 +13,7 @@
  */
 
 const _ = require('lodash')
+const Promise = require('bluebird')
 const asyncDone = require('async-done')
 
 const lifecycle = require('./lifecycle')
@@ -29,19 +30,40 @@ const task = (props, operationCreator) => {
     throw new Error('incorrect parameter types: task(props, operationCreator) where props is a plain object and operationCreator is a function')
   }
 
-  // Returns an invocable task that can be passed a cb and optionally a ctx
-  // By defauult cb is a noop and ctx is an object literal
-  return (cb = _.noop, ctx = {}) => {
+  const runLifecycle = new Promise((resolve, reject) => {
     let taskState
 
+    // Case 1: resumable === 'on'
+    //  Case 1A: output can be resolved
+    //    1. create
+    //    2. checkResumable
+    //    3. afterOperation
+    //    4. afterResolveOutput
+    //  Case 1B: output cannot be resolved
+    //    1. create
+    //    2. checkResumable
+    //    3. afterOperation
+    //    4. beforeOperation
+    //    5. afterOperation
+    //    6. afterResolveOutput
+    // Case 2: resumable === 'off'
+    //  1. create
+    //  2. checkResumable
+    //  3. beforeOperation
+    //  4. afterOperation
+    //  5. afterResolveOutput
+
+    // Create the task
     lifecycle.create(props)
       .then((results) => {
         taskState = results
         return lifecycle.resumable(taskState)
       })
+      // Check resumability: go to afterOperation or beforeOperation
       .then(isResumable => isResumable ? afterOperation(taskState) : beforeOperation(taskState))
       .catch(err => console.error(err))
 
+    // Was either not resumable or resumable && resolveOutput failed
     function beforeOperation (taskState) {
       lifecycle.resolveInput(taskState)
       .then((results) => {
@@ -60,6 +82,7 @@ const task = (props, operationCreator) => {
       })
     }
 
+    // Either just after resumable check or after settleOperation
     function afterOperation(taskState) {
       lifecycle.resolveOutput(taskState)
         .then((results) => {
@@ -83,10 +106,19 @@ const task = (props, operationCreator) => {
         .then((results) => {
           Object.assign(taskState, results)
 
-          cb(null, taskState)
+          finish(taskState)
         })
     }
-  }
+
+    function finish (taskState) {
+      resolve(taskState)
+    }
+  })
+
+  // Returns an invocable task that can be passed a cb and optionally a ctx
+  // By defauult cb is a noop and ctx is an object literal
+  // Provides promise and callback to user
+  return (cb = _.noop, ctx = {}) => runLifecycle.asCallback(cb)
 }
 
 module.exports = task
