@@ -4,10 +4,10 @@
  * Lifecycle method: resolve input
  */
 
-const resolveInput = (taskState) => {
-  return {
+const resolveInput = (taskState) => new Promise((resolve, reject) => {
+  resolve({
     resolvedInput: taskState.input
-  }
-}
+  })
+})
 
 module.exports = resolveInput

@@ -16,15 +16,15 @@ const createOperationProps = (taskState) => {
 /**
  * Create operation. Takes taskState.operationProps
  */
-const createOperation = (taskState, operationCreator) => {
+const createOperation = (taskState, operationCreator) => new Promise((resolve, reject) => {
   const operationProps = createOperationProps(taskState)
 
   const operation = operationCreator(operationProps)
 
-  return {
+  resolve({
     operation,
     operationString: JSON.stringify(operation)
-  }
-}
+  })
+})
 
 module.exports = createOperation

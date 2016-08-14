@@ -40,23 +40,30 @@ describe('task', function() {
     })
 
     it('calls operationCreator with an opsProps object', function(done) {
-      task({}, (opsProps) => {
+      task({ resume: 'off' }, (opsProps) => {
         assert.isOk(_.isPlainObject(opsProps), 'opsProps was not a plain object')
         done()
       })()
     })
 
     it('opsProps should not referentially equal props', function(done) {
-      const props = {}
+      const props = { resume: 'off' }
       task(props, (opsProps) => {
         assert.isOk(props !== opsProps)
         done()
       })()
     })
 
-    it('should eventually call callback', function(done) {
+    it('should eventually call callback with resume on', function(done) {
       task(
         { payload: 'foo' },
+        ({ payload }) => new Promise(resolve => resolve(payload.toUpperCase()))
+      )( (err, data) => done() )
+    })
+
+    it('should eventually call callback with resume off', function(done) {
+      task(
+        { payload: 'foo', resume: 'off' },
         ({ payload }) => new Promise(resolve => resolve(payload.toUpperCase()))
       )( (err, data) => done() )
     })

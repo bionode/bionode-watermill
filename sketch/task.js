@@ -15,7 +15,7 @@
 const _ = require('lodash')
 const asyncDone = require('async-done')
 
-const lifecycleMethods = require('./lifecycle')
+const lifecycle = require('./lifecycle')
 
 /**
  * The task factory function.
@@ -30,30 +30,61 @@ const task = (props, operationCreator) => {
   }
 
   // Returns an invocable task that can be passed a cb and optionally a ctx
-  // By defauult cb is a noop and ctx is a object literal
+  // By defauult cb is a noop and ctx is an object literal
   return (cb = _.noop, ctx = {}) => {
-    let taskState = lifecycleMethods.create(props)
-    let operation
+    let taskState
 
-    if (lifecycleMethods.resumable(taskState)) {
-      afterOperation(taskState)
-    } else {
-      taskState = lifecycleMethods.resolveInput(taskState)
-      operation = lifecycleMethods.createOperation(taskState, operationCreator).operation
+    lifecycle.create(props)
+      .then((results) => {
+        taskState = results
+        return lifecycle.resumable(taskState)
+      })
+      .then(isResumable => isResumable ? afterOperation(taskState) : beforeOperation(taskState))
+      .catch(err => console.error(err))
 
-      lifecycleMethods.settleOperation(operation, (err, results) => {
-        if (err) return afterOperation(taskState, err)
+    function beforeOperation (taskState) {
+      lifecycle.resolveInput(taskState)
+      .then((results) => {
+        Object.assign(taskState, results)
 
-        return afterOperation(taskState, null, results)
+        return lifecycle.createOperation(taskState, operationCreator)
+      })
+      .then((results) => {
+        const { operation } = results
+
+        lifecycle.settleOperation(operation)
+          .then((results) => {
+            afterOperation(taskState)
+          })
+          .catch(err => console.error(err))
       })
     }
 
-    function afterOperation (taskState, err, results) {
-      taskState = lifecycleMethods.resolveOutput(taskState)
-      taskState = lifecycleMethods.validateOutput(taskState)
-      taskState = lifecycleMethods.postValidation(taskState)
+    function afterOperation(taskState) {
+      lifecycle.resolveOutput(taskState)
+        .then((results) => {
+          Object.assign(taskState, results)
 
-      cb(null, taskState)
+          afterResolveOutput(taskState)
+        })
+        .catch((err) => {
+          console.error(err)
+          beforeOperation(taskState)
+        })
+    }
+
+    function afterResolveOutput (taskState) {
+      lifecycle.validateOutput(taskState)
+        .then((results) => {
+          Object.assign(taskState, results)
+
+          return lifecycle.postValidation(taskState)
+        })
+        .then((results) => {
+          Object.assign(taskState, results)
+
+          cb(null, taskState)
+        })
     }
   }
 }

@@ -9,14 +9,21 @@ const lifecycle = require('./lifecycle')
 
 describe('lifecycle', function() {
   describe('required methods', function() {
-    it('should have a create method', () => assert.isOk(lifecycle.hasOwnProperty('create')))
-    it('should have a resumable method', () => assert.isOk(lifecycle.hasOwnProperty('resumable')))
-    it('should have a resolveInput method', () => assert.isOk(lifecycle.hasOwnProperty('resolveInput')))
-    it('should have a createOperation method', () => assert.isOk(lifecycle.hasOwnProperty('createOperation')))
-    it('should have a settleOperation method', () => assert.isOk(lifecycle.hasOwnProperty('settleOperation')))
-    it('should have a resolveOutput method', () => assert.isOk(lifecycle.hasOwnProperty('resolveOutput')))
-    it('should have a validateOutput method', () => assert.isOk(lifecycle.hasOwnProperty('validateOutput')))
-    it('should have a postValidation method', () => assert.isOk(lifecycle.hasOwnProperty('postValidation')))
+    [
+      'create',
+      'resumable',
+      'resolveInput',
+      'resolveOutput',
+      'createOperation',
+      'settleOperation',
+      'resolveOutput',
+      'validateOutput',
+      'postValidation'
+    ].map((method) => {
+      it(`should have a ${method} method`, function() {
+        assert.isOk(lifecycle.hasOwnProperty(method))
+      })
+    })
   })
 
   it('each method should take a taskState and return a referentially dis-equal object', function() {
@@ -68,96 +75,116 @@ describe('lifecycle', function() {
       }
 
       describe('when props is {}', function() {
-        it('should have proper types', function() {
-          const initialTaskState = lifecycle.create({})
-
-          assertProperTypes(mappings, initialTaskState)
+        it('should have proper types', function(done) {
+          lifecycle.create({}).then((results) => {
+            assertProperTypes(mappings, results)
+            done()
+          })
         })
       })
 
       describe('when props has threads', function() {
         it('should use passed in value', function() {
           const threads = 2
-          const initialTaskState = lifecycle.create({ threads })
+          lifecycle.create({ threads }).then((results) => {
+            assert.equal(initialTaskState.threads, threads)
 
-          assert.equal(initialTaskState.threads, threads)
+            assertProperTypes(mappings, initialTaskState)
 
-          assertProperTypes(mappings, initialTaskState)
+            done()
+          })
         })
 
-        it('should throw if not a number', function() {
+        it('should throw if not a number', function(done) {
           const threads = '2'
 
-          assert.throws(() => lifecycle.create({ threads }), 'Bad type for threads, got string but expected number')
+          lifecycle.create({ threads }).catch((err) => {
+            // TODO assert err is 'Bad type for threads, got string but expected number'
+            done()
+          })
         })
       })
     })
 
     describe('resumable', function() {
-      it('should return a boolean', function() {
-        const taskState = lifecycle.create({})
-        const result = lifecycle.resumable(taskState)
+      it('should resolve to a boolean', function(done) {
+        lifecycle.create().then(taskState => {
+          lifecycle.resumable(taskState).then((result) => {
+            assert.isBoolean(result)
+            done()
+          })
 
-        assert.isBoolean(result)
+        })
       })
     })
 
     describe('resolveInput', function() {
-      it('should return an object with key resolvedInput', function() {
-        const taskState = lifecycle.create()
-
-        const result = lifecycle.resolveInput(taskState)
-        assert.isOk(result.hasOwnProperty('resolvedInput'))
+      it('should return an object with key resolvedInput', function(done) {
+        lifecycle.create().then(taskState => {
+          lifecycle.resolveInput(taskState).then((results) => {
+            assert.isOk(results.hasOwnProperty('resolvedInput'))
+            done()
+          })
+        })
       })
     })
 
     describe('createOperation', function() {
-      it('should return an object with keys operation and operationString', function() {
-        const taskState = lifecycle.create()
-        const result = lifecycle.createOperation(taskState, () => {})
-
-        assert.isOk(result.hasOwnProperty('operation'))
-        assert.isOk(result.hasOwnProperty('operationString'))
+      it('should return an object with keys operation and operationString', function(done) {
+        lifecycle.create().then(taskState => {
+          lifecycle.createOperation(taskState, () => {}).then((results) => {
+            assert.isOk(results.hasOwnProperty('operation'))
+            assert.isOk(results.hasOwnProperty('operationString'))
+            done()
+          })
+        })
       })
     })
 
     describe('settleOperation', function() {
       it('should call callback', function(done) {
-        lifecycle.settleOperation(
-          () => new Promise(resolve => resolve('foo')),
-          (err, data) => done()
-        )
+        lifecycle.settleOperation(new Promise(resolve => resolve('foo'))).then((results) => {
+          done()
+        })
       })
     })
 
     describe('resolveOutput', function() {
-      it('should return an object with key resolvedOutput', function() {
-        const taskState = lifecycle.create()
-
-        const result = lifecycle.resolveOutput(taskState)
-        assert.isOk(result.hasOwnProperty('resolvedOutput'))
+      it('should return an object with key resolvedOutput', function(done) {
+          lifecycle.create().then(taskState => {
+          lifecycle.resolveOutput(taskState).then((results) => {
+            assert.isOk(results.hasOwnProperty('resolvedOutput'))
+          })
+          done()
+        })
       })
     })
 
     describe('validateOutput', function() {
-      it('should return an object with keys validations and validated', function() {
-        const taskState = lifecycle.create()
-        const result = lifecycle.validateOutput(taskState)
+      it('should return an object with keys validations and validated', function(done) {
+        lifecycle.create().then(taskState => {
+          lifecycle.validateOutput(taskState).then((results) => {
+            assert.isOk(result.hasOwnProperty('validations'))
+            assert.isOk(_.isPlainObject(result.validations))
+            assert.isOk(result.hasOwnProperty('validated'))
+            assert.isBoolean(result.validated)
+          })
 
-        assert.isOk(result.hasOwnProperty('validations'))
-        assert.isOk(_.isPlainObject(result.validations))
-        assert.isOk(result.hasOwnProperty('validated'))
-        assert.isBoolean(result.validated)
+          done()
+        })
       })
     })
 
     describe('postValidation', function() {
-      it('should return an object with key postValidations', function() {
-        const taskState = lifecycle.create()
-        const result = lifecycle.postValidation(taskState)
+      it('should return an object with key postValidations', function(done) {
+        lifecycle.create().then(taskState => {
+          lifecycle.postValidation(taskState).then((results) => {
+            assert.isOk(result.hasOwnProperty('postValidation'))
+            assert.isOk(_.isPlainObject(result.postValidation))
+          })
 
-        assert.isOk(result.hasOwnProperty('postValidation'))
-        assert.isOk(_.isPlainObject(result.postValidation))
+          done()
+        })
       })
     })
   })

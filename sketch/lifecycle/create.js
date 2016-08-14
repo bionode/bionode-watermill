@@ -14,7 +14,7 @@ const { hash } = require('../utils/index.js')
  * @param props {Object}
  * @returns a task object
  */
-const create = (props = {}) => {
+const create = (props = {}) => new Promise((resolve, reject) => {
   // Check if props used a bad type for a certain key, if so, throw
   for (const key in defaultTaskTypes) {
     const val = defaultTaskTypes[key]
@@ -37,7 +37,7 @@ const create = (props = {}) => {
   const uid = hash(hashes.input + hashes.output + hashes.params)
   Object.assign(task, { hashes, uid })
 
-  return task
-}
+  resolve(task)
+})
 
 module.exports = create

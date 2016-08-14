@@ -28,7 +28,7 @@ exports.defaultTask = {
 exports.defaultTaskTypes = {
   threads: 'number',
   container: 'string',
-  resume: ['on', 'off'],
+  resume: 'string', // TODO 'on' or 'off'
   uid: 'string',
   hashes: 'object',
   name: 'string',
