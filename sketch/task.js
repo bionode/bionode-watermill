@@ -15,7 +15,7 @@
 const _ = require('lodash')
 const asyncDone = require('async-done')
 
-const lifecycleMethods = require('./lifecycle.js')
+const lifecycleMethods = require('./lifecycle')
 
 /**
  * The task factory function.
@@ -51,7 +51,7 @@ const task = (props, operationCreator) => {
     function afterOperation (taskState, err, results) {
       taskState = lifecycleMethods.resolveOutput(taskState)
       taskState = lifecycleMethods.validateOutput(taskState)
-      taskState = lifecycleMethods.addDAGNode(taskState)
+      taskState = lifecycleMethods.postValidation(taskState)
 
       cb(null, taskState)
     }

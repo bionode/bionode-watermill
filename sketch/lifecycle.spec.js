@@ -1,8 +1,9 @@
 'use strict'
 
+const _ = require('lodash')
 const { assert } = require('chai')
 
-const lifecycle = require('./lifecycle.js')
+const lifecycle = require('./lifecycle')
 
 describe('lifecycle', function() {
   describe('required methods', function() {
@@ -13,18 +14,17 @@ describe('lifecycle', function() {
     it('should have a settleOperation method', () => assert.hasOwnProperty('settleOperation'))
     it('should have a resolveOutput method', () => assert.hasOwnProperty('resolveOutput'))
     it('should have a validateOutput method', () => assert.hasOwnProperty('validateOutput'))
-    it('should have a addDAGNode method', () => assert.hasOwnProperty('addDAGNode'))
+    it('should have a postValidation method', () => assert.hasOwnProperty('postValidation'))
   })
 
-  it('each method should take a taskState and return a referentially dis-equal object', function(done) {
+  it('each method should take a taskState and return a referentially dis-equal object', function() {
     for (const method in lifecycle) {
-      // if (method === 'createOperation') break
       const taskState = {}
-      const newTaskState = lifecycle[method](taskState)
-
+      const args = [ taskState ]
+      if (method === 'createOperation') args.push(_.noop)
+      const newTaskState = lifecycle[method].apply(null, args)
 
       assert.notEqual(newTaskState, taskState, `lifecycle method ${method} did not return a new object`)
     }
-    done()
   })
 })
