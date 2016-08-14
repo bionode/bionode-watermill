@@ -1,5 +1,7 @@
 'use strict'
 
-const resolveOutput = (taskState) => Object.assign({}, taskState)
+const resolveOutput = (taskState) => {
+  return { resolvedOutput: taskState.output }
+}
 
 module.exports = resolveOutput

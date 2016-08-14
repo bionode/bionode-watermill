@@ -19,7 +19,12 @@ const createOperationProps = (taskState) => {
 const createOperation = (taskState, operationCreator) => {
   const operationProps = createOperationProps(taskState)
 
-  return operationCreator(operationProps)
+  const operation = operationCreator(operationProps)
+
+  return {
+    operation,
+    operationString: JSON.stringify(operation)
+  }
 }
 
 module.exports = createOperation

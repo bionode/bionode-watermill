@@ -3,7 +3,9 @@
 const addDAGNode = (taskState) => Object.assign({}, taskState)
 
 const postValidation = (taskState) => {
-  return addDAGNode(taskState)
+  return {
+    postValidation: {}
+  }
 }
 
 module.exports = postValidation

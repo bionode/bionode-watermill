@@ -14,7 +14,7 @@ const { hash } = require('../utils/index.js')
  * @param props {Object}
  * @returns a task object
  */
-const create = (props) => {
+const create = (props = {}) => {
   // Check if props used a bad type for a certain key, if so, throw
   for (const key in defaultTaskTypes) {
     const val = defaultTaskTypes[key]

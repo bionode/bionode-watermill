@@ -1,5 +1,10 @@
 'use strict'
 
-const validateOutput = (taskState) => Object.assign({}, taskState)
+const validateOutput = (taskState) => {
+  return {
+    validations: {},
+    validated: true
+  }
+}
 
 module.exports = validateOutput

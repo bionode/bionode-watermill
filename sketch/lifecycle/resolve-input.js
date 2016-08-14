@@ -4,6 +4,10 @@
  * Lifecycle method: resolve input
  */
 
-const resolveInput = (taskState) => Object.assign({}, taskState)
+const resolveInput = (taskState) => {
+  return {
+    resolvedInput: taskState.input
+  }
+}
 
 module.exports = resolveInput

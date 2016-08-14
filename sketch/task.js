@@ -39,7 +39,7 @@ const task = (props, operationCreator) => {
       afterOperation(taskState)
     } else {
       taskState = lifecycleMethods.resolveInput(taskState)
-      operation = lifecycleMethods.createOperation(taskState, operationCreator)
+      operation = lifecycleMethods.createOperation(taskState, operationCreator).operation
 
       lifecycleMethods.settleOperation(operation, (err, results) => {
         if (err) return afterOperation(taskState, err)
