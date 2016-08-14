@@ -118,7 +118,9 @@ const task = (props, operationCreator) => {
   // Returns an invocable task that can be passed a cb and optionally a ctx
   // By defauult cb is a noop and ctx is an object literal
   // Provides promise and callback to user
-  return (cb = _.noop, ctx = {}) => runLifecycle.asCallback(cb)
+  const invocableTask = (cb = _.noop, ctx = {}) => runLifecycle.asCallback(cb)
+
+  return invocableTask
 }
 
 module.exports = task
