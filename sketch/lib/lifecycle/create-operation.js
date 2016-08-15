@@ -52,6 +52,8 @@ const createOperation = (taskState, operationCreator) => new Promise((resolve, r
     createOperationProps(taskState).then((operationProps) => {
       const operation = operationCreator(operationProps)
 
+      console.log('operation as string: ', operationCreator.toString())
+
       // Convert string or array of strings into shell
       if (_.isString(operation)) {
         resolve({

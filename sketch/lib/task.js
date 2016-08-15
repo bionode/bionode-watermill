@@ -36,7 +36,7 @@ const task = (store) => (props, operationCreator) => {
 
 
   // Returns an invocable task that can be passed a cb and optionally a ctx
-  // By defauult cb is a noop and ctx is an object literal
+  // By defauult cb is a noop and ctx is defaultCtx
   // Provides promise and callback to user
   const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
     let taskState

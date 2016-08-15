@@ -91,18 +91,27 @@ function addOutputHandler (state, action) {
   return graph
 }
 
-reducer.addOutput = (uid, taskState) => (dispatch, getState) => new Promise((resolve, reject) => {
-  const { resolvedOutput, trajectory, params } = taskState
+// reducer.addOutput = (uid, taskState) => (dispatch, getState) => new Promise((resolve, reject) => {
+//   const { resolvedOutput, trajectory, params } = taskState
+//
+//   dispatch({
+//     type: ADD_OUTPUT,
+//     uid,
+//     output: resolvedOutput,
+//     trajectory,
+//     params
+//   })
+//
+//   resolve(uid)
+// })
 
-  dispatch({
-    type: ADD_OUTPUT,
-    uid,
-    output: resolvedOutput,
-    trajectory,
-    params
-  })
-
-  resolve(uid)
+reducer.ADD_OUTPUT = ADD_OUTPUT
+reducer.addOutput = (uid, taskState) => ({
+  type: ADD_OUTPUT,
+  uid,
+  output: taskState.resolvedOutput,
+  trajectory: taskState.trajectory,
+  params: taskState.params
 })
 
 module.exports = reducer
