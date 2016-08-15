@@ -40,6 +40,7 @@ const task = (props, operationCreator) => {
     //    3. afterOperation
     //    4. afterResolveOutput
     //  Case 1B: output cannot be resolved
+    //  TODO fix infinite loop before 5/3/4
     //    1. create
     //    2. checkResumable
     //    3. afterOperation
@@ -109,6 +110,7 @@ const task = (props, operationCreator) => {
 
           finish(taskState)
         })
+        .catch(err => console.log(err))
     }
 
     function finish (taskState) {
