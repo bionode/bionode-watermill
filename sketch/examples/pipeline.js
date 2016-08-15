@@ -12,7 +12,7 @@ const dumpPIDs = task({
   name: 'Dump all PIDs to *.pids'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
-// dumpPIDs().then((results) => console.log('final results: ', results))
+dumpPIDs().then(console.log)
 
 const numbersToLetters = task({
   input: '*.pids',
@@ -31,8 +31,6 @@ const numbersToLetters = task({
     }))
     .pipe(fs.createWriteStream(input.replace(/pids$/, 'txt')))
 )
-
-numbersToLetters().then((result) => console.log('result:', result))
 
 // A -> B
 // join(dumpPIDs, numbersToLetters)()

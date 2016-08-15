@@ -8,13 +8,15 @@ const { defaultTask, defaultTaskTypes } = require('../constants/default-task-sta
 const stringify = require('json-stable-stringify')
 const { hash } = require('../utils/index.js')
 
+const { defaultCtx } = require('../ctx')
+
 /**
  * Initialize a task object using defaultTask and user passed in options.
  *
  * @param props {Object}
  * @returns a task object
  */
-const create = (props = {}) => new Promise((resolve, reject) => {
+const create = (props = {}, ctx = defaultCtx) => new Promise((resolve, reject) => {
   // Check if props used a bad type for a certain key, if so, throw
   for (const key in defaultTaskTypes) {
     const val = defaultTaskTypes[key]
@@ -36,6 +38,8 @@ const create = (props = {}) => new Promise((resolve, reject) => {
   }
   const uid = hash(hashes.input + hashes.output + hashes.params)
   Object.assign(task, { hashes, uid })
+
+  task.trajectory = task.trajectory.concat(ctx.trajectory)
 
   resolve(task)
 })

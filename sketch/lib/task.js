@@ -16,7 +16,9 @@ const _ = require('lodash')
 const Promise = require('bluebird')
 const asyncDone = require('async-done')
 
-const lifecycle = require('./lifecycle')
+const { defaultCtx } = require('../lib/ctx')
+
+// const lifecycle = require('./lifecycle')
 
 /**
  * The task factory function.
@@ -24,7 +26,9 @@ const lifecycle = require('./lifecycle')
  * @param props {Object} properties of this task
  * @param operationCreator {Function} function to be called with props
  */
-const task = (props, operationCreator) => {
+const task = (store) => (props, operationCreator) => {
+  const lifecycle = require('./lifecycle')(store)
+
   // Type checking on params
   if (!_.isPlainObject(props) || !_.isFunction(operationCreator)) {
     throw new Error('incorrect parameter types: task(props, operationCreator) where props is a plain object and operationCreator is a function')
@@ -34,7 +38,7 @@ const task = (props, operationCreator) => {
   // Returns an invocable task that can be passed a cb and optionally a ctx
   // By defauult cb is a noop and ctx is an object literal
   // Provides promise and callback to user
-  const invocableTask = (cb = _.noop, ctx = {}) => new Promise((resolve, reject) => {
+  const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
     let taskState
 
     // Case 1: resumable === 'on'
@@ -60,7 +64,7 @@ const task = (props, operationCreator) => {
 
     // Create the task
     console.log('Creating the task')
-    lifecycle.create(props)
+    lifecycle.create(props, ctx)
       .then((results) => {
         taskState = results
 

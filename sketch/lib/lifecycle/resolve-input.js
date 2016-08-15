@@ -11,8 +11,10 @@ const matchToFs = require('../matchers/match-to-fs.js')
  */
 const dispatch = ({ content }) => console.log(content)
 
-const resolveInput = (taskState) => new Promise((resolve, reject) => {
-  const { input, dir, trajectory } = taskState
+const resolveInput = (store) => (taskState) => new Promise((resolve, reject) => {
+
+  const getState = store.getState()
+  const { uid, input, dir, trajectory } = taskState
 
   if (_.isNull(input)) {
     console.log('Ignoring input as is null')

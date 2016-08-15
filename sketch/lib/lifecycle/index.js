@@ -12,15 +12,15 @@ const resolveOutput = require('./resolve-output.js')
 const validateOutput = require('./validate-output.js')
 const postValidation = require('./post-validation.js')
 
-const lifecycleMethods = {
+const lifecycleMethods = (store) => ({
   create,
   resumable,
-  resolveInput,
+  resolveInput: resolveInput(store),
   createOperation,
   settleOperation,
   resolveOutput,
   validateOutput,
-  postValidation
-}
+  postValidation: postValidation(store)
+})
 
 module.exports = lifecycleMethods
