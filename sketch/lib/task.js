@@ -39,6 +39,15 @@ const task = (store) => (props, operationCreator) => {
   // By defauult cb is a noop and ctx is defaultCtx
   // Provides promise and callback to user
   const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
+    store.dispatch({
+      type: 'tasks/create',
+      task: props,
+      cb: (uid) => {
+        console.log('received task uid: ', uid)
+        console.log('state: ', store.getState())
+      }
+    })
+
     let taskState
 
     // Case 1: resumable === 'on'
@@ -63,17 +72,17 @@ const task = (store) => (props, operationCreator) => {
     //  5. afterResolveOutput
 
     // Create the task
-    console.log('Creating the task')
-    lifecycle.create(props, ctx)
-      .then((results) => {
-        taskState = results
+    // console.log('Creating the task')
+    // lifecycle.create(props, ctx)
+    //   .then((results) => {
+    //     taskState = results
 
-        console.log('Checking if resumable')
-        return lifecycle.resumable(taskState)
-      })
-      // Check resumability: go to afterOperation or beforeOperation
-      .then(isResumable => isResumable ? afterOperation(taskState) : beforeOperation(taskState))
-      .catch(err => console.error(err))
+    //     console.log('Checking if resumable')
+    //     return lifecycle.resumable(taskState)
+    //   })
+    //   // Check resumability: go to afterOperation or beforeOperation
+    //   .then(isResumable => isResumable ? afterOperation(taskState) : beforeOperation(taskState))
+    //   .catch(err => console.error(err))
 
     // Was either not resumable or resumable && resolveOutput failed
     function beforeOperation (taskState) {
