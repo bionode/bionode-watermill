@@ -3,9 +3,9 @@
 const _ = require('lodash')
 const { assert } = require('chai')
 
-const statusTypes = require('./constants/task-status-types.js')
-const defaultConfig = require('./constants/default-config-state.js')
-const lifecycle = require('./lifecycle')
+const statusTypes = require('../lib/constants/task-status-types.js')
+const defaultConfig = require('../lib/constants/default-config-state.js')
+const lifecycle = require('../lib/lifecycle')
 
 describe('lifecycle', function() {
   describe('required methods', function() {

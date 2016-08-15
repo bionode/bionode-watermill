@@ -2,7 +2,7 @@
 
 const { assert } = require('chai')
 
-const { defaultCtx, mergeCtx } = require('./ctx')
+const { defaultCtx, mergeCtx } = require('../lib/ctx')
 
 describe('Context', function() {
   describe('mergeCtx', function() {

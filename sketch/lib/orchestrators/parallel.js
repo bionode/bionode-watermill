@@ -3,7 +3,7 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
 
-const { defaultCtx, mergeCtx } = require('./ctx')
+const { defaultCtx, mergeCtx } = require('../ctx')
 
 function parallel(...tasks) {
   return (cb = _.noop, ctx = defaultCtx) => Promise.all(tasks.map(task => new Promise((resolve, reject) => {

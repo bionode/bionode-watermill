@@ -21,7 +21,7 @@
 const { assert } = require('chai')
 const _ = require('lodash')
 
-const task = require('./task.js')
+const { task } = require('../')
 
 describe('task', function() {
   describe('parameter type checks', function() {
