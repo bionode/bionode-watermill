@@ -2,11 +2,11 @@
 
 const { assert } = require('chai')
 
+const parallel = require('./parallel.js')
 const task = require('./task.js')
-const join = require('./orchestrators/join.js')
 
-describe('Join', function() {
-  it('Should pass context between two tasks', function(done) {
+describe('parallel', function() {
+  it('should produce a concatenated trajectory', function(done) {
     const tasks = ['foo', 'bar'].map((val) =>
       task({
         params: { val }
@@ -14,10 +14,10 @@ describe('Join', function() {
       )
     )
 
-    join(tasks[0], tasks[1])().then((results) => {
+    parallel.apply(null, tasks)().then((results) => {
       assert.equal(results.trajectory[0], JSON.stringify({val: 'foo'}))
       assert.equal(results.trajectory[2], JSON.stringify({val: 'bar'}))
-      assert.equal(results.type, 'join')
+      assert.equal(results.type, 'parallel')
 
       done()
     })
