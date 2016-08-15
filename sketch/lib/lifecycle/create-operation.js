@@ -1,6 +1,9 @@
 'use strict'
 
 const _ = require('lodash')
+const path = require('path')
+const Promise = require('bluebird')
+const mkdirp = Promise.promisify(require('mkdirp'))
 
 const { shell } = require('../utils/shell.js')
 
@@ -21,22 +24,31 @@ const createOperationProps = (taskState) => {
  * Create operation. Takes taskState.operationProps
  */
 const createOperation = (taskState, operationCreator) => new Promise((resolve, reject) => {
-  const operationProps = createOperationProps(taskState)
-  const operation = operationCreator(operationProps)
+  console.log('resolvedInput before making: ', taskState.resolvedInput)
+  const dir = taskState.dir
+  const madeDir = mkdirp(dir)
+    .then(() => console.log('Created ' + dir))
+    .catch(err => reject(err))
 
-  // Convert string or array of strings into shell
-  if (_.isString(operation)) {
-    resolve({
-      operation: shell(operation),
-      operationString: operation
-    })
-  } else {
-    resolve({
-      operation,
-      operationString: JSON.stringify(operation)
-    })
-  }
+  madeDir.then(() => {
+    const operationProps = createOperationProps(taskState)
+    const operation = operationCreator(operationProps)
 
+    // Convert string or array of strings into shell
+    if (_.isString(operation)) {
+      resolve({
+        operation: shell(operation, { cwd: dir }),
+        dir,
+        operationString: operation
+      })
+    } else {
+      resolve({
+        operation,
+        dir,
+        operationString: JSON.stringify(operation)
+      })
+    }
+  })
 })
 
 module.exports = createOperation

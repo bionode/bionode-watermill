@@ -85,6 +85,7 @@ const task = (store) => (props, operationCreator) => {
       })
       .then((results) => {
         const { operation } = results
+        taskState.dir = results.dir
 
         lifecycle.settleOperation(operation)
           .then((results) => {

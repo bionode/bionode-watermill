@@ -9,11 +9,11 @@ const matchToFs = require('../matchers/match-to-fs.js')
 /**
  * Lifecycle method: resolve input
  */
+
 const dispatch = ({ content }) => console.log(content)
+const tab = () => ''
 
 const resolveInput = (store) => (taskState) => new Promise((resolve, reject) => {
-
-  const getState = store.getState()
   const { uid, input, dir, trajectory } = taskState
 
   if (_.isNull(input)) {
@@ -51,7 +51,7 @@ const resolveInput = (store) => (taskState) => new Promise((resolve, reject) => 
 
     const minimatch = require('minimatch')
     const matchToCollection = (item) => new Promise((resolve, reject) => {
-      let currentCollection = getState().collection
+      let currentCollection = store.getState().collection
 
       const matchee = (path) => {
         if (minimatch(path.split('/').pop(), item)) {

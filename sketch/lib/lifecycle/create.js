@@ -7,6 +7,7 @@
 const { defaultTask, defaultTaskTypes } = require('../constants/default-task-state.js')
 const stringify = require('json-stable-stringify')
 const { hash } = require('../utils/index.js')
+const path = require('path')
 
 const { defaultCtx } = require('../ctx')
 
@@ -40,6 +41,7 @@ const create = (props = {}, ctx = defaultCtx) => new Promise((resolve, reject) =
   Object.assign(task, { hashes, uid })
 
   task.trajectory = task.trajectory.concat(ctx.trajectory)
+  task.dir = path.resolve('./work', uid)
 
   resolve(task)
 })
