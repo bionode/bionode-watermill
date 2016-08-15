@@ -22,7 +22,6 @@ const createOperationProps = (taskState) => {
  */
 const createOperation = (taskState, operationCreator) => new Promise((resolve, reject) => {
   const operationProps = createOperationProps(taskState)
-  console.log(operationProps)
   const operation = operationCreator(operationProps)
 
   // Convert string or array of strings into shell

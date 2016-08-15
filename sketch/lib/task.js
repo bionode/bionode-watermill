@@ -30,7 +30,11 @@ const task = (props, operationCreator) => {
     throw new Error('incorrect parameter types: task(props, operationCreator) where props is a plain object and operationCreator is a function')
   }
 
-  const runLifecycle = new Promise((resolve, reject) => {
+
+  // Returns an invocable task that can be passed a cb and optionally a ctx
+  // By defauult cb is a noop and ctx is an object literal
+  // Provides promise and callback to user
+  const invocableTask = (cb = _.noop, ctx = {}) => new Promise((resolve, reject) => {
     let taskState
 
     // Case 1: resumable === 'on'
@@ -55,9 +59,12 @@ const task = (props, operationCreator) => {
     //  5. afterResolveOutput
 
     // Create the task
+    console.log('Creating the task')
     lifecycle.create(props)
       .then((results) => {
         taskState = results
+
+        console.log('Checking if resumable')
         return lifecycle.resumable(taskState)
       })
       // Check resumability: go to afterOperation or beforeOperation
@@ -86,6 +93,7 @@ const task = (props, operationCreator) => {
 
     // Either just after resumable check or after settleOperation
     function afterOperation(taskState) {
+      console.log('Resolving output')
       lifecycle.resolveOutput(taskState)
         .then((results) => {
           Object.assign(taskState, results)
@@ -116,12 +124,7 @@ const task = (props, operationCreator) => {
     function finish (taskState) {
       resolve(taskState)
     }
-  })
-
-  // Returns an invocable task that can be passed a cb and optionally a ctx
-  // By defauult cb is a noop and ctx is an object literal
-  // Provides promise and callback to user
-  const invocableTask = (cb = _.noop, ctx = {}) => runLifecycle.asCallback(cb)
+  }).asCallback(cb)
 
   return invocableTask
 }
