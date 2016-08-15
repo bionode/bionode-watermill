@@ -12,7 +12,7 @@ const dumpPIDs = task({
   name: 'Dump all PIDs to *.pids'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
-dumpPIDs().then(console.log)
+// dumpPIDs().then(console.log)
 
 const numbersToLetters = task({
   input: '*.pids',
@@ -33,5 +33,5 @@ const numbersToLetters = task({
 )
 
 // A -> B
-// join(dumpPIDs, numbersToLetters)()
-//   .then(console.log)
+join(dumpPIDs, numbersToLetters)()
+  .then(console.log)

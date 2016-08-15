@@ -4,6 +4,7 @@ const _ = require('lodash')
 const path = require('path')
 const Promise = require('bluebird')
 const mkdirp = Promise.promisify(require('mkdirp'))
+const fs = Promise.promisifyAll(require('fs'))
 
 const { shell } = require('../utils/shell.js')
 
@@ -12,13 +13,30 @@ const { shell } = require('../utils/shell.js')
  *
  * @param props {Object}
  */
-const createOperationProps = (taskState) => {
-  const operationProps = {
-    input: taskState.resolvedInput,
-    output: taskState.resolvedOutput
+const createOperationProps = (taskState) => new Promise((resolve, reject) => {
+  const dir = taskState.dir
+
+  if (taskState.resolvedInput) {
+    const symlinkTarget = taskState.resolvedInput
+    const symlinkPath = path.resolve(dir, path.basename(symlinkTarget))
+
+    fs.symlinkAsync(symlinkTarget, symlinkPath).then(() => {
+      const operationProps = {
+        input: symlinkPath,
+        output: taskState.resolvedOutput
+      }
+      resolve(Object.assign({}, taskState, operationProps))
+    }).catch(err => {
+      console.log('got symlink err: ', err)
+    })
+  } else {
+    const operationProps = {
+      input: taskState.resolvedInput,
+      output: taskState.resolvedOutput
+    }
+    resolve(Object.assign({}, taskState, operationProps))
   }
-  return Object.assign({}, taskState, operationProps)
-}
+})
 
 /**
  * Create operation. Takes taskState.operationProps
@@ -31,23 +49,24 @@ const createOperation = (taskState, operationCreator) => new Promise((resolve, r
     .catch(err => reject(err))
 
   madeDir.then(() => {
-    const operationProps = createOperationProps(taskState)
-    const operation = operationCreator(operationProps)
+    createOperationProps(taskState).then((operationProps) => {
+      const operation = operationCreator(operationProps)
 
-    // Convert string or array of strings into shell
-    if (_.isString(operation)) {
-      resolve({
-        operation: shell(operation, { cwd: dir }),
-        dir,
-        operationString: operation
-      })
-    } else {
-      resolve({
-        operation,
-        dir,
-        operationString: JSON.stringify(operation)
-      })
-    }
+      // Convert string or array of strings into shell
+      if (_.isString(operation)) {
+        resolve({
+          operation: shell(operation, { cwd: dir }),
+          dir,
+          operationString: operation
+        })
+      } else {
+        resolve({
+          operation,
+          dir,
+          operationString: JSON.stringify(operation)
+        })
+      }
+    })
   })
 })
 
