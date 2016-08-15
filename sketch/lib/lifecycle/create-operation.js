@@ -14,7 +14,7 @@ const createOperationProps = (taskState) => {
     input: taskState.resolvedInput,
     output: taskState.resolvedOutput
   }
-  return Object.assign({}, taskState, { operationProps })
+  return Object.assign({}, taskState, operationProps)
 }
 
 /**
@@ -22,7 +22,7 @@ const createOperationProps = (taskState) => {
  */
 const createOperation = (taskState, operationCreator) => new Promise((resolve, reject) => {
   const operationProps = createOperationProps(taskState)
-
+  console.log(operationProps)
   const operation = operationCreator(operationProps)
 
   // Convert string or array of strings into shell

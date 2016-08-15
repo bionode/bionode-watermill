@@ -67,7 +67,7 @@ const task = (props, operationCreator) => {
     function beforeOperation (taskState) {
       lifecycle.resolveInput(taskState)
       .then((results) => {
-        Object.assign(taskState, results)
+        Object.assign(taskState, { resolvedInput: results.resolvedInput })
 
         return lifecycle.createOperation(taskState, operationCreator)
       })
@@ -80,6 +80,7 @@ const task = (props, operationCreator) => {
           })
           .catch(err => console.error(err))
       })
+      .catch(err => console.error(err))
     }
 
     // Either just after resumable check or after settleOperation

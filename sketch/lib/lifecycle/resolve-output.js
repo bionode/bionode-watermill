@@ -15,8 +15,6 @@ const resolveOutput = (taskState) => new Promise((resolve, reject) => {
 
   applicator(output, (item) => matchToFs(item, null, opts))
   .then(results => {
-    console.log('results: ', results)
-
     resolve({ success: true, resolvedOutput: results })
   })
   // Output was not resolved
