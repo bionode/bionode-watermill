@@ -12,9 +12,13 @@ const { call, put, take, select } = require('redux-saga/effects')
  * that is easy to test.
  */
 function* lifecycle (action) {
+  const { operationCreator, taskResolve, taskReject } = action
   console.log('state from sagas: ', JSON.stringify(yield select(), null, 2))
 
   console.log('operationCreator: ', action.operationCreator)
+
+  console.log('gonna resolve you son')
+  taskResolve('foo')
 }
 
 function* rootSaga() {

@@ -110,18 +110,8 @@ const reducer = (state = defaultState, action) => {
 //   }
 // }
 
-reducer.createTask = ({
-  uid,
-  hashes,
-  props,
-  operationCreator
-}) => ({
-  type: CREATE_TASK,
-  uid,
-  hashes,
-  props,
-  operationCreator
-})
+const wrapWithType = (type, obj) => Object.assign({}, obj, { type })
 
+reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
 
 module.exports = reducer

@@ -42,11 +42,15 @@ const task = (store) => (props, operationCreator) => {
     const { uid, hashes } = generateUid(props)
 
     // This kicks off the task lifecycle saga
+    // operationCreator, taskResolve, and taskReject
+    // will not be used in the reducer, BUT, they will be captured by the saga
     store.dispatch(createTask({
       uid,
       hashes,
       props,
-      operationCreator
+      operationCreator,
+      taskResolve: resolve,
+      taskReject: reject
     }))
 
     let taskState
