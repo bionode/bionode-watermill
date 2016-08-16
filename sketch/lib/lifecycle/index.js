@@ -3,7 +3,7 @@
 // Lifecycle methods
 const generateUid = require('./generate-uid.js')
 const create = require('./create.js')
-const resumable = require('./resumable.js')
+const checkResumable = require('./check-resumable.js')
 const resolveInput = require('./resolve-input.js')
 const createOperation = require('./create-operation.js')
 const settleOperation = require('./settle-operation.js')
@@ -14,7 +14,7 @@ const postValidation = require('./post-validation.js')
 const lifecycleMethods = {
   generateUid,
   create,
-  resumable,
+  checkResumable,
   resolveInput,
   createOperation,
   settleOperation,
