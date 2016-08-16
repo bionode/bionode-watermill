@@ -25,4 +25,8 @@ function* rootSaga() {
   yield* takeEvery('tasks/create', lifecycle)
 }
 
+// TODO differnet modules
+rootSaga.lifecycle = lifecycle
+
 module.exports = rootSaga
+

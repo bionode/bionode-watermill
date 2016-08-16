@@ -113,5 +113,6 @@ const reducer = (state = defaultState, action) => {
 const wrapWithType = (type, obj) => Object.assign({}, obj, { type })
 
 reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
+reducer.CREATE_TASK = CREATE_TASK
 
 module.exports = reducer
