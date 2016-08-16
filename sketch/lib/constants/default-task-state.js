@@ -3,16 +3,19 @@
 const defaultConfig = require('./default-config-state.js')
 const statusTypes = require('./task-status-types.js')
 
+const defaultHashes = {
+  input: null,
+  output: null,
+  params: null
+}
+exports.defaultHashes = defaultHashes
+
 exports.defaultTask = {
   threads: defaultConfig.threads,
   container: defaultConfig.container,
   resume: defaultConfig.resume,
   uid: null,
-  hashes: {
-    input: undefined,
-    output: undefined,
-    params: undefined
-  },
+  hashes: defaultHashes,
   name: 'Unnamed Task',
   dir: null,
   input: null,

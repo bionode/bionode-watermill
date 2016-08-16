@@ -14,11 +14,10 @@
 
 const _ = require('lodash')
 const Promise = require('bluebird')
-const asyncDone = require('async-done')
 
 const { defaultCtx } = require('../lib/ctx')
-
-// const lifecycle = require('./lifecycle')
+const { generateUid } = require('./lifecycle')
+const { createTask } = require('./reducers/tasks.js')
 
 /**
  * The task factory function.
@@ -27,8 +26,6 @@ const { defaultCtx } = require('../lib/ctx')
  * @param operationCreator {Function} function to be called with props
  */
 const task = (store) => (props, operationCreator) => {
-  const lifecycle = require('./lifecycle')(store)
-
   // Type checking on params
   if (!_.isPlainObject(props) || !_.isFunction(operationCreator)) {
     throw new Error('incorrect parameter types: task(props, operationCreator) where props is a plain object and operationCreator is a function')
@@ -39,14 +36,18 @@ const task = (store) => (props, operationCreator) => {
   // By defauult cb is a noop and ctx is defaultCtx
   // Provides promise and callback to user
   const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
-    store.dispatch({
-      type: 'tasks/create',
-      task: props,
-      cb: (uid) => {
-        console.log('received task uid: ', uid)
-        console.log('state: ', store.getState())
-      }
-    })
+    // First thing we need to do is create a `uid` for this task
+    // The `uid` is a hash of the `input`, `output`, and `params` hashes
+    // `hashes` is an object with input, output, params keys
+    const { uid, hashes } = generateUid(props)
+
+    // This kicks off the task lifecycle saga
+    store.dispatch(createTask({
+      uid,
+      hashes,
+      props,
+      operationCreator
+    }))
 
     let taskState
 

@@ -1,8 +1,7 @@
 'use strict'
 
-const asyncDone = require('async-done')
-
 // Lifecycle methods
+const generateUid = require('./generate-uid.js')
 const create = require('./create.js')
 const resumable = require('./resumable.js')
 const resolveInput = require('./resolve-input.js')
@@ -12,15 +11,16 @@ const resolveOutput = require('./resolve-output.js')
 const validateOutput = require('./validate-output.js')
 const postValidation = require('./post-validation.js')
 
-const lifecycleMethods = (store) => ({
+const lifecycleMethods = {
+  generateUid,
   create,
   resumable,
-  resolveInput: resolveInput(store),
+  resolveInput,
   createOperation,
   settleOperation,
   resolveOutput,
   validateOutput,
-  postValidation: postValidation(store)
-})
+  postValidation
+}
 
 module.exports = lifecycleMethods
