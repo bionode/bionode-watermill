@@ -12,7 +12,7 @@ const store = createStore(rootReducer, applyMiddleware(thunk, sagaMW))
 const rootSaga = require('./sagas')
 sagaMW.run(rootSaga)
 
-const task = require('./task.js')(store)
+const task = require('./task.js')(store.dispatch)
 const join = require('./orchestrators/join.js')
 const parallel = require('./orchestrators/parallel.js')
 

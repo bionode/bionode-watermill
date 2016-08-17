@@ -21,6 +21,27 @@ const { selectTask } = require('./selectors.js')
  * application of those results to the store, while also providing an iterable
  * that is easy to test.
  *
+ *   Case 1: resumable === 'on'
+ *    Case 1A: output can be resolved
+ *      1. create
+ *      2. checkResumable
+ *      3. afterOperation
+ *      4. afterResolveOutput
+ *    Case 1B: output cannot be resolved
+ *    TODO fix infinite loop before 5/3/4
+ *      1. create
+ *      2. checkResumable
+ *      3. afterOperation
+ *      4. beforeOperation
+ *      5. afterOperation
+ *      6. afterResolveOutput
+ *   Case 2: resumable === 'off'
+ *    1. create
+ *    2. checkResumable
+ *    3. beforeOperation
+ *    4. afterOperation
+ *    5. afterResolveOutput
+ *
  * Receives a CREATE_TASK
  */
 function* lifecycle (action) {

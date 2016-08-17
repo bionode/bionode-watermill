@@ -12,6 +12,9 @@ const dumpPIDs = task({
   name: 'Dump all PIDs to *.pids'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
+console.log('Can get info synchronously: ')
+console.log(dumpPIDs.info)
+
 dumpPIDs().then(console.log)
 
 const numbersToLetters = task({
