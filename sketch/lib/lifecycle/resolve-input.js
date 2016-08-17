@@ -13,7 +13,7 @@ const matchToFs = require('../matchers/match-to-fs.js')
 const dispatch = ({ content }) => console.log(content)
 const tab = () => ''
 
-const resolveInput = (store) => (taskState) => new Promise((resolve, reject) => {
+const resolveInput = (taskState) => new Promise((resolve, reject) => {
   const { uid, input, dir, trajectory } = taskState
 
   if (_.isNull(input)) {

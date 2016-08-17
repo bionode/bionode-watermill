@@ -3,6 +3,7 @@
 // Reducers - this implies there is reducer proxying in this reducer
 const taskReducer = require('./task.js')
 const { defaultTask } = require('../constants/default-task-state.js')
+const config = require('../constants/default-config-state.js')
 
 // Actions
 const CREATE_TASK = 'tasks/create'
@@ -38,7 +39,12 @@ const reducer = (state = defaultState, action) => {
     case CREATE_TASK:
       const { hashes, props } = action
 
-      return updateTask(state, Object.assign(defaultTask, props, { uid, hashes }))
+      return updateTask(state, Object.assign(
+        defaultTask,
+        props,
+        { uid, hashes },
+        { dir: config.workdir }
+      ))
     default:
       return state
   }
