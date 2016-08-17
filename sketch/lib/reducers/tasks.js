@@ -1,12 +1,23 @@
 'use strict'
 
 // Reducers - this implies there is reducer proxying in this reducer
-const taskReducer = require('./task.js')
+// const taskReducer = require('./task.js')
 const { defaultTask } = require('../constants/default-task-state.js')
 const config = require('../constants/default-config-state.js')
 
 // Actions
 const CREATE_TASK = 'tasks/create'
+const START_RESOLVE_INPUT = 'task/start_resolve-input'
+const SUCCESS_RESOLVE_INPUT = 'task/success_resolve-input'
+
+const START_OPERATION = 'task/start_operation'
+const SUCCESS_OPERATION = 'task/success_operation'
+
+const START_RESOLVE_OUTPUT = 'task/start_resolve-output'
+const SUCCESS_RESOLVE_OUTPUT = 'task/success_resolve-output'
+
+const START_VALIDATING_OUTPUT = 'task/start_validating-output'
+const SUCCESS_VALIDATING_OUTPUT = 'task/success_validating-output'
 
 // Internal Methods
 
@@ -27,6 +38,32 @@ const updateTask = (state, task) => {
   return Object.assign({}, state, { [uid]:task })
 }
 
+const taskReducer = (state = {}, action) => {
+  switch (action.type) {
+    case START_RESOLVE_INPUT:
+      return Object.assign({}, state, { status: 'RESOLVING_INPUT' })
+      break
+    case SUCCESS_RESOLVE_INPUT:
+      return Object.assign({}, state, { resolvedInput: action.resolvedInput })
+    case START_OPERATION:
+      return Object.assign({}, state, { status: 'RUNNING_OPERATION' })
+      break
+    case START_RESOLVE_OUTPUT:
+      return Object.assign({}, state, { status: 'RESOLVING_OUTPUT' })
+      break
+    case SUCCESS_RESOLVE_OUTPUT:
+      return Object.assign({}, state, { resolvedOutput: action.resolvedOutput })
+    case START_VALIDATING_OUTPUT:
+      return Object.assign({}, state, { status: 'VALIDATING_OUTPUT' })
+      break
+    case SUCCESS_VALIDATING_OUTPUT:
+      return Object.assign({}, state, { validated: true })
+      break
+    default:
+      return state
+  }
+}
+
 // The `tasks` store item is an object keyed by `task` uids. Each uid points to
 // a `task` instance, which also contains `task.uid` for  redundancy. Thus, the
 // default state is no tasks.
@@ -34,6 +71,35 @@ const defaultState = {}
 
 const reducer = (state = defaultState, action) => {
   const { uid, type } = action
+
+  if (type.startsWith('task/')) {
+    // An action has been dispatched for an *assumed existing* task.
+    // Proxy the task reducer behind this one.
+
+    // Get the action uid so we can retrieve the current state of that task.
+    // If it is not provided, throw and return current state.
+    // TODO test case for this
+    const { uid } = action
+    if (!uid) {
+      console.log(action)
+      throw new Error('task action not provided with uid')
+      return state
+    }
+
+    // Use uid to retrieve current task. Throw and return if it is not found.
+    // TODO test case for this
+    const currentTask = state[uid]
+    if (!currentTask) {
+      throw new Error('task uid does not match an existing task')
+      return state
+    }
+
+    // Call taskReducer with current state of corresponding task. This is the
+    // point of proxying.
+    const newTask = taskReducer(currentTask, action)
+
+    return updateTask(state, newTask)
+  }
 
   switch(type) {
     case CREATE_TASK:
@@ -43,82 +109,34 @@ const reducer = (state = defaultState, action) => {
         defaultTask,
         props,
         { uid, hashes },
-        { dir: config.workdir }
+        { dir: config.workdir },
+        { created: Date.now() }
       ))
     default:
       return state
   }
 }
 
-// const reducer = (state = defaultState, action) => {
-//   const { type } = action
-
-//   if (type.startsWith('task/')) {
-//     // An action has been dispatched for an *assumed existing* task.
-//     // Proxy the task reducer behind this one.
-
-//     // Get the action uid so we can retrieve the current state of that task.
-//     // If it is not provided, throw and return current state.
-//     // TODO test case for this
-//     const { uid } = action
-//     if (!uid) {
-//       console.log(action)
-//       throw new Error('task action not provided with uid')
-//       return state
-//     }
-
-//     // Use uid to retrieve current task. Throw and return if it is not found.
-//     // TODO test case for this
-//     const currentTask = state[uid]
-//     if (!currentTask) {
-//       throw new Error('task uid does not match an existing task')
-//       return state
-//     }
-
-//     // Call taskReducer with current state of corresponding task. This is the
-//     // point of proxying.
-//     const newTask = taskReducer(currentTask, action)
-
-//     return updateTask(state, newTask)
-//   }
-
-//   switch (type) {
-//     case CREATE_TASK:
-//       // We call the task reducer with an undefined state and an empty action.
-//       // We cannot dispatch this since the task reducer does not have an
-//       // associated item in the root of the store. This creates a new task with
-//       // default settings for this waterwheel instance. Once we have this task,
-//       // which has the `task.uid` property, we can add it to the object of
-//       // tasks. This is also a proxy to the task reducer as above, yet we need
-//       // to handle it less directly as the uid is required.
-//       const { task, cb } = action
-//       if (!task) {
-//         throw new Error('task not provided with create task action')
-//         return state
-//       }
-//       if (!cb) {
-//         throw new Error('callback not provided with create task action')
-//         return state
-//       }
-
-//       // TODO reconsider. pass action through? what should state be?
-//       // prefix action with 'proxy'?
-//       const newTask = taskReducer(task, {})
-
-//       // Pass the new task uid back to action creator so that it can resolve
-//       // with it, and other tasks can use it. The uid is required for every
-//       // task action.
-//       cb(newTask.uid)
-
-//       return updateTask(state, newTask)
-//     default:
-//       return state
-//   }
-// }
-
 const wrapWithType = (type, obj) => Object.assign({}, obj, { type })
 
-reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
 reducer.CREATE_TASK = CREATE_TASK
+reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
+
+reducer.startResolveInput = (uid) => ({ type: START_RESOLVE_INPUT, uid })
+reducer.successResolveInput = (uid, resolvedInput) => ({ type: SUCCESS_RESOLVE_INPUT, uid, resolvedInput })
+reducer.SUCCESS_RESOLVE_INPUT = SUCCESS_RESOLVE_INPUT
+
+reducer.startOperation = (uid) => ({ type: START_OPERATION, uid })
+reducer.successOperation = (uid) => ({ type: SUCCESS_OPERATION, uid })
+reducer.SUCCESS_OPERATION = SUCCESS_OPERATION
+
+reducer.startResolveOutput = (uid) => ({ type: START_RESOLVE_OUTPUT, uid })
+reducer.START_RESOLVE_INPUT = START_RESOLVE_INPUT
+reducer.successResolveOutput = (uid, resolvedOutput) => ({ type: SUCCESS_RESOLVE_OUTPUT, uid, resolvedOutput })
+reducer.SUCCESS_RESOLVE_OUTPUT = SUCCESS_RESOLVE_OUTPUT
+
+reducer.startValidatingOutput = (uid) => ({ type: START_VALIDATING_OUTPUT, uid })
+reducer.successValidatatingOutput = (uid) => ({ type: SUCCESS_VALIDATING_OUTPUT, uid })
+
 
 module.exports = reducer

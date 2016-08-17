@@ -1,6 +1,6 @@
 'use strict'
 
-const { call, put, take, select } = require('redux-saga/effects')
+const { call, put, take, select, fork } = require('redux-saga/effects')
 
 const {
   checkResumable,
@@ -11,7 +11,23 @@ const {
   validateOutput,
   postValidation
 } = require('../lifecycle')
+
 const { selectTask } = require('./selectors.js')
+
+const {
+  startResolveInput,
+  START_RESOLVE_INPUT,
+  successResolveInput,
+  SUCCESS_RESOLVE_INPUT,
+  startOperation,
+  successOperation,
+  SUCCESS_OPERATION,
+  startResolveOutput,
+  successResolveOutput,
+  SUCCESS_RESOLVE_OUTPUT,
+  startValidatingOutput,
+  successValidatatingOutput
+} = require('../reducers/tasks.js')
 
 /**
  * The task lifecycle
@@ -21,72 +37,84 @@ const { selectTask } = require('./selectors.js')
  * application of those results to the store, while also providing an iterable
  * that is easy to test.
  *
- *   Case 1: resumable === 'on'
- *    Case 1A: output can be resolved
- *      1. create
- *      2. checkResumable
- *      3. afterOperation
- *      4. afterResolveOutput
- *    Case 1B: output cannot be resolved
- *    TODO fix infinite loop before 5/3/4
- *      1. create
- *      2. checkResumable
- *      3. afterOperation
- *      4. beforeOperation
- *      5. afterOperation
- *      6. afterResolveOutput
- *   Case 2: resumable === 'off'
- *    1. create
- *    2. checkResumable
- *    3. beforeOperation
- *    4. afterOperation
- *    5. afterResolveOutput
- *
  * Receives a CREATE_TASK
  */
 function* lifecycle (action) {
-  const { operationCreator, taskResolve, taskReject } = action
+  const { uid, operationCreator, taskResolve, taskReject } = action
 
-  const taskState = yield select(selectTask(action.uid))
+  // These will all launch now but each blocks until ready
+  // Each one waits for the success action from the preceding one
+  // This is the regular (resume off or first-run) lifecyle, in order
+  yield fork(resolveInputSaga, uid)
+  yield fork(operationSaga, uid, operationCreator)
+  yield fork(resolveOutputSaga, uid, 'after')
+  yield fork(validateOutputSaga, uid)
 
-  const resumable = yield call(checkResumable, taskState)
-  if (resumable) {
-    yield* afterOperation(action.uid)
+  // If resumable, jump into resolveOutputSaga first (and skip waiting for operation)
+  if (yield call(checkResumable, yield select(selectTask(uid)))) {
+    yield* resolveOutputSaga(uid, 'before')
+  } else {
+    yield put(startResolveInput(uid))
   }
 
-  // console.log('operationCreator: ', action.operationCreator)
-  // console.log('gonna resolve you son')
-  // taskResolve('foo')
-
-  function* beforeOperation (uid) {
-    const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)))
-    const { operation } = yield call(
-      createOperation,
-      Object.assign(yield select(selectTask(uid))),
-      operationCreator
-    )
-    yield call(settleOperation, operation)
-
-    yield* afterOperation(uid)
-  }
-
-  function* afterOperation (uid) {
-    let resolvedOutput
+  function* resolveInputSaga (uid) {
+    yield take(START_RESOLVE_INPUT)
+    console.log('resolve input triggered')
     try {
-      resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)))
-      console.log('resolvedOutput: ', resolvedOutput)
-
-      yield call(
-        validateOutput,
-        Object.assign(yield select(selectTask(uid)), { resolvedOutput: resolvedOutput.resolvedOutput })
-      )
-      taskResolve('resolve from saga')
-    } catch(err) {
-      console.log('err: ', err)
-
-      // TODO fix this inf. loop that can happen here
-      yield* beforeOperation(uid)
+      const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)))
+      console.log('_saga: resolvedInput: ', resolvedInput)
+      yield put(successResolveInput(uid, resolvedInput))
+      // console.log(yield select(selectTask(uid)))
+    } catch (err) {
+      console.log('error: ', err)
     }
+  }
+
+  function* operationSaga (uid, operationCreator) {
+    yield take(SUCCESS_RESOLVE_INPUT)
+    console.log('operation saga triggered')
+    let ops
+    try {
+      yield put(startOperation(uid))
+      ops = yield call(createOperation, yield select(selectTask(uid)), operationCreator)
+      const settled = yield call(settleOperation, ops.operation)
+      console.log('post settled: ', settled)
+      yield put(successOperation(uid))
+    } catch (err) {
+      console.log('err2: ', err)
+    }
+  }
+
+  function* resolveOutputSaga (uid, mode) {
+    if (mode !== 'before') yield take(SUCCESS_OPERATION)
+
+    console.log('resolve output triggered')
+
+    yield put(startResolveOutput(uid))
+    try {
+      const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)))
+      yield put(successResolveOutput(uid, resolvedOutput))
+    } catch (err) {
+      console.log('error3: ', err)
+
+      if (mode === 'before') yield put(startResolveInput(uid))
+    }
+  }
+
+  function* validateOutputSaga (uid) {
+    yield take(SUCCESS_RESOLVE_OUTPUT)
+    console.log('validate triggered')
+
+    yield put(startValidatingOutput(uid))
+    try {
+      const validations = yield call(validateOutput, yield select(selectTask(uid)))
+      console.log('validations: ', validations)
+      yield put(successValidatatingOutput(uid))
+    } catch (err) {
+      console.error('err4: ', err)
+    }
+
+    taskResolve(yield select(selectTask(uid)))
   }
 }
 

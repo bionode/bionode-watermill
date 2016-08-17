@@ -19,7 +19,7 @@ const resolveInput = (taskState) => new Promise((resolve, reject) => {
   if (_.isNull(input)) {
     console.log('Ignoring input as is null')
 
-    return resolve({})
+    return resolve(null)
   }
 
   console.log('resolving input')

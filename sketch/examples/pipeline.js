@@ -9,11 +9,12 @@ const { task, join, parallel } = require('../')
 const dumpPIDs = task({
   input: null,
   output: '*.pids',
-  name: 'Dump all PIDs to *.pids'
+  name: 'Dump all PIDs to *.pids',
+  // resume: 'off'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
-console.log('Can get info synchronously: ')
-console.log(dumpPIDs.info)
+// console.log('Can get info synchronously: ')
+// console.log(dumpPIDs.info)
 
 dumpPIDs().then(console.log)
 
