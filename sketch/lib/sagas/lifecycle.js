@@ -1,7 +1,19 @@
 'use strict'
 
+// Effects
+// Sagas is a redux middleware - it will watch for dispatched actions (which
+// have already affected the store) and let you 'catch' them with the 'take'
+// effect - effects are functions that pause the generator, letting the
+// middleware running it do work on the yielded effect.
+// call(fn, ...args) -> run a function asynchdronously, get back its resolved value
+// put(action) -> dispatch an action to the store
+// take(pattern) -> wait for an action matching `pattern`
+// select(selector) -> select a piece of the store
+// fork(fn) -> runs another generator in the background - used for tasks that first take()
 const { call, put, take, select, fork } = require('redux-saga/effects')
 
+// Mostly promises
+// Ran as async side effects through call() in the middle of start/end/fail sagas
 const {
   checkResumable,
   resolveInput,
@@ -12,8 +24,12 @@ const {
   postValidation
 } = require('../lifecycle')
 
+// Store selector:
+// (uid) => (store) => store.tasks[uid]
+// Pass into select() effect
 const { selectTask } = require('./selectors.js')
 
+// Actions and action types
 const {
   startResolveInput,
   START_RESOLVE_INPUT,
@@ -30,16 +46,41 @@ const {
 } = require('../reducers/tasks.js')
 
 /**
- * The task lifecycle
+ * The task lifecycle.
  *
- * `call`s all side effects and `put`s some actions.
- * This lets us seperate the async side effects from their results and
- * application of those results to the store, while also providing an iterable
- * that is easy to test.
+ * A series of generator functions, each which
+ * 1. Waits on an action. Usually something like SUCCESS_PROPHASE
+ * 2. Dispatches the START_METAPHASE action.
+ * 3. Runs the main side effect(s) that are associated with that lifecycle stage.
+ * 4. Dispatches either a SUCCESS_METAPHASE or FAIL_METAPHASE or ERR_METAPHASE
+ * 5. The last action is assumed to be take()'d by another saga: else, the lifecycle ends
+ * 6. (There is a potential for infinite looping - or recursive pipelines...)
  *
- * Receives a CREATE_TASK
+ * These "lifecycle method" chunks can be further composed, forked, etc.
+ *
+ * This lifecycle can be described as the following state machine:
+ *
+ *                                     (if resumable) ↘︎
+ * resolveInput -> (!resumable) ->      operationSaga -> resolveOutput -> validateOutput
+ *           ↖︎ (if resumable and output cannot be resolved)    ⏎
+ *
+ * The setting of resumable = false lets us avoid an infinite loop when output
+ * cannot be resolved.
+ *
+ * @receives a CREATE_TASK action
+ * @forks resolveInputSaga
+ *  @receives START_RESOLVE_INPUT
+ *  @emits SUCCESS/FAIL/ERR_RESOLVE_INPUT
+ * @forks operationSaga
+ *  @receives SUCCESS_RESOLVE_INPUT
+ *  @emits ...
+ * @forks resolveOutputSaga
+ * @forks validateOutputSage
  */
 function* lifecycle (action) {
+  // Take task uid,
+  // operationCreator: the actual task we are running, called with computing arguments
+  // taskResolve, taskReject: from the parent promise which dispatched the action
   const { uid, operationCreator, taskResolve, taskReject } = action
 
   // These will all launch now but each blocks until ready

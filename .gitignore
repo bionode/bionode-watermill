@@ -11,6 +11,9 @@ _book
 test/**/*.sink*
 *.txt
 
+# pipeline output dir
+**/work
+
 # pipeline examples output files
 *.fastq*
 *.bam*
