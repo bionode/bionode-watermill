@@ -6,7 +6,9 @@ const matchToFs = require('../matchers/match-to-fs.js')
 const applicator = require('../utils/applicator.js')
 
 const resolveOutput = (taskState, logger) => new Promise((resolve, reject) => {
-  const { uid, output, dir } = taskState
+  // const { uid, output, dir } = taskState
+  const { uid, output } = taskState
+  const dir = null
   logger.emit('log', `Starting resolve output for ${uid}`)
 
   let opts = {}
