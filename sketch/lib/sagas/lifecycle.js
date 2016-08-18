@@ -10,7 +10,10 @@
 // take(pattern) -> wait for an action matching `pattern`
 // select(selector) -> select a piece of the store
 // fork(fn) -> runs another generator in the background - used for tasks that first take()
+const { eventChannel, END } = require('redux-saga')
 const { call, put, take, select, fork } = require('redux-saga/effects')
+const { EventEmitter2 } = require('eventemitter2')
+const Promise = require('bluebird')
 
 // Mostly promises
 // Ran as async side effects through call() in the middle of start/end/fail sagas
@@ -84,6 +87,7 @@ function* lifecycle (action) {
   // operationCreator: the actual task we are running, called with computing arguments
   // taskResolve, taskReject: from the parent promise which dispatched the action
   const { uid, operationCreator, taskResolve, taskReject } = action
+  const logEmitter = new EventEmitter2({ wildcard: true })
 
   // These will all launch now but each blocks until ready
   // Each one waits for the success action from the preceding one
@@ -92,6 +96,7 @@ function* lifecycle (action) {
   yield fork(operationSaga, uid, operationCreator)
   yield fork(resolveOutputSaga, uid, 'after')
   yield fork(validateOutputSaga, uid)
+  // Watches a channel made of logEmitter events
   yield fork(loggerSaga, uid)
 
   // If resumable, jump into resolveOutputSaga first (and skip waiting for operation)
@@ -101,16 +106,51 @@ function* lifecycle (action) {
     yield put(startResolveInput(uid))
   }
 
+  function logger ({ uid }) {
+    return eventChannel((emitter) => {
+      logEmitter.on('*', function(content) {
+        emitter({
+          uid,
+          channel: this.event,
+          content
+        })
+      })
+
+      logEmitter.on('CLOSE_LOG', () => emitter(END))
+
+      // Subscriber must return an unsubscribe function
+      return () => logEmitter.removeAllListeners()
+    })
+  }
+
+  function* loggerSaga (uid) {
+    const logChan = yield call(logger, { uid })
+    try {
+      while (true) {
+        const { uid, channel, content } = yield take(logChan)
+        yield put(appendToLog({ uid, channel, content }))
+      }
+    } finally {
+      console.log('logger terminated and unsubscribed')
+    }
+  }
+
   function* resolveInputSaga (uid) {
     yield take(START_RESOLVE_INPUT)
-    yield put(appendToLog({
-      uid,
-      content: `Resolving input for ${uid}`
-    }))
+    // yield put(appendToLog({
+    //   uid,
+    //   content: `Resolving input for ${uid}`
+    // }))
     console.log('resolve input triggered')
     try {
-      const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)))
+      const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)), logEmitter)
+
       console.log('_saga: resolvedInput: ', resolvedInput)
+
+      yield put(appendToLog({
+        uid,
+        content: `Successfully resolved input for ${uid}`
+      }))
       yield put(successResolveInput(uid, resolvedInput))
       // console.log(yield select(selectTask(uid)))
     } catch (err) {
@@ -162,12 +202,8 @@ function* lifecycle (action) {
       console.error('err4: ', err)
     }
 
+    logEmitter.emit('CLOSE_LOG')
     taskResolve(yield select(selectTask(uid)))
-  }
-
-  function* loggerSaga (uid) {
-    const logAction = yield take(APPEND_TO_LOG)
-    console.log('_' + logAction.content)
   }
 }
 

@@ -43,6 +43,20 @@ const updateTask = (state, task) => {
   return Object.assign({}, state, { [uid]:task })
 }
 
+/**
+ * @param status {string}
+ * @returns {Number}
+ */
+const statusToTabLevel = (status) => {
+  switch (status) {
+    case 'RESOLVING_INPUT':
+      return 1
+      break
+    default:
+      return 0
+  }
+}
+
 // Is never triggered with an undefined action:
 // Called as a nested reducer from the tasks dictionary
 const taskReducer = (state = {}, action) => {
@@ -68,8 +82,13 @@ const taskReducer = (state = {}, action) => {
       break
     case APPEND_TO_LOG:
       const { channel, content } = action
-      const newBuf = new Buffer([])
-      state.log[channel].copy(newBuf)
+      const currentLog = Buffer.from(tab(statusToTabLevel(state.status)) + content)
+      console.log('currentLog:' + currentLog)
+      const newBuf = Buffer.concat([
+        state.log[channel],
+        Buffer.from('\n'),
+        currentLog
+      ], state.log[channel].length + 1 + currentLog.length)
       const newLog = Object.assign({}, state.log, { [channel]:newBuf })
       return Object.assign({}, state, { log: newLog })
       break
@@ -158,6 +177,11 @@ reducer.SUCCESS_RESOLVE_OUTPUT = SUCCESS_RESOLVE_OUTPUT
 
 reducer.startValidatingOutput = (uid) => ({ type: START_VALIDATING_OUTPUT, uid })
 reducer.successValidatatingOutput = (uid) => ({ type: SUCCESS_VALIDATING_OUTPUT, uid })
+
+
+// reducer.appendToLog = ({ uid, channel = 'log', content }) => {
+//   const tabLevel =
+// }
 
 reducer.appendToLog = ({ uid, channel = 'log', content }) => ({
   type: APPEND_TO_LOG,

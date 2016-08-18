@@ -13,11 +13,12 @@ const matchToFs = require('../matchers/match-to-fs.js')
 const dispatch = ({ content }) => console.log(content)
 const tab = () => ''
 
-const resolveInput = (taskState) => new Promise((resolve, reject) => {
+const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
   const { uid, input, dir, trajectory } = taskState
 
   if (_.isNull(input)) {
     console.log('Ignoring input as is null')
+    logger.emit('log', 'Ignoring input as is null')
 
     return resolve(null)
   }
