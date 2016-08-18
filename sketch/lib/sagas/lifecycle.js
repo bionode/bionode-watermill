@@ -42,7 +42,9 @@ const {
   successResolveOutput,
   SUCCESS_RESOLVE_OUTPUT,
   startValidatingOutput,
-  successValidatatingOutput
+  successValidatatingOutput,
+  appendToLog,
+  APPEND_TO_LOG
 } = require('../reducers/tasks.js')
 
 /**
@@ -90,6 +92,7 @@ function* lifecycle (action) {
   yield fork(operationSaga, uid, operationCreator)
   yield fork(resolveOutputSaga, uid, 'after')
   yield fork(validateOutputSaga, uid)
+  yield fork(loggerSaga, uid)
 
   // If resumable, jump into resolveOutputSaga first (and skip waiting for operation)
   if (yield call(checkResumable, yield select(selectTask(uid)))) {
@@ -100,6 +103,10 @@ function* lifecycle (action) {
 
   function* resolveInputSaga (uid) {
     yield take(START_RESOLVE_INPUT)
+    yield put(appendToLog({
+      uid,
+      content: `Resolving input for ${uid}`
+    }))
     console.log('resolve input triggered')
     try {
       const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)))
@@ -156,6 +163,11 @@ function* lifecycle (action) {
     }
 
     taskResolve(yield select(selectTask(uid)))
+  }
+
+  function* loggerSaga (uid) {
+    const logAction = yield take(APPEND_TO_LOG)
+    console.log('_' + logAction.content)
   }
 }
 

@@ -5,6 +5,8 @@
 const { defaultTask } = require('../constants/default-task-state.js')
 const config = require('../constants/default-config-state.js')
 
+const { tab } = require('../utils')
+
 // Actions
 const CREATE_TASK = 'tasks/create'
 const START_RESOLVE_INPUT = 'task/start_resolve-input'
@@ -19,7 +21,7 @@ const SUCCESS_RESOLVE_OUTPUT = 'task/success_resolve-output'
 const START_VALIDATING_OUTPUT = 'task/start_validating-output'
 const SUCCESS_VALIDATING_OUTPUT = 'task/success_validating-output'
 
-const APPEND_TO_LOG = 'tasks/append-to-log'
+const APPEND_TO_LOG = 'task/append-to-log'
 
 // Internal Methods
 
@@ -63,6 +65,13 @@ const taskReducer = (state = {}, action) => {
       break
     case SUCCESS_VALIDATING_OUTPUT:
       return Object.assign({}, state, { validated: true })
+      break
+    case APPEND_TO_LOG:
+      const { channel, content } = action
+      const newBuf = new Buffer([])
+      state.log[channel].copy(newBuf)
+      const newLog = Object.assign({}, state.log, { [channel]:newBuf })
+      return Object.assign({}, state, { log: newLog })
       break
     default:
       return state
@@ -121,9 +130,17 @@ const reducer = (state = defaultState, action) => {
 
 reducer.CREATE_TASK = CREATE_TASK // exported constants along functions is nicer with JSM..
 reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
-reducer.createTask = ({ uid, task, props, hash}) => ({
+reducer.createTask = ({
+  uid,
+  task,
+  props,
+  hash,
+  operationCreator,
+  taskResolve,
+  taskReject
+}) => ({
   type: CREATE_TASK,
-  uid, task, props, hash
+  uid, task, props, hash, operationCreator, taskResolve, taskReject
 })
 
 reducer.startResolveInput = (uid) => ({ type: START_RESOLVE_INPUT, uid })
@@ -141,5 +158,11 @@ reducer.SUCCESS_RESOLVE_OUTPUT = SUCCESS_RESOLVE_OUTPUT
 
 reducer.startValidatingOutput = (uid) => ({ type: START_VALIDATING_OUTPUT, uid })
 reducer.successValidatatingOutput = (uid) => ({ type: SUCCESS_VALIDATING_OUTPUT, uid })
+
+reducer.appendToLog = ({ uid, channel = 'log', content }) => ({
+  type: APPEND_TO_LOG,
+  uid, channel, content
+})
+reducer.APPEND_TO_LOG = APPEND_TO_LOG
 
 module.exports = reducer

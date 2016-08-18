@@ -10,6 +10,22 @@ const defaultHashes = {
 }
 exports.defaultHashes = defaultHashes
 
+const defaultContext = {
+  trajectory: []
+}
+exports.defaultContext = defaultContext
+
+const defaultLog = {
+  log: new Buffer([]),
+  // Some of these we dont want to store - e.g. some programs use stderr for
+  // logging, stdout for the real data, (and dont always exit with proper error
+  // codes..)
+  stdout: new Buffer([]),
+  stderr: new Buffer([]),
+  // will need to copy into a new buffer each action as per state immutability
+  exitCode: null,
+}
+
 exports.defaultTask = {
   threads: defaultConfig.threads,
   container: defaultConfig.container,
@@ -25,7 +41,9 @@ exports.defaultTask = {
   created: null,
   validated: false,
   params: {},
-  trajectory: []
+  trajectory: [],
+  context: defaultContext,
+  log: defaultLog
 }
 
 exports.defaultTaskTypes = {
