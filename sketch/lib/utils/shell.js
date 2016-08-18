@@ -3,8 +3,8 @@
 const { spawn } = require('child_process')
 const { tab } = require('../utils')
 
-const shell = (cmd, opts = {}) => {
-  console.log(tab(1) + 'Starting: ' + cmd)
+const shell = (cmd, opts = {}, logger) => {
+  logger.emit('log', 'Starting: ' + cmd)
   cmd = cmd.split(' ')
 
   opts = Object.assign({ shell:true }, opts)
@@ -31,7 +31,7 @@ const shell = (cmd, opts = {}) => {
   }
 
   function onClose(code) {
-    console.log('CP closed: ' + code)
+    // console.log('CP closed: ' + code)
     if (code !== 0) {
       console.log(`Child process exited with code ${code}`)
       console.log('Exiting...')
@@ -40,7 +40,7 @@ const shell = (cmd, opts = {}) => {
   }
 
   function onExit(code) {
-    console.log('CP exited: ', code)
+    // console.log('CP exited: ', code)
   }
 
   function onError(err) {

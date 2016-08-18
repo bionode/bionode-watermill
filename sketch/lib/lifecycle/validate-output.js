@@ -16,14 +16,9 @@ const uid = 'sdsd'
 const tab = () => ''
 const mode = 'sdsds'
 
-const validateOutput = (taskState) => new Promise((resolve, reject) => {
-  dispatch({
-    type: TASK_LOG,
-    uid,
-    content: tab(1) + 'Running validations'
-  })
-
-  const { resolvedOutput, status } = taskState
+const validateOutput = (taskState, logger) => new Promise((resolve, reject) => {
+  const { uid, resolvedOutput, status } = taskState
+  logger.emit('log', `Running validations for ${uid}`)
 
   const validArr = [
     applicator(resolvedOutput, isNonNull)
@@ -40,7 +35,6 @@ const validateOutput = (taskState) => new Promise((resolve, reject) => {
 
   validations
   .then(() => {
-    console.log('validations ran')
     if (status === CHECKING_RESUMABLE) {
       dispatch({
         type: TASK_LOG,
@@ -49,12 +43,6 @@ const validateOutput = (taskState) => new Promise((resolve, reject) => {
       })
     }
 
-    // dispatch({
-    //   type: SET_VALIDATION,
-    //   uid,
-    //   value: true
-    // })
-
     if (mode === 'after') {
       const checksummer = require('../post-validators/checksummer.js')
       return applicator(resolvedOutput, checksummer)
@@ -62,12 +50,6 @@ const validateOutput = (taskState) => new Promise((resolve, reject) => {
     }
   })
   .catch((err) => {
-    // dispatch({
-    //   type: SET_VALIDATION,
-    //   uid,
-    //   value: false
-    // })
-
     dispatch({
       type: TASK_LOG,
       uid,

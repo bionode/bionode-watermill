@@ -16,12 +16,13 @@ const defaultContext = {
 exports.defaultContext = defaultContext
 
 const defaultLog = {
-  log: new Buffer([]),
+  log: Buffer.from(''),
   // Some of these we dont want to store - e.g. some programs use stderr for
   // logging, stdout for the real data, (and dont always exit with proper error
   // codes..)
-  stdout: new Buffer([]),
-  stderr: new Buffer([]),
+  stdout: Buffer.from(''),
+  stderr: Buffer.from(''),
+  currentLog: Buffer.from(''),
   // will need to copy into a new buffer each action as per state immutability
   exitCode: null,
 }

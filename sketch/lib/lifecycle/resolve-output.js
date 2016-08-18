@@ -5,8 +5,9 @@ const _ = require('lodash')
 const matchToFs = require('../matchers/match-to-fs.js')
 const applicator = require('../utils/applicator.js')
 
-const resolveOutput = (taskState) => new Promise((resolve, reject) => {
-  const { output, dir } = taskState
+const resolveOutput = (taskState, logger) => new Promise((resolve, reject) => {
+  const { uid, output, dir } = taskState
+  logger.emit('log', `Starting resolve output for ${uid}`)
 
   let opts = {}
   if (!_.isNull(dir)) {

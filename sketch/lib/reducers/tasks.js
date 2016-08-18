@@ -82,14 +82,15 @@ const taskReducer = (state = {}, action) => {
       break
     case APPEND_TO_LOG:
       const { channel, content } = action
-      const currentLog = Buffer.from(tab(statusToTabLevel(state.status)) + content)
-      console.log('currentLog:' + currentLog)
+      const currentLog = Buffer.from(content)
+      // console.log('currentLog:' + currentLog)
+      // console.log(currentLog.toString())
       const newBuf = Buffer.concat([
         state.log[channel],
         Buffer.from('\n'),
         currentLog
       ], state.log[channel].length + 1 + currentLog.length)
-      const newLog = Object.assign({}, state.log, { [channel]:newBuf })
+      const newLog = Object.assign({}, state.log, { [channel]:newBuf, currentLog })
       return Object.assign({}, state, { log: newLog })
       break
     default:

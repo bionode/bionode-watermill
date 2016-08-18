@@ -15,15 +15,14 @@ const tab = () => ''
 
 const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
   const { uid, input, dir, trajectory } = taskState
+  logger.emit('log', `Resolving input for ${uid}`)
 
   if (_.isNull(input)) {
-    console.log('Ignoring input as is null')
-    logger.emit('log', 'Ignoring input as is null')
+    logger.emit('log', 'Ignoring input as is null', 1)
 
+    logger.emit('log', `Successfully resolved input for ${uid}`)
     return resolve(null)
   }
-
-  console.log('resolving input')
 
   let opts = {}
   if (!_.isNull(dir)) {
@@ -35,11 +34,8 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
       .then((resolvedInput) => {
         console.log(`Resolved ${chalk.magenta(JSON.stringify(resolvedInput, null, 2))} from ${chalk.blue(JSON.stringify(input, null, 2))}`)
 
-        // dispatch({
-        //   type: RESOLVE_INPUT,
-        //   uid,
-        //   resolvedInput
-        // })
+        logger.emit('log', `Successfully resolved input for ${uid}`)
+
         resolve({ resolvedInput })
       })
       .catch(err => {
@@ -63,7 +59,7 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
 
       const traverse = (obj) => {
         if (_.isUndefined(obj)) {
-          console.log('traverse got undefined, returning')
+          logger.emit('log', 'traverse got undefined, returning')
           return
         }
 
@@ -101,12 +97,6 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
     applicator(input, matchToCollection)
       .then((resolvedInput) => {
         console.log('resolvedInput: ', resolvedInput)
-
-        // dispatch({
-        //   type: RESOLVE_INPUT,
-        //   uid,
-        //   resolvedInput
-        // })
 
         resolve({ resolvedInput })
       })

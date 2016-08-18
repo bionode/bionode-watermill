@@ -16,7 +16,7 @@ const dumpPIDs = task({
 // console.log('Can get info synchronously: ')
 // console.log(dumpPIDs.info)
 
-dumpPIDs().then(console.log)
+dumpPIDs().then(() => console.log('Pipeline finito'))
 
 const numbersToLetters = task({
   input: '*.pids',

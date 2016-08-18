@@ -33,6 +33,7 @@
   "homepage": "https://github.com/bionode/bionode-waterwheel#readme",
   "devDependencies": {
     "bionode-ncbi": "^1.6.1",
+    "cdir": "^0.1.2",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "codecov": "^1.0.1",
