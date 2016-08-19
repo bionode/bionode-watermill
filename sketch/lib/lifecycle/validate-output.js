@@ -50,11 +50,7 @@ const validateOutput = (taskState, logger) => new Promise((resolve, reject) => {
     }
   })
   .catch((err) => {
-    dispatch({
-      type: TASK_LOG,
-      uid,
-      content: tab(2) + err
-    })
+    console.log('err: ', err)
 
     dispatch({
       type: TASK_LOG,

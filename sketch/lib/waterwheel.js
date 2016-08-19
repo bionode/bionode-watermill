@@ -14,11 +14,11 @@ sagaMW.run(rootSaga)
 
 const task = require('./task.js')(store.dispatch)
 const join = require('./orchestrators/join.js')
-const parallel = require('./orchestrators/parallel.js')
+const junction = require('./orchestrators/junction.js')
 
 module.exports = {
   task,
   join,
-  parallel,
+  junction,
   store
 }

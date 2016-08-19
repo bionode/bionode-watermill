@@ -8,7 +8,7 @@ const { mergeCtx } = require('../ctx')
 
 function join(...tasks) {
   const accumulator = (currentCtx, task) => new Promise((resolve, reject) => {
-    console.log('Joining to task: ' + task.info.name)
+    if (task.info) console.log('Joining to task: ' + task.info.name)
 
     // Call next task with currentCtx
     task(_.noop, currentCtx).then((results) => {

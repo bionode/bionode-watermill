@@ -183,6 +183,7 @@ function* lifecycle (action) {
     yield put(startResolveOutput(uid))
     try {
       const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)), nestedLogger(1))
+      console.log('resolvedOutput: ', resolvedOutput)
       yield put(successResolveOutput(uid, resolvedOutput))
     } catch (err) {
       console.log('error3: ', err)
@@ -192,19 +193,20 @@ function* lifecycle (action) {
   }
 
   function* validateOutputSaga (uid) {
-    yield take(SUCCESS_RESOLVE_OUTPUT)
+    const action = yield take(SUCCESS_RESOLVE_OUTPUT)
+    if (action.uid === uid) {
+      yield put(startValidatingOutput(uid))
+      try {
+        const validations = yield call(validateOutput, yield select(selectTask(uid)), nestedLogger(1))
+        yield put(successValidatatingOutput(uid))
+      } catch (err) {
+        console.error('err4: ', err)
+      }
 
-    yield put(startValidatingOutput(uid))
-    try {
-      const validations = yield call(validateOutput, yield select(selectTask(uid)), nestedLogger(1))
-      yield put(successValidatatingOutput(uid))
-    } catch (err) {
-      console.error('err4: ', err)
+      yield call(() => logEmitter.emit('log', `Finished task ${uid}`))
+      // logEmitter.emit('CLOSE_LOG')
+      yield put(successResolveOutput(uid))
     }
-
-    yield call(() => logEmitter.emit('log', `Finished task ${uid}`))
-    // logEmitter.emit('CLOSE_LOG')
-    yield put(successResolveOutput(uid))
   }
 
   function* postValidationSaga (uid) {
