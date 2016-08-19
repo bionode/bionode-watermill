@@ -18,7 +18,15 @@ function join(...tasks) {
     })
   })
 
-  return (cb = _.noop, ctx = defaultContext) => Promise.reduce(tasks, accumulator, ctx).asCallback(cb)
+  return (cb = _.noop, ctx = defaultContext) =>
+    Promise.reduce(tasks, accumulator, ctx)
+      .then(results => Promise.resolve(Object.assign({}, {
+        type: results.type,
+        context: {
+          trajectory: results.trajectory
+        }
+      })))
+      .asCallback(cb)
 }
 
 module.exports = join
