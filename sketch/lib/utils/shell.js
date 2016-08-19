@@ -20,21 +20,21 @@ const shell = (cmd, opts = {}, logger) => {
 
   function onStdout(chunk) {
     for (let line of chunk.toString().split('\n')) {
-      console.log(tab(2) + 'stdout: ' + line)
+      logger.emit('log', 'stdout: ' + line, 2)
     }
   }
 
   function onStderr(chunk) {
     for (let line of chunk.toString().split('\n')) {
-      console.log(tab(2) + 'stderr: ' + line)
+      logger.emit('log', 'stderr: ' + line, 2)
     }
   }
 
   function onClose(code) {
     // console.log('CP closed: ' + code)
     if (code !== 0) {
-      console.log(`Child process exited with code ${code}`)
-      console.log('Exiting...')
+      logger.emit('log', `Child process exiting with code ${code}`)
+      logger.emit('log', 'Exiting...')
       setTimeout(() => process.exit(code), 5000)
     }
   }
@@ -44,11 +44,11 @@ const shell = (cmd, opts = {}, logger) => {
   }
 
   function onError(err) {
-    console.log('Child process error: ' + err)
+    logger.emit('log', `Child process error: ${err}`)
   }
 
   function onDisconnect() {
-    console.log('Child process disconnect')
+    logger.emit('log', 'Child process disconnect')
   }
 
   return myProcess

@@ -92,14 +92,14 @@ function* lifecycle (action) {
   // operationCreator: the actual task we are running, called with computing arguments
   // taskResolve, taskReject: from the parent promise which dispatched the action
   const { uid, operationCreator, taskResolve, taskReject } = action
-  console.log('just started lifecylce for ', uid)
-  console.log(yield select(s => s))
-  console.log(yield select(selectTask(uid)))
   const logEmitter = new EventEmitter2({ wildcard: true })
   const nestedLogger = (depth) => ({
     emit: (channel, content, tabLevel = 0) => logEmitter.emit(channel, content, depth + tabLevel),
     depth
   })
+
+  // Watches a channel made of logEmitter events
+  yield fork(loggerSaga, uid)
 
   // These will all launch now but each blocks until ready
   // Each one waits for the success action from the preceding one
@@ -110,11 +110,7 @@ function* lifecycle (action) {
   yield fork(validateOutputSaga, uid)
   yield fork(postValidationSaga, uid)
 
-  // Watches a channel made of logEmitter events
-  yield fork(loggerSaga, uid)
 
-  const task = yield select(selectTask(uid))
-  console.log('task???', task)
   // console.log('task params in saga: ', task.params, 'for uid ', task.uid, 'with uid ', uid)
   // logEmitter.emit('log', `Running task: ${task.name} (${uid})`)
   logEmitter.emit('log', `Running task: (${uid})`)
@@ -153,7 +149,7 @@ function* lifecycle (action) {
         // const currentLog = yield(select(s => s.tasks[uid].log.currentLog))
         // WHERE LOGGING HAPPENS
         // TODO trigger based on join, parallel, fork
-        // console.log(content)
+        console.log(uid.substring(0, 7), ':', content)
       }
     } finally {
       console.log('logger terminated and unsubscribed')
@@ -197,6 +193,7 @@ function* lifecycle (action) {
       try {
         const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)), nestedLogger(1))
         logEmitter.emit('log', 'resolvedOutput: ' + resolvedOutput)
+        logEmitter.emit('log', 'gonna emit successResolveOutput???')
         yield put(successResolveOutput(uid, resolvedOutput))
       } catch (err) {
         // console.log('error3: ', err)
@@ -209,7 +206,9 @@ function* lifecycle (action) {
   }
 
   function* validateOutputSaga (uid) {
+    logEmitter.emit('log', 'Waiting for SUCCESS_RESOLVE_OUTPUT from ' + uid.substring(0,7))
     const action = yield take(SUCCESS_RESOLVE_OUTPUT)
+    logEmitter.emit('log', 'On ' + uid, 'action uid: '+ action.uid)
     if (action.uid === uid) {
       yield put(startValidatingOutput(uid))
       try {
@@ -222,6 +221,8 @@ function* lifecycle (action) {
       yield call(() => logEmitter.emit('log', `Finished task ${uid}`))
       // logEmitter.emit('CLOSE_LOG')
       yield put(successResolveOutput(uid))
+    } else {
+      logEmitter.emit('log', 'Gonna miss it for ' + uid.substring(0,7))
     }
   }
 
@@ -249,7 +250,8 @@ function* lifecycle (action) {
   function* finish (uid) {
     // Resolve the promise from task.js
     const task = yield select(selectTask(uid))
-    console.log(task.log.log.toString())
+    // TODO if was ran alongside other tasks
+    // console.log(task.log.log.toString())
     taskResolve(yield select(selectTask(uid)))
   }
 }

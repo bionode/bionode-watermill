@@ -135,7 +135,6 @@ const reducer = (state = defaultState, action) => {
   switch(type) {
     case CREATE_TASK:
       const { hashes, props } = action
-      console.log('brand new before updateTask: ', props.params)
       const newTask = Object.assign(
         {},
         defaultTask,
@@ -144,10 +143,7 @@ const reducer = (state = defaultState, action) => {
         { dir: config.workdir },
         { created: Date.now() }
       )
-      console.log('then newTask: ', newTask.params)
       const newState = updateTask(state, newTask)
-
-      console.log('brand new ', uid, 'params: ', newState[uid].params)
 
       return newState
     default:

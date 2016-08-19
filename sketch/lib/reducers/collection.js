@@ -52,9 +52,9 @@ function addOutputHandler (state, action) {
   const { uid, output, params, context } = action
   const { trajectory } = context
 
-  console.log(`trajectory for ${uid}: `, trajectory)
-  console.log(`output for ${uid}: `, output)
-  console.log(`params for ${uid}: `, params)
+  // console.log(`trajectory for ${uid}: `, trajectory)
+  // console.log(`output for ${uid}: `, output)
+  // console.log(`params for ${uid}: `, params)
 
   if (!_.isArray(trajectory)) {
     console.log('Trajectory is not an array!')
