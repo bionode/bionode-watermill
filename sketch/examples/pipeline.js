@@ -15,7 +15,7 @@ const dumpPIDs = task({
 // console.log('Can get info synchronously: ')
 // console.log(dumpPIDs.info)
 
-dumpPIDs().then(() => console.log('Pipeline finito'))
+// dumpPIDs().then(() => console.log('Pipeline finito'))
 
 const numbersToLetters = task({
   input: '*.pids',
@@ -36,5 +36,5 @@ const numbersToLetters = task({
 )
 
 // A -> B
-// join(dumpPIDs, numbersToLetters)()
-//   .then(console.log)
+join(dumpPIDs, numbersToLetters)()
+  .then(console.log)

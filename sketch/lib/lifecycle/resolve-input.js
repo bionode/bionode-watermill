@@ -14,7 +14,8 @@ const dispatch = ({ content }) => console.log(content)
 const tab = () => ''
 
 const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
-  const { uid, input, dir, trajectory } = taskState
+  const { uid, input, dir } = taskState
+  const { trajectory } = taskState.context
   logger.emit('log', `Resolving input for ${uid}`)
 
   if (_.isNull(input)) {
@@ -25,9 +26,10 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
   }
 
   let opts = {}
-  if (!_.isNull(dir)) {
-    opts.cwd = dir
-  }
+  // TODO use dir
+  // if (!_.isNull(dir)) {
+  //   opts.cwd = dir
+  // }
 
   if (trajectory.length === 0) {
     applicator(input, (item) => matchToFs(item, null, opts))
@@ -43,7 +45,6 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
         reject('Input could not be resolved. Exiting early.')
       })
   } else {
-    const { trajectory } = taskState
     console.log(`trajectory for ${uid}: `, trajectory)
 
     const minimatch = require('minimatch')

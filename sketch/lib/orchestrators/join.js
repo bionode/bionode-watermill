@@ -3,10 +3,13 @@
 const _ = require('lodash')
 const Promise = require('bluebird')
 
-const { defaultCtx, mergeCtx } = require('../ctx')
+const { defaultContext } = require('../constants/default-task-state.js')
+const { mergeCtx } = require('../ctx')
 
 function join(...tasks) {
   const accumulator = (currentCtx, task) => new Promise((resolve, reject) => {
+    console.log('Joining to task: ' + task.info.name)
+
     // Call next task with currentCtx
     task(_.noop, currentCtx).then((results) => {
       // Resolve to a new context with a ctx merge strategy
@@ -15,7 +18,7 @@ function join(...tasks) {
     })
   })
 
-  return (cb = _.noop, ctx = defaultCtx) => Promise.reduce(tasks, accumulator, ctx).asCallback(cb)
+  return (cb = _.noop, ctx = defaultContext) => Promise.reduce(tasks, accumulator, ctx).asCallback(cb)
 }
 
 module.exports = join

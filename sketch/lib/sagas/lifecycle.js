@@ -155,9 +155,9 @@ function* lifecycle (action) {
   function* resolveInputSaga (uid) {
     yield take(START_RESOLVE_INPUT)
     try {
-      const resolvedInput = yield call(resolveInput, yield select(selectTask(uid)), nestedLogger(1))
+      const results = yield call(resolveInput, yield select(selectTask(uid)), nestedLogger(1))
 
-      yield put(successResolveInput(uid, resolvedInput))
+      yield put(successResolveInput(uid, results ? results.resolvedInput : null))
     } catch (err) {
       console.log('error: ', err)
     }

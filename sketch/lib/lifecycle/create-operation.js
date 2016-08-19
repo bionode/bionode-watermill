@@ -15,27 +15,33 @@ const { shell } = require('../utils/shell.js')
  */
 const createOperationProps = (taskState) => new Promise((resolve, reject) => {
   const dir = taskState.dir
-
-  if (taskState.resolvedInput) {
-    const symlinkTarget = taskState.resolvedInput
-    const symlinkPath = path.resolve(dir, path.basename(symlinkTarget))
-
-    fs.symlinkAsync(symlinkTarget, symlinkPath).then(() => {
-      const operationProps = {
-        input: symlinkPath,
-        output: taskState.resolvedOutput
-      }
-      resolve(Object.assign({}, taskState, operationProps))
-    }).catch(err => {
-      console.log('got symlink err: ', err)
-    })
-  } else {
-    const operationProps = {
-      input: taskState.resolvedInput,
-      output: taskState.resolvedOutput
-    }
-    resolve(Object.assign({}, taskState, operationProps))
+  const operationProps = {
+    input: taskState.resolvedInput,
+    output: taskState.resolvedOutput
   }
+  resolve(Object.assign({}, taskState, operationProps))
+
+  // TODO dirs
+  // if (taskState.resolvedInput) {
+  //   const symlinkTarget = taskState.resolvedInput
+  //   const symlinkPath = path.resolve(dir, path.basename(symlinkTarget))
+
+  //   fs.symlinkAsync(symlinkTarget, symlinkPath).then(() => {
+  //     const operationProps = {
+  //       input: symlinkPath,
+  //       output: taskState.resolvedOutput
+  //     }
+  //     resolve(Object.assign({}, taskState, operationProps))
+  //   }).catch(err => {
+  //     console.log('got symlink err: ', err)
+  //   })
+  // } else {
+  //   const operationProps = {
+  //     input: taskState.resolvedInput,
+  //     output: taskState.resolvedOutput
+  //   }
+  //   resolve(Object.assign({}, taskState, operationProps))
+  // }
 })
 
 /**

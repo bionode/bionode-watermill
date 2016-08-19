@@ -2,9 +2,7 @@
 
 const _ = require('lodash')
 
-exports.defaultCtx = {
-  trajectory: []
-}
+const { defaultCtx } = require('../constants/default-task-state.js')
 
 exports.mergeCtx = (type) => (currentCtx, results) => {
   const { uid, params } = results
@@ -20,7 +18,7 @@ exports.mergeCtx = (type) => (currentCtx, results) => {
     }
   }
 
-  newTrajection = results.trajectory.concat(newTrajection)
+  newTrajection = results.context.trajectory.concat(newTrajection)
 
   return {
     type,
