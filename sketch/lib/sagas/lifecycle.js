@@ -48,9 +48,12 @@ const {
   SUCCESS_RESOLVE_OUTPUT,
   startValidatingOutput,
   successValidatatingOutput,
+  SUCCESS_VALIDATING_OUTPUT,
   appendToLog,
   APPEND_TO_LOG
 } = require('../reducers/tasks.js')
+
+const { addOutput } = require('../reducers/collection.js')
 
 /**
  * The task lifecycle.
@@ -102,6 +105,8 @@ function* lifecycle (action) {
   yield fork(operationSaga, uid, operationCreator)
   yield fork(resolveOutputSaga, uid, 'after')
   yield fork(validateOutputSaga, uid)
+  yield fork(postValidationSaga, uid)
+
   // Watches a channel made of logEmitter events
   yield fork(loggerSaga, uid)
 
@@ -199,6 +204,19 @@ function* lifecycle (action) {
 
     yield call(() => logEmitter.emit('log', `Finished task ${uid}`))
     // logEmitter.emit('CLOSE_LOG')
+    yield put(successResolveOutput(uid))
+  }
+
+  function* postValidationSaga (uid) {
+    yield take(SUCCESS_VALIDATING_OUTPUT)
+    logEmitter.emit('log', tab(1) + 'Adding task output to DAG')
+    yield put(addOutput(uid, yield select(selectTask(uid))))
+
+    yield* finish(uid)
+  }
+
+  function* finish (uid) {
+    // Resolve the promise from task.js
     taskResolve(yield select(selectTask(uid)))
   }
 }

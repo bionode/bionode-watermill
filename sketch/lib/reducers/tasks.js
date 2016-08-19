@@ -78,7 +78,7 @@ const taskReducer = (state = {}, action) => {
       return Object.assign({}, state, { status: 'VALIDATING_OUTPUT' })
       break
     case SUCCESS_VALIDATING_OUTPUT:
-      return Object.assign({}, state, { validated: true })
+      return Object.assign({}, state, { status: 'POST_VALIDATION', validated: true })
       break
     case APPEND_TO_LOG:
       const { channel, content } = action
@@ -178,6 +178,7 @@ reducer.SUCCESS_RESOLVE_OUTPUT = SUCCESS_RESOLVE_OUTPUT
 
 reducer.startValidatingOutput = (uid) => ({ type: START_VALIDATING_OUTPUT, uid })
 reducer.successValidatatingOutput = (uid) => ({ type: SUCCESS_VALIDATING_OUTPUT, uid })
+reducer.SUCCESS_VALIDATING_OUTPUT = SUCCESS_VALIDATING_OUTPUT
 
 
 // reducer.appendToLog = ({ uid, channel = 'log', content }) => {
