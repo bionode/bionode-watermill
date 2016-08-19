@@ -40,10 +40,12 @@ const task = (dispatch) => (props, operationCreator) => {
   // `hashes` is an object with input, output, params keys
   // The `uid` is a hash of the `input`, `output`, and `params` hashes
   const { uid, hashes } = generateUid(props)
+  // console.log('params for uid before invoked', uid, props.params)
 
   // Returns an invocable task that can be passed a callback (or resolved as a
   // promise) and/or context
   const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
+    console.log('JUST BEFORE DISPATCH params for uid', uid, props.params)
     // This kicks off the task lifecycle saga. Lifecycle saga will continue from
     // point just after this action has update the store.
     dispatch(createTask({
@@ -61,6 +63,7 @@ const task = (dispatch) => (props, operationCreator) => {
   // Used to let join() know if it should stream across tasks
   // Could be used for a dry run using just glob patterns
   invocableTask.info = Object.assign(props, { uid })
+  console.log(`Params for ${uid}, ${JSON.stringify(props.params)}`)
 
   return invocableTask
 }

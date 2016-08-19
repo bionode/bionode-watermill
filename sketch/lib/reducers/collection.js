@@ -52,9 +52,9 @@ function addOutputHandler (state, action) {
   const { uid, output, params, context } = action
   const { trajectory } = context
 
-  // console.log(`trajectory for ${uid}: `, trajectory)
-  // console.log('output: ', output)
-  // console.log('params: ', params)
+  console.log(`trajectory for ${uid}: `, trajectory)
+  console.log(`output for ${uid}: `, output)
+  console.log(`params for ${uid}: `, params)
 
   if (!_.isArray(trajectory)) {
     console.log('Trajectory is not an array!')
@@ -87,7 +87,7 @@ function addOutputHandler (state, action) {
     }
   }
 
-  console.log('collection as json: ', JSON.stringify(jsonifyGraph(graph), null, 2))
+  // console.log('collection as json: ', JSON.stringify(jsonifyGraph(graph), null, 2))
 
   return graph
 }
@@ -100,5 +100,7 @@ reducer.addOutput = (uid, taskState) => ({
   context: taskState.context,
   params: taskState.params
 })
+
+reducer.jsonifyGraph = jsonifyGraph
 
 module.exports = reducer

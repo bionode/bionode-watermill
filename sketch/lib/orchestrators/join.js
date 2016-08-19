@@ -9,6 +9,7 @@ const { mergeCtx } = require('../ctx')
 function join(...tasks) {
   const accumulator = (currentCtx, task) => new Promise((resolve, reject) => {
     if (task.info) console.log('Joining to task: ' + task.info.name)
+    if (task.info) console.log('task params: ', task.info.params)
 
     // Call next task with currentCtx
     task(_.noop, currentCtx).then((results) => {
@@ -18,7 +19,7 @@ function join(...tasks) {
     })
   })
 
-  return (cb = _.noop, ctx = defaultContext) =>
+  const joinInvocator = (cb = _.noop, ctx = defaultContext) =>
     Promise.reduce(tasks, accumulator, ctx)
       .then(results => Promise.resolve(Object.assign({}, {
         type: results.type,
@@ -27,6 +28,10 @@ function join(...tasks) {
         }
       })))
       .asCallback(cb)
+
+  joinInvocator.info = tasks.map(task => task.info)
+
+  return joinInvocator
 }
 
 module.exports = join
