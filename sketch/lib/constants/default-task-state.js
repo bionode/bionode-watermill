@@ -42,7 +42,7 @@ exports.defaultTask = {
   created: null,
   validated: false,
   params: {},
-  trajectory: [],
+  // trajectory: [],
   context: defaultContext,
   log: defaultLog
 }
