@@ -45,12 +45,19 @@ const task = (dispatch) => (props, operationCreator) => {
   // Returns an invocable task that can be passed a callback (or resolved as a
   // promise) and/or context
   const invocableTask = (cb = _.noop, ctx = defaultCtx) => new Promise((resolve, reject) => {
+    // Take trajectory from context
+    const { trajectory } = ctx
+    // Make a new context for the task we are about to create using it
+    const context = { trajectory }
+
     // This kicks off the task lifecycle saga. Lifecycle saga will continue from
     // point just after this action has update the store.
+    console.log('context we gonna pass in: ', context)
     dispatch(createTask({
       uid,
       hashes,
       props,
+      context,
       // For saga but not reducer
       operationCreator,
       taskResolve: resolve,

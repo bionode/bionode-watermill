@@ -87,7 +87,8 @@ const getSamples = task({
 const fastqDump = task({
   input: '**/*.sra',
   output: [1, 2].map(n => (`*_${n}.fastq.gz`)),
-  name: 'fastq-dump **/*.sra'
+  name: 'fastq-dump **/*.sra',
+  resume: 'off'
 }, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}` )
 
 
@@ -179,7 +180,7 @@ bcftools call -c - > variants.vcf
 //   join(getSamples, fastqDump)
 // )
 
-const pipeline = junction(getSamples, getReference)
+const pipeline = join(getReference, bwaIndex)
 
 pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
 

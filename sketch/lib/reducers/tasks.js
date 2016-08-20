@@ -134,7 +134,8 @@ const reducer = (state = defaultState, action) => {
 
   switch(type) {
     case CREATE_TASK:
-      const { hashes, props } = action
+      // Double check values being passed from action creator
+      const { hashes, props, context } = action
       const newTask = Object.assign(
         {},
         defaultTask,
@@ -143,6 +144,8 @@ const reducer = (state = defaultState, action) => {
         { dir: config.workdir },
         { created: Date.now() }
       )
+      newTask.context = context
+      console.log('newTask: ', newTask)
       const newState = updateTask(state, newTask)
 
       return newState
@@ -152,18 +155,11 @@ const reducer = (state = defaultState, action) => {
 }
 
 reducer.CREATE_TASK = CREATE_TASK // exported constants along functions is nicer with JSM..
-reducer.createTask = (opts) => wrapWithType(CREATE_TASK, opts)
 reducer.createTask = ({
-  uid,
-  task,
-  props,
-  hash,
-  operationCreator,
-  taskResolve,
-  taskReject
+  uid, task, props, hashes, context, operationCreator, taskResolve, taskReject
 }) => ({
   type: CREATE_TASK,
-  uid, task, props, hash, operationCreator, taskResolve, taskReject
+  uid, task, props, hashes, context, operationCreator, taskResolve, taskReject
 })
 
 reducer.startResolveInput = (uid) => ({ type: START_RESOLVE_INPUT, uid })

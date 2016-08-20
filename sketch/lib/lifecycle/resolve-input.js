@@ -13,7 +13,7 @@ const matchToFs = require('../matchers/match-to-fs.js')
 const dispatch = ({ content }) => console.log(content)
 const tab = () => ''
 
-const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
+const resolveInput = (taskState, DAG, logger) => new Promise((resolve, reject) => {
   const { uid, input, dir } = taskState
   const miniUid = uid.substring(0, 7)
   const { trajectory } = taskState.context
@@ -50,7 +50,7 @@ const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
 
     const minimatch = require('minimatch')
     const matchToCollection = (item) => new Promise((resolve, reject) => {
-      let currentCollection = store.getState().collection
+      let currentCollection = DAG
 
       const matchee = (path) => {
         if (minimatch(path.split('/').pop(), item)) {

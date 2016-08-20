@@ -119,7 +119,12 @@ function* lifecycle (action) {
 
   function* resolveInputSaga () {
     try {
-      const results = yield call(resolveInput, yield select(selectTask(uid)), nestedLogger(1))
+      const results = yield call(
+        resolveInput,
+        yield select(selectTask(uid)),
+        yield select(s => s.collection),
+        nestedLogger(1)
+      )
       yield put(successResolveInput(uid, results ? results.resolvedInput : null))
     } catch (err) {
       console.log('error: ', err.toString())
