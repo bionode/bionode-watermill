@@ -9,7 +9,8 @@ const { task, join, parallel } = require('../')
 const dumpPIDs = task({
   input: null,
   output: '*.pids',
-  name: 'Dump all PIDs to *.pids'
+  name: 'Dump all PIDs to *.pids',
+  resume: 'off'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
 // console.log('Can get info synchronously: ')
@@ -20,7 +21,8 @@ const dumpPIDs = task({
 const numbersToLetters = task({
   input: '*.pids',
   output: '*.txt',
-  name: 'Convert lines of numbers to letters'
+  name: 'Convert lines of numbers to letters',
+  resume: 'off'
 }, ({ input }) =>
   fs.createReadStream(input)
     .pipe(split())

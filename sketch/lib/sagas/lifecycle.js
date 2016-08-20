@@ -58,6 +58,7 @@ const { addOutput } = require('../reducers/collection.js')
 /**
  * The task lifecycle.
  *
+ * TODO rewrite this as per now using yield*
  * A series of generator functions, each which
  * 1. Waits on an action. Usually something like SUCCESS_PROPHASE
  * 2. Dispatches the START_METAPHASE action.
@@ -78,51 +79,121 @@ const { addOutput } = require('../reducers/collection.js')
  * cannot be resolved.
  *
  * @receives a CREATE_TASK action
- * @forks resolveInputSaga
- *  @receives START_RESOLVE_INPUT
- *  @emits SUCCESS/FAIL/ERR_RESOLVE_INPUT
- * @forks operationSaga
- *  @receives SUCCESS_RESOLVE_INPUT
- *  @emits ...
- * @forks resolveOutputSaga
- * @forks validateOutputSage
  */
 function* lifecycle (action) {
   // Take task uid,
   // operationCreator: the actual task we are running, called with computing arguments
   // taskResolve, taskReject: from the parent promise which dispatched the action
+  // taskResolve will trigger the myTask().then, similary taskReject -> catch
   const { uid, operationCreator, taskResolve, taskReject } = action
+  const miniUid = uid.substring(0, 7)
+
+  // Logging - pass an emitter into functions that can log for the task
+  // This is more verbose than console.log - but lets us manage interpolated
+  // logging for different tasks running at once. Can either print logs
+  // interpolated, prefixed with task uid, or after completion of each task
+  // Alternatively, could pass store.dispatch into each function, but using a
+  // saga lets us manage all logs in one place.
   const logEmitter = new EventEmitter2({ wildcard: true })
   const nestedLogger = (depth) => ({
     emit: (channel, content, tabLevel = 0) => logEmitter.emit(channel, content, depth + tabLevel),
     depth
   })
-
   // Watches a channel made of logEmitter events
   yield fork(loggerSaga, uid)
 
-  // These will all launch now but each blocks until ready
-  // Each one waits for the success action from the preceding one
-  // This is the regular (resume off or first-run) lifecyle, in order
-  yield fork(resolveInputSaga, uid)
-  yield fork(operationSaga, uid, operationCreator)
-  yield fork(resolveOutputSaga, uid, 'after')
-  yield fork(validateOutputSaga, uid)
-  yield fork(postValidationSaga, uid)
+  // This task will not have resolveInput, resolveOutput (and never will)
+  const originalTask = yield select(selectTask(uid))
+  logEmitter.emit('log', `=== ${originalTask.name} ===`)
+  logEmitter.emit('log', `Running task ${miniUid}`)
 
-
-  // console.log('task params in saga: ', task.params, 'for uid ', task.uid, 'with uid ', uid)
-  // logEmitter.emit('log', `Running task: ${task.name} (${uid})`)
-  logEmitter.emit('log', `Running task: (${uid})`)
-
-  // If resumable, jump into resolveOutputSaga first (and skip waiting for operation)
-  if (yield call(checkResumable, yield select(selectTask(uid)))) {
-    yield* resolveOutputSaga(uid, 'before')
+  if (originalTask.resume === 'off') {
+    yield* resolveInputSaga()
+    yield* operationSaga(operationCreator)
+    yield* resolveOutputSaga()
+    yield* validateOutputSaga()
+    yield* postValidationSaga()
   } else {
-    yield put(startResolveInput(uid))
+    console.log('NOT IMPLEMENTED YET')
   }
 
-  function logger ({ uid }) {
+  function* resolveInputSaga () {
+    try {
+      const results = yield call(resolveInput, yield select(selectTask(uid)), nestedLogger(1))
+      yield put(successResolveInput(uid, results ? results.resolvedInput : null))
+    } catch (err) {
+      console.log('error: ', err.toString())
+    }
+  }
+
+  function* operationSaga (operationCreator) {
+    let ops
+    try {
+      yield put(startOperation(uid))
+      ops = yield call(createOperation, yield select(selectTask(uid)), operationCreator, nestedLogger(1))
+      const settled = yield call(settleOperation, ops.operation)
+      // console.log('post settled: ', settled)
+      yield put(successOperation(uid))
+    } catch (err) {
+      console.log('err2: ', err.toString())
+    }
+  }
+
+  function* resolveOutputSaga (masterUid, mode) {
+    yield put(startResolveOutput(uid))
+
+    try {
+      const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)), nestedLogger(1))
+      logEmitter.emit('log', 'resolvedOutput: ' + resolvedOutput)
+      // logEmitter.emit('log', uid, 'gonna emit successResolveOutput???')
+      yield put(successResolveOutput(uid, resolvedOutput))
+    } catch (err) {
+      // console.log('error3: ', err)
+      // TODO
+      logEmitter.emit('log', uid, err.toString())
+
+      if (mode === 'before') yield put(startResolveInput(uid))
+    }
+  }
+
+  function* validateOutputSaga () {
+    yield put(startValidatingOutput(uid))
+
+    try {
+      const validations = yield call(validateOutput, yield select(selectTask(uid)), nestedLogger(1))
+      yield put(successValidatatingOutput(uid))
+    } catch (err) {
+      console.error('err4: ', err.toString())
+    }
+  }
+
+  function* postValidationSaga () {
+    logEmitter.emit('log', tab(1) + `Adding task output to DAG for ${uid}`)
+    try {
+      yield put(addOutput(uid, yield select(selectTask(uid))))
+      const DAG = yield(select(s => s.collection))
+      const { jsonifyGraph } = require('../reducers/collection.js')
+      logEmitter.emit('log', 'current DAG: ' + JSON.stringify(jsonifyGraph(DAG), null, 2))
+    } catch (err) {
+      logEmitter.emit('log', err.toString())
+    }
+
+    const { delay } = require('redux-saga')
+    // Wait a bit for logs to catch up
+    // TODO fix
+    yield delay(500)
+    yield* finish(action.uid)
+  }
+
+  function* finish (uid) {
+    // Resolve the promise from task.js
+    const finalTask = yield select(selectTask(uid))
+    // TODO if was ran alongside other tasks
+    // console.log(task.log.log.toString())
+    taskResolve(finalTask)
+  }
+
+  function logger () {
     return eventChannel((emitter) => {
       logEmitter.on('*', function(content, tabLevel = 0) {
         // console.log('logger event triggered: ', content)
@@ -141,7 +212,7 @@ function* lifecycle (action) {
   }
 
   function* loggerSaga (uid) {
-    const logChan = yield call(logger, { uid })
+    const logChan = yield call(logger)
     try {
       while (true) {
         const { uid, channel, content } = yield take(logChan)
@@ -149,110 +220,11 @@ function* lifecycle (action) {
         // const currentLog = yield(select(s => s.tasks[uid].log.currentLog))
         // WHERE LOGGING HAPPENS
         // TODO trigger based on join, parallel, fork
-        console.log(uid.substring(0, 7), ':', content)
+        console.log(miniUid, ':', content)
       }
     } finally {
-      console.log('logger terminated and unsubscribed')
+      console.log('Logger terminated and unsubscribed for task ' + miniUid)
     }
-  }
-
-  function* resolveInputSaga (uid) {
-    const action = yield take(START_RESOLVE_INPUT)
-    if (action.uid === uid) {
-      try {
-        const results = yield call(resolveInput, yield select(selectTask(uid)), nestedLogger(1))
-
-        yield put(successResolveInput(uid, results ? results.resolvedInput : null))
-      } catch (err) {
-        console.log('error: ', err)
-      }
-    }
-  }
-
-  function* operationSaga (uid, operationCreator) {
-    const action = yield take(SUCCESS_RESOLVE_INPUT)
-    if(action.uid === uid) {
-      let ops
-      try {
-        yield put(startOperation(uid))
-        ops = yield call(createOperation, yield select(selectTask(uid)), operationCreator, nestedLogger(1))
-        const settled = yield call(settleOperation, ops.operation)
-        // console.log('post settled: ', settled)
-        yield put(successOperation(uid))
-      } catch (err) {
-        console.log('err2: ', err)
-      }
-    }
-  }
-
-  function* resolveOutputSaga (uid, mode) {
-    let action
-    if (mode !== 'before') action = yield take(SUCCESS_OPERATION)
-    if (!action || action.uid === uid) {
-      yield put(startResolveOutput(uid))
-      try {
-        const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)), nestedLogger(1))
-        logEmitter.emit('log', 'resolvedOutput: ' + resolvedOutput)
-        logEmitter.emit('log', 'gonna emit successResolveOutput???')
-        yield put(successResolveOutput(uid, resolvedOutput))
-      } catch (err) {
-        // console.log('error3: ', err)
-        // TODO
-        logEmitter.emit('log', err.toString())
-
-        if (mode === 'before') yield put(startResolveInput(uid))
-      }
-    }
-  }
-
-  function* validateOutputSaga (uid) {
-    logEmitter.emit('log', 'Waiting for SUCCESS_RESOLVE_OUTPUT from ' + uid.substring(0,7))
-    const action = yield take(SUCCESS_RESOLVE_OUTPUT)
-    logEmitter.emit('log', 'On ' + uid, 'action uid: '+ action.uid)
-    if (action.uid === uid) {
-      yield put(startValidatingOutput(uid))
-      try {
-        const validations = yield call(validateOutput, yield select(selectTask(uid)), nestedLogger(1))
-        yield put(successValidatatingOutput(uid))
-      } catch (err) {
-        console.error('err4: ', err)
-      }
-
-      yield call(() => logEmitter.emit('log', `Finished task ${uid}`))
-      // logEmitter.emit('CLOSE_LOG')
-      yield put(successResolveOutput(uid))
-    } else {
-      logEmitter.emit('log', 'Gonna miss it for ' + uid.substring(0,7))
-    }
-  }
-
-  function* postValidationSaga (uid) {
-    const action = yield take(SUCCESS_VALIDATING_OUTPUT)
-    if (action.uid === uid) {
-      logEmitter.emit('log', tab(1) + `Adding task output to DAG for ${uid}`)
-      try {
-        yield put(addOutput(uid, yield select(selectTask(uid))))
-        const DAG = yield(select(s => s.collection))
-        const { jsonifyGraph } = require('../reducers/collection.js')
-        logEmitter.emit('log', 'current DAG: ' + JSON.stringify(jsonifyGraph(DAG), null, 2))
-      } catch (err) {
-        logEmitter.emit('log', err)
-      }
-
-      const { delay } = require('redux-saga')
-      // Wait a bit for logs to catch up
-      // TODO fix
-      yield delay(500)
-      yield* finish(uid)
-    }
-  }
-
-  function* finish (uid) {
-    // Resolve the promise from task.js
-    const task = yield select(selectTask(uid))
-    // TODO if was ran alongside other tasks
-    // console.log(task.log.log.toString())
-    taskResolve(yield select(selectTask(uid)))
   }
 }
 

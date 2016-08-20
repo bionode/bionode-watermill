@@ -15,13 +15,14 @@ const tab = () => ''
 
 const resolveInput = (taskState, logger) => new Promise((resolve, reject) => {
   const { uid, input, dir } = taskState
+  const miniUid = uid.substring(0, 7)
   const { trajectory } = taskState.context
-  logger.emit('log', `Resolving input for ${uid}`)
+  logger.emit('log', `Resolving input for ${uid.substring(0,7)}`)
 
   if (_.isNull(input)) {
     logger.emit('log', 'Ignoring input as is null', 1)
 
-    logger.emit('log', `Successfully resolved input for ${uid}`)
+    logger.emit('log', `Successfully resolved input for ${miniUid}`)
     return resolve(null)
   }
 
