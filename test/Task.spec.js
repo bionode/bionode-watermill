@@ -1,195 +1,73 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
+/**
+ * The task function takes in `props` and an `operationCreator`. A series of
+ * transformations will be applied to the props through the lifecycle methods
+ * which are responsible for receiving props and mutating them. The quick way is
+ * to modify the same `props` object over a closure; the safe way is to use a pure
+ * function that takes an immutable `props` and returns an `opsProps` (like a
+ * redux reducer). However, this detail is internal to the abstract `task`
+ * implementation for our purposes (the API definition and test suite). `task`
+ * returns a function which takes a `ctx`. The `ctx` is used to store the
+ * position of this task in the DAG (`ctx.trajectory`, where `trajectory` is an
+ * array of vertex ids).
+ *
+ * Ultimately, an invocation to `task` shall return a function which returns
+ * a function, stream, promise, observable, callback - anything that can be
+ * handled by async-done. In this way - think of the item that `task()()`
+ * produces to be a valid function for a Gulp task.
+ */
 
-const { assert, expect, should } = require('chai')
-const streamAssert = require('stream-assert')
-const isStream = require('isstream')
-const { isReadable, isWritable, isDuplex } = isStream
-const intoStream = require('into-stream')
-const through = require('through2')
-const duplexify = require('duplexify')
-const split = require('split')
+const { assert } = require('chai')
+const _ = require('lodash')
 
-const { task, join, store } = require('../')()
-const switchExt = require('../lib/utils/switch-ext.js')
+const { task } = require('../')
 
-const noop = () => {}
+describe('task', function() {
+  describe('parameter type checks', function() {
+    it('should throw if props is not a plain object', function() {
+      assert.throws(() => task('foo', noop), Error)
+    })
 
-const twd = path.resolve(__dirname, 'files', 'task')
-
-describe('Task', function() {
-  describe('checking parameters', function(done) {
-    it.skip('should error if not provided with a function', function() {
-
+    it('should throw if operationCreator is not a function', function() {
+      assert.throws(() => task({}, 'foo'), Error)
     })
   })
 
-  describe('should interact with collection', function() {
-    it('with no parameters', function(done) {
-      const capitalize = task({
-        input: '*.lowercase',
-        output: '*.uppercase',
-        name: `Capitalize *.lowercase -> *.uppercase`,
-        dir: twd,
-        resume: 'off'
-      }, ({ input, dir }) =>
-        fs.createReadStream(input)
-          .pipe(through((chunk, enc, next) => next(null, chunk.toString().toUpperCase())))
-          .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
-      )
+  describe('invocable task', function() {
+    it('should be a function', function() {
+      assert(_.isFunction(task({}, _.noop)), 'task did not return a function')
+    })
 
-      capitalize().on('task.finish', (results) => {
-        const collection = store.getState().collection
-
-        const { uid, resolvedOutput } = results
-        assert.equal(collection.vertexValue(uid), resolvedOutput)
-
+    it('calls operationCreator with an opsProps object', function(done) {
+      task({ resume: 'off' }, (opsProps) => {
+        assert.isOk(_.isPlainObject(opsProps), 'opsProps was not a plain object')
         done()
-      })
+      })()
     })
 
-    it('with parameters', function(done) {
-      const capitalize = task({
-        input: '*.lowercase',
-        output: '*.uppercase',
-        params: { foo: 'bar' },
-        name: `Capitalize *.lowercase -> *.uppercase`,
-        dir: twd,
-        resume: 'off'
-      }, ({ input, dir }) =>
-        fs.createReadStream(input)
-          .pipe(through((chunk, enc, next) => next(null, chunk.toString().toUpperCase())))
-          .pipe(fs.createWriteStream(switchExt(input, 'uppercase').replace(/source/, 'sink')))
-      )
-
-      capitalize().on('task.finish', (results) => {
-        const collection = store.getState().collection
-        const { uid, params, resolvedOutput } = results
-
-        assert(collection.hasVertex(JSON.stringify(params)))
-        assert(collection.hasEdge(JSON.stringify(params), uid))
-
-        assert.equal(collection.vertexValue(uid), resolvedOutput)
-
+    it('opsProps should not referentially equal props', function(done) {
+      const props = { resume: 'off' }
+      task(props, (opsProps) => {
+        assert.isOk(props !== opsProps)
         done()
-      })
-    })
-  })
-
-  describe('when provided with a Promise', function() {
-    describe('that resolves to a value', function() {
-      it.skip('should return a readable stream', function(done) {
-        const task = Task(null, () => new Promise((resolve, reject) => resolve('datums')))()
-
-        assert.isOk(isReadable(task))
-        // assert.isNotOk(isWritable(task))
-
-        task
-          .on('data', noop)
-          .on('end', done)
-      })
+      })()
     })
 
-    it.skip('should return a readable stream given a string', function(done) {
-      const task = Task({
-        input: {
-          one: { value: 5 },
-          two: { value: 2 }
-        },
-        name: 'testing promise stream with string'
-      }, () => new Promise((resolve, reject) => resolve('42')))
-
-
-      task()
-        .on('data', (data) => {
-          assert(data.toString() === '42')
-
-          done()
-        })
-        // .on('end', done)
-        .on('error', done)
+    it('should eventually call callback with resume on', function(done) {
+      task(
+        { payload: 'foo' },
+        ({ payload }) => new Promise(resolve => resolve(payload.toUpperCase()))
+      )( (err, data) => done() )
     })
 
-
-    it.skip('should return a readable stream given an object', function(done) {
-      const task = Task({
-        input: {
-          one: { value: 5 },
-          two: { value: 2 }
-        },
-        output: { stream: 'object' },
-        name: 'testing promise stream with object'
-      }, () => new Promise((resolve, reject) => resolve({ foo: 'bar' })))
-
-
-      task()
-        .on('data', (data) => {
-          assert.deepEqual(data, { foo: 'bar' })
-
-          done()
-        })
-        .on('error', done)
-    })
-  })
-
-  describe('when provided with a curried callback(err, data)', function() {
-    it.skip('should return a readable stream', function(done) {
-      const task = Task(null, (props) => (cb) => cb(null, 'datums'))()
-
-      assert.isOk(isReadable(task))
-      // assert.isNotOk(isWritable(task))
-
-      task
-        .on('data', noop)
-        .on('end', () => done())
-    })
-  })
-
-  describe('when provided with a readable stream', function() {
-    it.skip('should return a readable stream', function(done) {
-      const task = Task(null, () => intoStream('unicorn'))()
-
-      assert.isOk(isReadable(task))
-      // assert.isNotOk(isWritable(task))
-
-      task
-        .on('data', noop)
-        .on('end', () => done())
-    })
-  })
-
-  describe('when provided with a writable stream', function() {
-    it.skip('should return a writable stream', function(done) {
-      const task = Task(null, () => fs.createWriteStream(path.resolve(__dirname, 'writable.log')))()
-
-      task.write('one\n')
-      task.write('two\n')
-      task.end()
-
-      assert.isOk(isWritable(task))
-      assert.isNotOk(isReadable(task))
-
-      task
-        .on('finish', () => done())
-    })
-  })
-
-  describe('when provided with a duplex stream', function() {
-    it.skip('should return a duplex stream', function(done) {
-      // Simple pass-through duplex stream
-      const task = Task(null, () => through())()
-
-      assert.isOk(isDuplex(task))
-
-      task.write('datum')
-      task.end()
-
-      task
-        .on('data', noop)
-        //.on('end', () => done())
-        .on('finish', () => done())
+    it('should eventually call callback with resume off', function(done) {
+      task(
+        { payload: 'foo', resume: 'off' },
+        ({ payload }) => new Promise(resolve => resolve(payload.toUpperCase()))
+      )( (err, data) => done() )
     })
   })
 })
+
+
