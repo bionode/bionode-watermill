@@ -9,6 +9,7 @@ _book
 
 # test files
 test/**/*.sink*
+test/files
 *.txt
 
 # pipeline output dir
