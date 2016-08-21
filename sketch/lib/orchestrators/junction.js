@@ -7,6 +7,7 @@ const { defaultContext } = require('../constants/default-task-state.js')
 const { mergeCtx } = require('../ctx')
 
 const { addJunctionVertex } = require('../reducers/collection.js')
+const hash = require('../utils/hash.js')
 
 const junction = (dispatch) => {
   return function (...tasks) {
@@ -24,20 +25,37 @@ const junction = (dispatch) => {
 
       return Promise.all(tasks.map(task => taskToPromise(task)))
       .then((results) => {
-        dispatch(addJunctionVertex(results))
-        return Promise.resolve(results)
-      })
-      .then((results) => results.reduce(
-        (sum, current) => Object.assign({}, sum, mergeCtx('junction')(sum, current)),
-          defaultContext)
-           )
-           .then((results) => Object.assign({}, {
-             type: 'junction',
-             context: {
-               trajectory: results.trajectory
-             }
-           }))
-           .asCallback(cb)
+        const uids = []
+        for (const result of results) {
+          if (result.uid) {
+            uids.push(result.uid)
+          } else {
+            throw new Error('A uid was not found in the result')
+          }
+        }
+        const uid = hash(uids.join(''))
+        dispatch(addJunctionVertex(uid, results))
+
+        const junctionResults = {
+          type: 'junction',
+          context: {
+            trajectory: [uid]
+          }
+        }
+
+        return junctionResults
+      }).asCallback(cb)
+      // .then((results) => results.reduce(
+      //   (sum, current) => Object.assign({}, sum, mergeCtx('junction')(sum, current)),
+      //     defaultContext)
+      //      )
+      //      .then((results) => Object.assign({}, {
+      //        type: 'junction',
+      //        context: {
+      //          trajectory: results.trajectory
+      //        }
+      //      }))
+      //      .asCallback(cb)
     }
 
     return junctionInvocator

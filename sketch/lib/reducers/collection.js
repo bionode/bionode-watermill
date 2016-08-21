@@ -97,10 +97,36 @@ function addOutputHandler (state, action) {
 }
 
 function addJunctionVertexHandler(state, action) {
-  console.log('gonna do something with: ')
-  console.log(action.contexts)
+  const { uid, results } = action
 
-  return state
+  console.log('gonna do something with: ')
+  console.log(JSON.stringify(results, null, 2))
+
+  console.log('gonna make a node with uid: ', uid)
+
+  // Clone graph to maintain immutable state
+  const graph = state.clone()
+
+  const values = []
+  const lastUids = []
+  for (const result of results) {
+    if (result.tasks) {
+      // Dealing with a join/fork/junction
+      // Since param nodes never have values, can use these
+      result.tasks.forEach((taskUid, i) => {
+        values.push(graph.vertexValue(taskUid))
+        if (i === result.tasks.length - 1) lastUids.push(taskUid)
+      })
+    }
+  }
+  // TODO flatten values?
+  // I think each vertex value is already an array only
+  graph.addNewVertex(uid, _.flatten(values))
+
+  // Edge from last task of each to new junction node
+  lastUids.forEach(lastUid => graph.addNewEdge(lastUid, uid))
+
+  return graph
 }
 
 reducer.ADD_OUTPUT = ADD_OUTPUT
@@ -113,9 +139,10 @@ reducer.addOutput = (uid, taskState) => ({
 })
 
 reducer.ADD_JUNCTION_VERTEX = ADD_JUNCTION_VERTEX
-reducer.addJunctionVertex = (contexts) => ({
+reducer.addJunctionVertex = (uid, results) => ({
   type: ADD_JUNCTION_VERTEX,
-  contexts
+  uid,
+  results
 })
 
 reducer.jsonifyGraph = jsonifyGraph
