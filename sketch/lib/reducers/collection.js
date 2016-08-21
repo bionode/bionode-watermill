@@ -6,6 +6,7 @@ const Graph = require('graph.js/dist/graph.full.js')
 
 // Actions
 const ADD_OUTPUT = 'collection/add-output'
+const ADD_JUNCTION_VERTEX = 'collection/add-junction-vertex'
 
 const defaultState = new Graph()
 
@@ -13,6 +14,9 @@ const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case ADD_OUTPUT:
       return addOutputHandler(state, action)
+      break
+    case ADD_JUNCTION_VERTEX:
+      return addJunctionVertexHandler(state, action)
       break
     default:
       return state
@@ -92,6 +96,13 @@ function addOutputHandler (state, action) {
   return graph
 }
 
+function addJunctionVertexHandler(state, action) {
+  console.log('gonna do something with: ')
+  console.log(action.contexts)
+
+  return state
+}
+
 reducer.ADD_OUTPUT = ADD_OUTPUT
 reducer.addOutput = (uid, taskState) => ({
   type: ADD_OUTPUT,
@@ -99,6 +110,12 @@ reducer.addOutput = (uid, taskState) => ({
   output: taskState.resolvedOutput,
   context: taskState.context,
   params: taskState.params
+})
+
+reducer.ADD_JUNCTION_VERTEX = ADD_JUNCTION_VERTEX
+reducer.addJunctionVertex = (contexts) => ({
+  type: ADD_JUNCTION_VERTEX,
+  contexts
 })
 
 reducer.jsonifyGraph = jsonifyGraph

@@ -14,7 +14,7 @@ sagaMW.run(rootSaga)
 
 const task = require('./task.js')(store.dispatch)
 const join = require('./orchestrators/join.js')
-const junction = require('./orchestrators/junction.js')
+const junction = require('./orchestrators/junction.js')(store.dispatch)
 
 module.exports = {
   task,

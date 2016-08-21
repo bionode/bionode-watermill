@@ -162,18 +162,13 @@ bcftools call -c - > variants.vcf
 
 // === PIPELINE ===
 
-// const pipeline = join(
-//   junction(
-//     join(getReference, bwaIndex),
-//     join(getSamples, fastqDump)
-//   ),
-//   decompressReference, // only b/c mpileup did not like fna.gz
-//   join(alignAndSort, samtoolsIndex, mpileupAndCall)
-// )
-
-const pipeline = junction(
-  join(getReference, bwaIndex),
-  join(getSamples, fastqDump)
+const pipeline = join(
+  junction(
+    join(getReference, bwaIndex),
+    join(getSamples, fastqDump)
+  ),
+  decompressReference, // only b/c mpileup did not like fna.gz
+  join(alignAndSort, samtoolsIndex, mpileupAndCall)
 )
 
 pipeline().then(results => console.log('PIPELINE RESULTS: ', results))

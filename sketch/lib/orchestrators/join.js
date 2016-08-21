@@ -7,8 +7,14 @@ const { defaultContext } = require('../constants/default-task-state.js')
 const { mergeCtx } = require('../ctx')
 
 function join(...tasks) {
+  let uids = []
   const accumulator = (currentCtx, task) => new Promise((resolve, reject) => {
-    if (task.info) console.log('Joining to task: ' + task.info.name)
+    // TODO better checking if task/join/junction/fork
+    if (task.info) {
+      console.log('Joining to task: ' + task.info.name)
+      // Add this task to list of uids for this join
+      uids.push(task.info.uid)
+    }
 
     // Call next task with currentCtx
     task(_.noop, currentCtx).then((results) => {
@@ -22,6 +28,7 @@ function join(...tasks) {
     Promise.reduce(tasks, accumulator, ctx)
       .then(results => Promise.resolve(Object.assign({}, {
         type: results.type,
+        tasks: uids,
         context: {
           trajectory: results.trajectory
         }
