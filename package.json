@@ -4,7 +4,7 @@
   "description": "Streaming workflow engine for bionformatics pipelines",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.js",
+    "test": "cd test && mocha *.spec.js",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage",
     "book-build": "gitbook build",
     "book-serve": "gitbook serve"

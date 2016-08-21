@@ -40,12 +40,12 @@ describe('Task lifecycle saga', function() {
   }))
 
   let next = generator.next()
-  it('Should select for the task', function() {
+  it.skip('Should select for the task', function() {
     assert.isOk(next.value.SELECT.function === select(selectTask(uid)).SELECT.function)
   })
 
   const taskState = Object.assign({}, defaultTask, props, { uid, hashes })
-  it('Should first check if resumable', function() {
+  it.skip('Should first check if resumable', function() {
     next = generator.next(taskState)
     assert.deepEqual(next.value, call(checkResumable, taskState))
   })
