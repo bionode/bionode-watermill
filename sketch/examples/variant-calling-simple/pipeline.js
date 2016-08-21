@@ -171,12 +171,10 @@ bcftools call -c - > variants.vcf
 //   join(alignAndSort, samtoolsIndex, mpileupAndCall)
 // )
 
-// const pipeline = junction(
-//   join(getReference, bwaIndex),
-//   join(getSamples, fastqDump)
-// )
-
-const pipeline = join(getReference, bwaIndex)
+const pipeline = junction(
+  join(getReference, bwaIndex),
+  join(getSamples, fastqDump)
+)
 
 pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
 

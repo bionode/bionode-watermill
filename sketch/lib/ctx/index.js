@@ -18,10 +18,15 @@ exports.mergeCtx = (type) => (currentCtx, results) => {
     }
   }
 
-  newTrajection = results.context.trajectory.concat(newTrajection)
-
-  return {
-    type,
-    trajectory: currentCtx.trajectory.concat(newTrajection)
+  let newTrajectory = results.context.trajectory.concat(newTrajection)
+  if (type === 'junction') {
+    newTrajectory = currentCtx.trajectory.concat(newTrajectory)
   }
+
+  const newContext = {
+    type,
+    trajectory: newTrajectory
+  }
+
+  return newContext
 }
