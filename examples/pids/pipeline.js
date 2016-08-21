@@ -4,19 +4,18 @@ const split = require('split')
 const fs = require('fs')
 const through = require('through2')
 
-const { task, join, parallel } = require('../')
+const { task, join, parallel } = require('../..')
 
 const dumpPIDs = task({
   input: null,
   output: '*.pids',
-  name: 'Dump all PIDs to *.pids',
-  resume: 'off'
+  name: 'Dump all PIDs to *.pids'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
 
 // console.log('Can get info synchronously: ')
 // console.log(dumpPIDs.info)
 
-// dumpPIDs().then(() => console.log('Pipeline finito'))
+dumpPIDs().then(() => console.log('Pipeline finito'))
 
 const numbersToLetters = task({
   input: '*.pids',
@@ -38,5 +37,5 @@ const numbersToLetters = task({
 )
 
 // A -> B
-join(dumpPIDs, numbersToLetters)()
-  .then(console.log)
+// join(dumpPIDs, numbersToLetters)()
+//   .then(console.log)
