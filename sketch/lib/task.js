@@ -52,7 +52,6 @@ const task = (dispatch) => (props, operationCreator) => {
 
     // This kicks off the task lifecycle saga. Lifecycle saga will continue from
     // point just after this action has update the store.
-    console.log('context we gonna pass in: ', context)
     dispatch(createTask({
       uid,
       hashes,

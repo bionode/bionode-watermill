@@ -145,7 +145,6 @@ const reducer = (state = defaultState, action) => {
         { created: Date.now() }
       )
       newTask.context = context
-      console.log('newTask: ', newTask)
       const newState = updateTask(state, newTask)
 
       return newState

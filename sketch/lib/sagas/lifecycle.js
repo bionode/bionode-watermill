@@ -107,14 +107,26 @@ function* lifecycle (action) {
   logEmitter.emit('log', `=== ${originalTask.name} ===`)
   logEmitter.emit('log', `Running task ${miniUid}`)
 
-  if (originalTask.resume === 'off') {
+  function* orderedLifecycle () {
     yield* resolveInputSaga()
     yield* operationSaga(operationCreator)
+    yield* afterResolveOutput()
+  }
+
+  function* afterResolveOutput () {
     yield* resolveOutputSaga()
     yield* validateOutputSaga()
     yield* postValidationSaga()
+  }
+
+  if (originalTask.resume === 'off') {
+    yield* orderedLifecycle()
+  } else if (originalTask.resume === 'on') {
+    // Will trigger orderedLifecycle if mode === 'before' on failure to resolveOutput
+    yield* resolveOutputSaga('before')
   } else {
-    console.log('NOT IMPLEMENTED YET')
+    logEmitter.log('log', 'WARN: resume was not "on" or "off"')
+    yield* orderedLifecycle()
   }
 
   function* resolveInputSaga () {
@@ -144,20 +156,20 @@ function* lifecycle (action) {
     }
   }
 
-  function* resolveOutputSaga (masterUid, mode) {
+  function* resolveOutputSaga (mode) {
     yield put(startResolveOutput(uid))
 
     try {
       const resolvedOutput = yield call(resolveOutput, yield select(selectTask(uid)), nestedLogger(1))
       logEmitter.emit('log', 'resolvedOutput: ' + resolvedOutput)
-      // logEmitter.emit('log', uid, 'gonna emit successResolveOutput???')
       yield put(successResolveOutput(uid, resolvedOutput))
+
+      if (mode === 'before') yield* afterResolveOutput()
     } catch (err) {
-      // console.log('error3: ', err)
       // TODO
       logEmitter.emit('log', uid, err.toString())
 
-      if (mode === 'before') yield put(startResolveInput(uid))
+      if (mode === 'before') yield* orderedLifecycle()
     }
   }
 

@@ -33,8 +33,7 @@ const getReference = task({
   params: { url: config.referenceURL },
   input: null,
   output: '*_genomic.fna.gz',
-  name: `Download reference genome for ${config.name}`,
-  resume: 'off'
+  name: `Download reference genome for ${config.name}`
 }, ({ params }) => {
   const { url } = params
   const outfile = url.split('/').pop()
@@ -53,8 +52,7 @@ const getReference = task({
 const bwaIndex = task({
   input: '*_genomic.fna.gz',
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`),
-  name: 'bwa index *_genomic.fna.gz',
-  resume: 'off'
+  name: 'bwa index *_genomic.fna.gz'
 }, ({ input }) => `bwa index ${input}` )
 
 
@@ -72,8 +70,7 @@ const getSamples = task({
   },
   input: null,
   output: '**/*.sra',
-  name: `Download SRA ${config.sraAccession}`,
-  resume: 'off'
+  name: `Download SRA ${config.sraAccession}`
 // }, ({ params }) => ncbi.download(params.db, params.accession) )
 }, ({ params }) => ncbi.download(params.db, params.accession).resume() )
 
@@ -87,8 +84,7 @@ const getSamples = task({
 const fastqDump = task({
   input: '**/*.sra',
   output: [1, 2].map(n => (`*_${n}.fastq.gz`)),
-  name: 'fastq-dump **/*.sra',
-  resume: 'off'
+  name: 'fastq-dump **/*.sra'
 }, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}` )
 
 
