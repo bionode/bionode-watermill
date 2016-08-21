@@ -5,6 +5,7 @@ const Promise = require('bluebird')
 
 const { defaultContext } = require('../constants/default-task-state.js')
 const { mergeCtx } = require('../ctx')
+const hash = require('../utils/hash.js')
 
 function join(...tasks) {
   let uids = []
@@ -28,6 +29,7 @@ function join(...tasks) {
     Promise.reduce(tasks, accumulator, ctx)
       .then(results => Promise.resolve(Object.assign({}, {
         type: results.type,
+        uid: hash(uids.join('')),
         tasks: uids,
         context: {
           trajectory: results.trajectory
