@@ -24,13 +24,15 @@ const lineCount = task({
 }, ({ input }) => `cat ${input} | wc -l > lines.count`)
 
 describe('fork', function() {
-  // it('should return an array of results', function (done) {
-  //   fork(ls, lsAL)().then((results) => {
-  //     console.log('results: ', results)
-  //     assert.isOk(_.isArray(results))
-  //     done()
-  //   })
-  // })
+  // Running this adds nodes to DAG breaking other tests
+  // TODO setup/teadown
+  it.skip('should return an array of results', function (done) {
+    fork(ls, lsAL)().then((results) => {
+      console.log('results: ', results)
+      assert.isOk(_.isArray(results))
+      done()
+    })
+  })
 
   it ('should have info.type be "fork"', function() {
     const forked = fork(ls, lsAL)
@@ -38,7 +40,7 @@ describe('fork', function() {
     assert.equal(forked.info.type, 'fork')
   })
 
-  it.only('should work with join', function(done) {
+  it('should work with join', function(done) {
     const pipeline = join(fork(ls, lsAL), lineCount)
 
     pipeline().then((results) => {
