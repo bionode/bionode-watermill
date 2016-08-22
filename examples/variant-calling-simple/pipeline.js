@@ -72,42 +72,9 @@ const getSamples = task({
   },
   input: null,
   output: '**/*.sra',
+  dir: process.cwd(),
   name: `Download SRA ${config.sraAccession}`
-}, ({ params, dir }) => new Promise((resolve, reject) => {
-  ncbi.download(params.db, params.accession)
-  .pipe(through.obj(function (obj, env, next) {
-    if (obj.status === 'completed') {
-      next(null, obj.path)
-      next()
-    }
-
-    next(null)
-  }))
-  .on('data', (data) => {
-    const dirname = path.dirname(data)
-    const source = path.resolve(process.cwd(), data)
-    const target = path.resolve(dir, data)
-    console.log('target: ', target)
-    console.log('source: ', source)
-
-    fs.move(source, target, (err) => {
-      if (err) reject(err)
-
-      resolve(target)
-    })
-  })
-  .on('error', () => {})
-
-  // .on('data', console.log)
-  // .on('end', (path) => {
-  //   console.log('path: ', path)
-  //   resolve()
-  // })
-})
-)
-
-
-// }, ({ params }) => ncbi.download(params.db, params.accession).resume() )
+}, ({ params }) => ncbi.download(params.db, params.accession).resume() )
 
 
 /**
@@ -137,7 +104,8 @@ const alignAndSort = task({
     reads: {
       1: '*_1.fastq.gz',
       2: '*_2.fastq.gz'
-    }
+    },
+    indexFiles: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`)
   },
   output: ['reads.bam'], // NOTE forced genomic.fna into here
   name: 'bwa mem | samtools view | samtools sort'

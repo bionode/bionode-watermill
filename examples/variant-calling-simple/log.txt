@@ -1,0 +1,1685 @@
+Junction created for:  [ 'undefined (f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54)',
+  'undefined (78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69)' ]
+Junction created for:  [ 'undefined (1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c)',
+  'undefined (ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c)' ]
+Joining to task: undefined
+f4ecd19 : === Download reference genome for Salmonella enterica ===
+f4ecd19 : Running task f4ecd19
+f4ecd19 :   Starting resolve output for f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54
+Joining to task: undefined
+1959a2d : === Download SRA 2492428 ===
+1959a2d : Running task 1959a2d
+1959a2d :   Starting resolve output for 1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c
+f4ecd19 : No matches found for pattern [35m*_genomic.fna.gz[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19
+f4ecd19 :   Resolving input for f4ecd19
+f4ecd19 :     Ignoring input as is null
+f4ecd19 :   Successfully resolved input for f4ecd19
+1959a2d : No matches found for pattern [35m**/*.sra[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple
+1959a2d :   Resolving input for 1959a2d
+1959a2d :     Ignoring input as is null
+1959a2d :   Successfully resolved input for 1959a2d
+f4ecd19 :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19
+1959a2d :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple
+f4ecd19 :   Creating operation
+1959a2d :   Creating operation
+f4ecd19 :     operationProps input: null
+f4ecd19 :     operationProps params: {
+  "url": "http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz"
+}
+1959a2d :     operationProps input: null
+1959a2d :     operationProps params: {
+  "db": "sra",
+  "accession": "2492428"
+}
+f4ecd19 :   Starting resolve output for f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54
+f4ecd19 : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+f4ecd19 :   Running validations for f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54
+f4ecd19 :   Adding task output to DAG for f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54
+f4ecd19 : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz"
+    }
+  }
+}
+f4ecd19 : Finished task f4ecd19
+Joining to task: undefined
+78fe68b : === bwa index *_genomic.fna.gz ===
+78fe68b : Running task 78fe68b
+78fe68b :   Starting resolve output for 78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69
+78fe68b : No matches found for pattern [35m*_genomic.fna.gz.amb[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b
+78fe68b :   Resolving input for 78fe68b
+trajectory for 78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69:  [ '{"url":"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz"}',
+  'f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz"
+    }
+  }
+}
+[35m*_genomic.fna.gz[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz[39m
+78fe68b :   traverse got undefined, returning
+resolvedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+78fe68b :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+symlinkedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+78fe68b :   Creating operation
+78fe68b :     operationProps input: "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz"
+78fe68b :     operationProps params: {}
+78fe68b :     Starting: bwa index /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+78fe68b :         stderr: [bwa_index] Pack FASTA... 
+78fe68b :         stderr: 0.07 sec
+78fe68b :         stderr: [bwa_index] Construct BWT for the packed sequence...
+78fe68b :         stderr: 
+78fe68b :         stderr: [bwa_index] 2.01 seconds elapse.
+78fe68b :         stderr: [bwa_index] Update BWT... 
+78fe68b :         stderr: 0.04 sec
+78fe68b :         stderr: 
+78fe68b :         stderr: [bwa_index] Pack forward-only FASTA... 
+78fe68b :         stderr: 0.05 sec
+78fe68b :         stderr: 
+78fe68b :         stderr: [bwa_index] Construct SA from BWT and Occ... 
+78fe68b :         stderr: 0.75 sec
+78fe68b :         stderr: 
+78fe68b :         stderr: [main] Version: 0.7.14-r1136
+78fe68b :         stderr: [main] CMD: bwa index /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+78fe68b :         stderr: [main] Real time: 3.041 sec; CPU: 2.938 sec
+78fe68b :         stderr: 
+78fe68b :   Starting resolve output for 78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69
+78fe68b : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb,/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann,/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt,/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac,/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa
+78fe68b :   Running validations for 78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69
+78fe68b :   Adding task output to DAG for 78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69
+78fe68b : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ]
+      }
+    }
+  }
+}
+78fe68b : Finished task 78fe68b
+1959a2d :   Starting resolve output for 1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c
+1959a2d : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra
+1959a2d :   Running validations for 1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c
+1959a2d :   Adding task output to DAG for 1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c
+1959a2d : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ]
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra"
+    }
+  }
+}
+1959a2d : Finished task 1959a2d
+Joining to task: undefined
+ef7ee47 : === fastq-dump **/*.sra ===
+ef7ee47 : Running task ef7ee47
+ef7ee47 :   Starting resolve output for ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c
+ef7ee47 : No matches found for pattern [35m*_1.fastq.gz[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47
+ef7ee47 :   Resolving input for ef7ee47
+trajectory for ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c:  [ '{"db":"sra","accession":"2492428"}',
+  '1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ]
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra"
+    }
+  }
+}
+[35m**/*.sra[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra[39m
+ef7ee47 :   traverse got undefined, returning
+resolvedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra
+ef7ee47 :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra
+symlinkedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra
+ef7ee47 :   Creating operation
+ef7ee47 :     operationProps input: "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra"
+ef7ee47 :     operationProps params: {}
+ef7ee47 :     Starting: fastq-dump --split-files --skip-technical --gzip /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra
+ef7ee47 :         stdout: Read 582158 spots for /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra
+ef7ee47 :         stdout: Written 582158 spots for /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296.sra
+ef7ee47 :         stdout: 
+ef7ee47 :   Starting resolve output for ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c
+ef7ee47 : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz,/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz
+ef7ee47 :   Running validations for ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c
+ef7ee47 :   Adding task output to DAG for ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c
+ef7ee47 : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ]
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ]
+      }
+    }
+  }
+}
+ef7ee47 : Finished task ef7ee47
+Joining to task: undefined
+f7ff33d : === Decompress reference ===
+f7ff33d : Running task f7ff33d
+f7ff33d :   Starting resolve output for f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345
+f7ff33d : No matches found for pattern [35m*_genomic.fna[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d
+f7ff33d :   Resolving input for f7ff33d
+trajectory for f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345:  [ 'babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ]
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ]
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz[39m
+resolvedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+f7ff33d :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+symlinkedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+f7ff33d :   Creating operation
+f7ff33d :     operationProps input: "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna.gz"
+f7ff33d :     operationProps params: {}
+f7ff33d :     Starting: bgzip -d /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna.gz --stdout > /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna
+f7ff33d :   Starting resolve output for f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345
+f7ff33d : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna
+f7ff33d :   Running validations for f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345
+f7ff33d :   Adding task output to DAG for f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345
+f7ff33d : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+f7ff33d : Finished task f7ff33d
+Joining to task: undefined
+Joining to task: undefined
+568f22c : === bwa mem | samtools view | samtools sort ===
+568f22c : Running task 568f22c
+568f22c :   Starting resolve output for 568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a
+568f22c : No matches found for pattern [35mreads.bam[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c
+568f22c :   Resolving input for 568f22c
+trajectory for 568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a:  [ 'babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519',
+  'f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_1.fastq.gz[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_2.fastq.gz[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz.amb[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz.ann[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz.bwt[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz.pac[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna"
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna.gz.sa[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa[39m
+resolvedInput:  { reference: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz',
+  reads: 
+   { '1': '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz',
+     '2': '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz' },
+  indexFiles: 
+   [ '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa' ] }
+568f22c :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_1.fastq.gz
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_2.fastq.gz
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa
+symlinkedInput:  { reference: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz',
+  reads: 
+   { '1': '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_1.fastq.gz',
+     '2': '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_2.fastq.gz' },
+  indexFiles: 
+   [ '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac',
+     '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa' ] }
+568f22c :   Creating operation
+568f22c :     operationProps input: {
+  "reference": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+  "reads": {
+    "1": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_1.fastq.gz",
+    "2": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_2.fastq.gz"
+  },
+  "indexFiles": [
+    "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+    "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+    "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+    "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+    "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+  ]
+}
+568f22c :     operationProps params: {}
+568f22c :     Starting: 
+bwa mem -t 4 /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_1.fastq.gz /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_2.fastq.gz | samtools view -@ 4 -Sbh - | samtools sort -@ 4 - -o reads.bam > reads.bam
+
+568f22c :         stderr: [M::bwa_idx_load_from_disk] read 0 ALT contigs
+568f22c :         stderr: 
+568f22c :         stderr: [M::process] read 269160 sequences (40000004 bp)...
+568f22c :         stderr: 
+568f22c :         stderr: [M::process] read 270482 sequences (40000238 bp)...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (77, 104404, 6, 69)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (154, 268, 482)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1138)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (320.70, 217.63)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1466)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FR...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (273, 382, 538)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1068)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (418.82, 198.63)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1333)
+568f22c :         stderr: [M::mem_pestat] skip orientation RF as there are not enough pairs
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RR...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (151, 276, 480)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1138)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (315.55, 218.10)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1467)
+568f22c :         stderr: [M::mem_pestat] skip orientation FF
+568f22c :         stderr: [M::mem_pestat] skip orientation RR
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_process_seqs] Processed 269160 reads in 36.244 CPU sec, 10.044 real sec
+568f22c :         stderr: 
+568f22c :         stderr: [M::process] read 269990 sequences (40000004 bp)...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (62, 111235, 9, 37)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (134, 215, 367)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 833)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (217.69, 134.39)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1066)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FR...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (241, 327, 445)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 853)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (351.10, 155.04)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1057)
+568f22c :         stderr: [M::mem_pestat] skip orientation RF as there are not enough pairs
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RR...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (71, 192, 338)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 872)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (190.75, 161.92)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1139)
+568f22c :         stderr: [M::mem_pestat] skip orientation FF
+568f22c :         stderr: [M::mem_pestat] skip orientation RR
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_process_seqs] Processed 270482 reads in 36.386 CPU sec, 11.940 real sec
+568f22c :         stderr: 
+568f22c :         stderr: [M::process] read 269642 sequences (40000077 bp)...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (59, 111280, 5, 38)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (138, 201, 325)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 699)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (214.13, 132.62)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 886)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FR...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (246, 334, 457)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 879)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (359.76, 160.33)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1090)
+568f22c :         stderr: [M::mem_pestat] skip orientation RF as there are not enough pairs
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RR...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (139, 210, 341)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 745)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (214.03, 107.95)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 947)
+568f22c :         stderr: [M::mem_pestat] skip orientation FF
+568f22c :         stderr: [M::mem_pestat] skip orientation RR
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_process_seqs] Processed 269990 reads in 37.289 CPU sec, 12.651 real sec
+568f22c :         stderr: 
+568f22c :         stderr: [M::process] read 85042 sequences (12630111 bp)...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (61, 111130, 10, 47)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (178, 261, 492)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1120)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (321.61, 254.00)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1434)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FR...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (248, 337, 466)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 902)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (366.04, 165.56)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1120)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (19, 519, 780)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 2302)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (247.12, 294.97)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 3063)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RR...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (124, 232, 359)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 829)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (235.98, 154.05)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1064)
+568f22c :         stderr: [M::mem_pestat] skip orientation FF
+568f22c :         stderr: [M::mem_pestat] skip orientation RF
+568f22c :         stderr: [M::mem_pestat] skip orientation RR
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_process_seqs] Processed 269642 reads in 36.155 CPU sec, 12.192 real sec
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (11, 35060, 2, 17)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FF...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (176, 339, 446)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 986)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (322.64, 198.92)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1256)
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation FR...
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (251, 341, 470)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 908)
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (369.63, 165.89)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 1127)
+568f22c :         stderr: [M::mem_pestat] skip orientation RF as there are not enough pairs
+568f22c :         stderr: [M::mem_pestat] analyzing insert size distribution for orientation RR...
+568f22c :         stderr: [M::mem_pestat] (25, 50, 75) percentile: (102, 182, 321)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 759)
+568f22c :         stderr: [M::mem_pestat] mean and std.dev: (209.35, 127.97)
+568f22c :         stderr: [M::mem_pestat] low and high boundaries for proper pairs: (1, 978)
+568f22c :         stderr: [M::mem_pestat] skip orientation FF
+568f22c :         stderr: [M::mem_pestat] skip orientation RR
+568f22c :         stderr: 
+568f22c :         stderr: [M::mem_process_seqs] Processed 85042 reads in 11.714 CPU sec, 5.548 real sec
+568f22c :         stderr: 
+568f22c :         stderr: [main] Version: 0.7.14-r1136
+568f22c :         stderr: [main] CMD: bwa mem -t 4 /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/GCA_000988525.2_ASM98852v2_genomic.fna.gz /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_1.fastq.gz /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/ERR1229296_2.fastq.gz
+568f22c :         stderr: 
+568f22c :         stderr: [main] Real time: 55.934 sec; CPU: 158.960 sec
+568f22c :         stderr: 
+568f22c :   Starting resolve output for 568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a
+568f22c : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam
+568f22c :   Running validations for 568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a
+568f22c :   Adding task output to DAG for 568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a
+568f22c : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+568f22c : Finished task 568f22c
+Joining to task: undefined
+d5d355b : === samtools index ===
+d5d355b : Running task d5d355b
+d5d355b :   Starting resolve output for d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75
+d5d355b : No matches found for pattern [35m*.bam.bai[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b
+d5d355b :   Resolving input for d5d355b
+trajectory for d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75:  [ 'babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519',
+  'f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345',
+  '568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+[35mreads.bam[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam[39m
+resolvedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam
+d5d355b :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam
+symlinkedInput:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam
+d5d355b :   Creating operation
+d5d355b :     operationProps input: "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam"
+d5d355b :     operationProps params: {}
+d5d355b :     Starting: samtools index /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam
+d5d355b :   Starting resolve output for d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75
+d5d355b : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai
+d5d355b :   Running validations for d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75
+d5d355b :   Adding task output to DAG for d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75
+d5d355b : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+d5d355b : Finished task d5d355b
+Joining to task: undefined
+c8137ea : === samtools mpileup | bcftools call ===
+c8137ea : Running task c8137ea
+c8137ea :   Starting resolve output for c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0
+c8137ea : No matches found for pattern [35mvariants.vcf[39m in /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea
+c8137ea :   Resolving input for c8137ea
+trajectory for c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0:  [ 'babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519',
+  'f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345',
+  '568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a',
+  'd5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75' ]
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+[35m*_genomic.fna[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+[35m*.bam[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam[39m
+currentCollection:  {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+[35m*.bam.bai[39m matched to [34m/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai[39m
+resolvedInput:  { reference: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna',
+  bam: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam',
+  _bai: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai' }
+c8137ea :   Made dir: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/GCA_000988525.2_ASM98852v2_genomic.fna
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam
+Gonna make a symlink for:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai
+Into:  /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam.bai
+symlinkedInput:  { reference: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/GCA_000988525.2_ASM98852v2_genomic.fna',
+  bam: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam',
+  _bai: '/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam.bai' }
+c8137ea :   Creating operation
+c8137ea :     operationProps input: {
+  "reference": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/GCA_000988525.2_ASM98852v2_genomic.fna",
+  "bam": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam",
+  "_bai": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam.bai"
+}
+c8137ea :     operationProps params: {}
+c8137ea :     Starting: 
+samtools mpileup -uf /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/GCA_000988525.2_ASM98852v2_genomic.fna /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/reads.bam | bcftools call -c - > variants.vcf
+
+c8137ea :         stderr: [fai_load] build FASTA index.
+c8137ea :         stderr: 
+c8137ea :         stderr: Note: Neither --ploidy nor --ploidy-file given, assuming all sites are diploid
+c8137ea :         stderr: 
+c8137ea :         stderr: [mpileup] 1 samples in 1 input files
+c8137ea :         stderr: 
+c8137ea :         stderr: <mpileup> Set max per-file depth to 8000
+c8137ea :         stderr: 
+c8137ea :   Starting resolve output for c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0
+c8137ea : resolvedOutput: /Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/variants.vcf
+c8137ea :   Running validations for c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0
+c8137ea :   Adding task output to DAG for c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0
+c8137ea : current DAG: {
+  "{\"url\":\"http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz\"}": {
+    "_value": "",
+    "f4ecd19156e316cedc280fdfc81f4fbeaeb5783c5aa0ea0b90f7b68f5a838b54": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+      "78fe68b428e60953c66a2788af83b7997183755e6a3670c110467c0bc3090e69": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai",
+                "c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0": {
+                  "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/variants.vcf"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "{\"db\":\"sra\",\"accession\":\"2492428\"}": {
+    "_value": "",
+    "1959a2de981a3be7f8abb0a812fc5854c8bd5dbd41271df58f5ceab0c3e2f62c": {
+      "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+      "ef7ee47b6ced0cd7cc1c843ea5c5e81819dde37ee943e57b236e4faf3503570c": {
+        "_value": [
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+          "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+        ],
+        "babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519": {
+          "_value": [
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f4ecd19/GCA_000988525.2_ASM98852v2_genomic.fna.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.amb",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.ann",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.bwt",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.pac",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/78fe68b/GCA_000988525.2_ASM98852v2_genomic.fna.gz.sa",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/2492428/ERR1229296.sra",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_1.fastq.gz",
+            "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/ef7ee47/ERR1229296_2.fastq.gz"
+          ],
+          "f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345": {
+            "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/f7ff33d/GCA_000988525.2_ASM98852v2_genomic.fna",
+            "568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a": {
+              "_value": [
+                "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/568f22c/reads.bam"
+              ],
+              "d5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75": {
+                "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/d5d355b/reads.bam.bai",
+                "c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0": {
+                  "_value": "/Users/jmazz/Documents/repos/bionode-waterwheel/examples/variant-calling-simple/data/c8137ea/variants.vcf"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+c8137ea : Finished task c8137ea
+PIPELINE RESULTS:  { type: 'join',
+  uid: 'a77ee66d0e2b230cab7d4b58abc234cf30b33ad65fdd2c65d10a9edc7c2456ca',
+  tasks: 
+   [ 'f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345',
+     undefined ],
+  context: 
+   { trajectory: 
+      [ 'babcb5e4ffc5d2befdd18e8437c1cc5aab4b45f42dfea69c5cdbc8775802c519',
+        'f7ff33df98372055ad552b4eb427bbf4e6c51dc58a765d68ab978240cc1c8345',
+        '568f22c5ac2c366cfb34e185866ae97c2fab12bce520f15b35f60353fa5d600a',
+        'd5d355b998e774a03f3fb2740b111b59f50ad4bc44605e7eefceb4993c84af75',
+        'c8137eac1c6511c84695036aab4c04a098d357d8bd0918221dc4b8d40a13a4f0' ] } }
