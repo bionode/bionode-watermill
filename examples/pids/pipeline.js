@@ -7,7 +7,6 @@ const through = require('through2')
 const { task, join, parallel } = require('../..')
 
 const dumpPIDs = task({
-  input: null,
   output: '*.pids',
   name: 'Dump all PIDs to *.pids'
 }, () => `ps aux | awk '{print $2}' | tail -n +2 > ${Date.now()}.pids`)
@@ -20,8 +19,7 @@ dumpPIDs().then(() => console.log('Pipeline finito'))
 const numbersToLetters = task({
   input: '*.pids',
   output: '*.txt',
-  name: 'Convert lines of numbers to letters',
-  resume: 'off'
+  name: 'Convert lines of numbers to letters'
 }, ({ input }) =>
   fs.createReadStream(input)
     .pipe(split())
