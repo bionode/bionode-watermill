@@ -6,6 +6,7 @@ const { assert } = require('chai')
 const _ = require('lodash')
 const path = require('path')
 const twd = path.resolve(__dirname, 'files', 'fork')
+const hash = require('../lib/utils/hash.js')
 
 const lsTask = (flags = '') => task({
   output: `*.txt`,
@@ -41,7 +42,13 @@ describe('fork', function() {
     const pipeline = join(fork(ls, lsAL), lineCount)
 
     pipeline().then((results) => {
-      console.log(results)
+      console.log('RESULTS: ', results)
+      assert.equal(results[0].tasks[0], ls.info.uid)
+      assert.equal(results[0].tasks[1], hash(lineCount.info.uid + 0))
+      assert.equal(results[1].tasks[0], lsAL.info.uid)
+      assert.equal(results[1].tasks[1], hash(lineCount.info.uid + 1))
+
+      done()
     })
   })
 })
