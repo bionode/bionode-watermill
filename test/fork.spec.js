@@ -1,6 +1,6 @@
 'use strict'
 
-const { task, fork } = require('../')
+const { task, fork, join, junction } = require('../')
 
 const { assert } = require('chai')
 const _ = require('lodash')
@@ -8,19 +8,40 @@ const path = require('path')
 const twd = path.resolve(__dirname, 'files', 'fork')
 
 const lsTask = (flags = '') => task({
-  output: `${twd}/*.txt`,
-  params: { flags }
-}, ({ params }) => `ls ${params.flags} > ${twd}/${Date.now()}.txt`)
+  output: `*.txt`,
+  params: { flags },
+  name: `ls ${flags}`
+}, ({ params }) => `ls ${params.flags} > files.txt`)
 
 const ls = lsTask()
 const lsAL = lsTask('-al')
 
+const lineCount = task({
+  input: '*.txt',
+  output: '*.count',
+  name: 'Count lines from *.txt'
+}, ({ input }) => `cat ${input} | wc -l > lines.count`)
+
 describe('fork', function() {
-  it ('should return an array of results', function (done) {
-    fork(ls, lsAL)().then((results) => {
-      console.log('results: ', results)
-      assert.isOk(_.isArray(results))
-      done()
+  // it('should return an array of results', function (done) {
+  //   fork(ls, lsAL)().then((results) => {
+  //     console.log('results: ', results)
+  //     assert.isOk(_.isArray(results))
+  //     done()
+  //   })
+  // })
+
+  it ('should have info.type be "fork"', function() {
+    const forked = fork(ls, lsAL)
+
+    assert.equal(forked.info.type, 'fork')
+  })
+
+  it.only('should work with join', function(done) {
+    const pipeline = join(fork(ls, lsAL), lineCount)
+
+    pipeline().then((results) => {
+      console.log(results)
     })
   })
 })
