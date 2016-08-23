@@ -1,0 +1,15 @@
+{
+  "name": "variant-calling-filtered",
+  "version": "1.0.0",
+  "description": "Variant Calling bionode-watermill example with fork(kmc, khmer) filtering",
+  "main": "pipeline.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bionode-ncbi": "^1.6.1",
+    "request": "^2.74.0"
+  }
+}

@@ -13,7 +13,7 @@ test/files
 *.txt
 
 # pipeline output dir
-**/work
+**/data
 
 # pipeline examples output files
 *.fastq*
