@@ -110,6 +110,16 @@ LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36`)
 
 
 /**
+ * Merge trim ends with seqtk merge.
+ */
+const mergeTrimEnds = task({
+  input: [1, 2].map(n => `*_${n}.trim.pe.fastq.gz`),
+  output: 'reads.trim.pe.fastq.gz',
+  name: 'Merge trim ends'
+}, ({ input }) => `seqtk mergepe ${input[0]} ${input[1]} | gzip > reads.trim.pe.fastq.gz`)
+
+
+/**
  * Align reads and sort.
  * @input.reference {file} reference genome
  * @input.reads.1 {file} reads end 1
@@ -189,7 +199,7 @@ const pipeline = join(
     join(getReference, bwaIndex),
     join(getSamples, fastqDump)
   ),
-  trim
+  trim, mergeTrimEnds
   // decompressReference, // only b/c mpileup did not like fna.gz
   // join(alignAndSort, samtoolsIndex, mpileupAndCall)
 )
