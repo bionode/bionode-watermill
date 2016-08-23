@@ -157,27 +157,25 @@ filter-abund.py -T ${THREADS} -C ${MINCOVERAGE} ${params.khmerFile} -o reads.tri
 /**
  * Align reads and sort.
  * @input.reference {file} reference genome
- * @input.reads.1 {file} reads end 1
- * @input.reads.2 {file} reads end 2
+ * @input.reads {file} merged reads
  * @output {file} bam
  * @action {shell}
  */
 const alignAndSort = task({
   input: {
     reference: '*_genomic.fna.gz',
-    reads: {
-      1: '*_1.fastq.gz',
-      2: '*_2.fastq.gz'
-    },
+    reads: '*.trim.pe.filtered.fastq.gz',
     indexFiles: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`)
   },
-  output: ['reads.bam'], // NOTE forced genomic.fna into here
+  output: 'reads.bam',
   name: 'bwa mem | samtools view | samtools sort'
 }, ({ input }) => `
-bwa mem -t ${THREADS} ${input.reference} ${input.reads['1']} ${input.reads['2']} | \
+bwa mem -t ${THREADS} ${input.reference} ${input.reads} | \
 samtools view -@ ${THREADS} -Sbh - | \
 samtools sort -@ ${THREADS} - -o reads.bam > reads.bam
 `)
+// May need -o reads.bam > reads.bam or just -o reads.bam
+// Depending on samtools version
 
 
 /**
@@ -234,9 +232,12 @@ const pipeline = join(
     join(getReference, bwaIndex),
     join(getSamples, fastqDump)
   ),
-  trim, mergeTrimEnds, filterKHMER
-  // decompressReference, // only b/c mpileup did not like fna.gz
-  // join(alignAndSort, samtoolsIndex, mpileupAndCall)
+  trim, mergeTrimEnds,
+  decompressReference, // only b/c mpileup did not like fna.gz
+  join(
+    fork(filterKMC, filterKHMER),
+    alignAndSort, samtoolsIndex, mpileupAndCall // 2 instances each of these
+  )
 )
 
 pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
