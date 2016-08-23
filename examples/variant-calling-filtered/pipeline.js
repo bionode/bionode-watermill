@@ -19,11 +19,17 @@ const ncbi = require('bionode-ncbi')
 // === CONFIG ===
 const THREADS = parseInt(process.env.WATERMILL_THREADS) || 4
 const MEMORYGB = parseInt(process.env.WATERMILL_MEMORY) || 4
+const TMPDIR = path.resolve(__dirname, 'temp') // Assume this already exists
 const config = {
   name: 'Salmonella enterica',
   sraAccession: '2492428',
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz'
 }
+
+const KMERSIZE = 20
+const MINCOVERAGE = 5
+const PLOTXMAX = 60
+const PLOTYMAX = 1200000
 
 // === TASKS ===
 
@@ -120,6 +126,20 @@ const mergeTrimEnds = task({
 
 
 /**
+ * Fitering with KMC.
+ */
+const filterKMC = task({
+  input: 'reads.trim.pe.fastq.gz',
+  output: 'reads.trim.pe.filtered.fastq.gz',
+  params: { kmcFile: 'reads.trim.pe.kmc' },
+  name: 'Filtering with KMC'
+}, ({ input, params }) => `
+kmc -k${KMERSIZE} -m${MEMORYGB} -t${THREADS} ${input} ${params.kmcFile} ${TMPDIR} && \
+kmc_tools filter ${params.kmcFile} -cx${MINCOVERAGE} ${input} -ci0 -cx0 reads.trim.pe.filtered.fastq.gz
+`)
+
+
+/**
  * Align reads and sort.
  * @input.reference {file} reference genome
  * @input.reads.1 {file} reads end 1
@@ -199,7 +219,7 @@ const pipeline = join(
     join(getReference, bwaIndex),
     join(getSamples, fastqDump)
   ),
-  trim, mergeTrimEnds
+  trim, mergeTrimEnds, filterKMC
   // decompressReference, // only b/c mpileup did not like fna.gz
   // join(alignAndSort, samtoolsIndex, mpileupAndCall)
 )
