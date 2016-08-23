@@ -140,6 +140,21 @@ kmc_tools filter ${params.kmcFile} -cx${MINCOVERAGE} ${input} -ci0 -cx0 reads.tr
 
 
 /**
+ * Filtering with KHMER.
+ */
+const filterKHMER = task({
+  input: 'reads.trim.pe.fastq.gz',
+  output: 'reads.trim.pe.filtered.fastq.gz',
+  params: { khmerFile: 'reads.trim.pe.fastq.gz.kh' },
+  name: 'Filtering with KHMER'
+}, ({ input, params }) => `
+load-into-counting.py -N 4 -k ${KMERSIZE} -M ${MEMORYGB}e9 -T ${THREADS} ${params.khmerFile} ${input} && \
+abundance-dist.py ${params.khmerFile} ${input} ${params.khmerFile}.hist && \
+filter-abund.py -T ${THREADS} -C ${MINCOVERAGE} ${params.khmerFile} -o reads.trim.pe.filtered.fastq.gz ${input}
+`)
+
+
+/**
  * Align reads and sort.
  * @input.reference {file} reference genome
  * @input.reads.1 {file} reads end 1
@@ -219,7 +234,7 @@ const pipeline = join(
     join(getReference, bwaIndex),
     join(getSamples, fastqDump)
   ),
-  trim, mergeTrimEnds, filterKMC
+  trim, mergeTrimEnds, filterKHMER
   // decompressReference, // only b/c mpileup did not like fna.gz
   // join(alignAndSort, samtoolsIndex, mpileupAndCall)
 )
