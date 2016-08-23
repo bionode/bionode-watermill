@@ -1,6 +1,6 @@
 # bionode-waterwheel
 
-[![npm version](https://badge.fury.io/js/bionode-waterwheel.svg)](https://badge.fury.io/js/bionode-waterwheel) [![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() [![Build Status](https://travis-ci.org/bionode/bionode-waterwheel.svg?branch=master)](https://travis-ci.org/bionode/bionode-waterwheel)  [![codecov.io](https://codecov.io/github/bionode/bionode-waterwheel/coverage.svg?branch=master)](https://codecov.io/github/bionode/bionode-waterwheel?branch=master) 
+[![npm version](https://badge.fury.io/js/bionode-waterwheel.svg)](https://badge.fury.io/js/bionode-waterwheel) [![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() [![Build Status](https://travis-ci.org/bionode/bionode-waterwheel.svg?branch=master)](https://travis-ci.org/bionode/bionode-waterwheel)  [![codecov.io](https://codecov.io/github/bionode/bionode-watermill/coverage.svg?branch=master)](https://codecov.io/github/bionode/bionode-waterwheel?branch=master) 
 
 *Waterwheel: A Streaming Workflow Engine*
 
