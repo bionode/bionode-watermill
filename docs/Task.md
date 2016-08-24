@@ -2,13 +2,13 @@
 
 The `task` function is the fundamental unit to build pipelines.
 
-It is provided with the default export of `bionode-waterwheel`:
+It is provided with the default export of `bionode-watermill`:
 
 ```javascript
-const waterwheel = require('bionode-waterwheel')
-const task = waterwheel.task
+const watermill = require('bionode-watermill')
+const task = watermill.task
 // Or, with assignment destructuring:
-const { task } = waterwheel
+const { task } = watermill
 ```
 
 ## API

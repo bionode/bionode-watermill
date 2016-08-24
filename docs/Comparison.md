@@ -2,12 +2,12 @@
 
 WIP
 
-bionode-waterwheel is an API targeted towards developing data analysis
+bionode-watermill is an API targeted towards developing data analysis
 pipelines. It separates itself from other tools by putting **parameters ahead
 of input/output files**. This enables modular rearrangement of pipelines, and
 quick experimentation and comparison of tools and their parameters. Let's
 examine how other tools put I/O ahead of parameters, then demonstrate how
-bionode-waterwheel does the opposite.
+bionode-watermill does the opposite.
 
 Consider a simple variant calling pipeline:
 

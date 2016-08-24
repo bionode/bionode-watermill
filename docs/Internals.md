@@ -1,12 +1,12 @@
 # Internals
 
-This section documents how bionode-waterwheel functions internally. Read this if you would like to understand the tool better, or would like to contribute *middlewares*.
+This section documents how bionode-watermill functions internally. Read this if you would like to understand the tool better, or would like to contribute *middlewares*.
 
 Waterwheel and [Gulp](https://github.com/gulpjs/gulp) are alike in some ways:
 
 - both provide an interface to run **tasks** in **series and parallel**
 - both maintain a **registry of tasks** - Gulp uses [Undertaker](https://github.com/gulpjs/gulp) and Waterwheel uses a [Redux](https://github.com/reactjs/redux) store
-- both use [async-done](https://github.com/gulpjs/async-done) to catch errors and completion from the task function  
+- both use [async-done](https://github.com/gulpjs/async-done) to catch errors and completion from the task function
 
 Yet also differ in some respects:
 
