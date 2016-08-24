@@ -6,42 +6,72 @@
 
 [![NPM](https://nodei.co/npm/bionode-waterwheel.png?downloads=true&stars=true)](https://nodei.co/npm/bionode-waterwheel/)
 
-**NOTE: v0.2 is a prerelease**
+Watermill lets you *orchestrate* **tasks** using operators like **join**, **junction**, and **fork**. Each task has a [lifecycle](https://thejmazz.gitbooks.io/bionode-watermill/content/TaskLifecycle.html) where
 
-See this [draft blog post](https://github.com/thejmazz/jmazz.me/blob/master/content/post/ngs-workflow.md) for an introduction to why this tool was developed, specifically with respect to improving upon ideas introduced by [Snakemake](https://bitbucket.org/snakemake/snakemake/wiki/Home) and [Nextflow](http://www.nextflow.io/) while introducing the notion of *streaming data* via [Stream](https://nodejs.org/api/stream.html).
+1. Input [glob patterns](https://github.com/isaacs/node-glob) are resolved to absolute file paths (e.g. `*.bam` to `reads.bam`)
+2. The **operation** is ran, passed resolved input, params, and other props
+3. The operation completes.
+4. Output glob patterns are resolved to absolute file paths.
+5. Validators are ran over the output. Check for non-null files, can pass in custom validators.
+6. Post-validations are ran. Add task and output to DAG.
 
-### Who is this tool for?
+## What is a task?
 
-Waterwheel is for **programmers** who desire an efficient and easy-to-write
-methodology for developing complex and dynamic data pipelines, while handling
-parallelization as much as possible. Waterwheel is an npm module, and is
-accessible by anyone willing to learn a little JavaScript. This is in contrast
-to other tools which develop their own DSL (domain specific language), which is
-not useful outside the tool. By leveraging the npm ecosystem and JavaScript on
-the client, Waterwheel can be built upon for inclusion on web apis, modern web
-applications, as well as native applications through
-[Electron](http://electron.atom.io/). Look forward to seeing Galaxy-like
-applications backed by a completely configurable Node API.
+A `task` is the fundamental unit pipelines are built with. For more details, see [Task](https://thejmazz.gitbooks.io/bionode-watermill/content/Task.html). At a glance, a task is created by passing in **props** and an **operationCreator**, which will later be called with the resolved input. Consider this task which takes a "lowercase" file and creates an "uppercase" one:
 
-Waterwheel is for **biologists** who understand it is important to experiment
-with sample data, parameter values, and tools. Compared to other workflow
-systems, the ease of swapping around parameters and tools is much improved,
-allowing you to iteratively compare results and construct more confident
-inferences. Consider the ability to construct your own
-[Teaser](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0803-1)
-for *your data* with a *simple syntax*, and getting utmost performance out of
-the box.
+```javascript
+const uppercase = task({
+  input: '*.lowercase',
+  output: '*.uppercase'
+}, function(resolvedProps) {
+  const input = resolvedProps.input
+  
+  return fs.createReadStream(input)
+  	.pipe(through function(chunk, enc, next) {
+      next(null, chunk.toString().toUpperCase())
+  	})
+    .pipe(fs.createWriteStream(input.replace(/lowercase$/, 'uppercase')))
+})
+```
 
-### API (v0.4)
+A "task declaration" like above will not immediately run the task. Instead, the task declaration returns an "invocable task" that can either be called directly or used with an orchestration operator. Tasks can also be created to **run shell programs**:
 
-See [docs](./docs/Task.md).
+```javascript
+const fastqDump = task({
+  input: '**/*.sra',
+  output: [1, 2].map(n => `*_${n}.fastq.gz`),
+  name: 'fastq-dump **/*.sra'
+}, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}` )
+```
 
-### Example Genomic Pipeline
+## What are orchestrators?
 
-Once you have a Node runtime installed on your system, we can begin writing the
-"hello world" pipeline. For this we will illustrate how streams and
-parrallezation can be leveraged to improve the performance of our pipeline while
-also improving readability, atomicity of tool descriptions, and
-self-documentation of the pipeline.
+Orchestrators are functions which can take tasks as params in order to let you compose your pipeline from a high level view. This **separates task order from task declaration**. For more details, see [Orchestration](https://thejmazz.gitbooks.io/bionode-watermill/content/Orchestration.html). At a glance, here is a complex usage of `join`, `junction`, and `fork`:
 
-See [variant-calling-simple.js](./examples/vc-simple/variant-calling-simple.js)
+```javascript
+const pipeline = join(
+  junction(
+    join(getReference, bwaIndex),
+    join(getSamples, fastqDump)
+  ),
+  trim, mergeTrimEnds,
+  decompressReference, // only b/c mpileup did not like fna.gz
+  join(
+    fork(filterKMC, filterKHMER),
+    alignAndSort, samtoolsIndex, mpileupAndCall // 2 instances each of these
+  )
+)
+```
+
+## Examples
+
+- [Toy pipeline with shell/node](https://github.com/bionode/bionode-watermill/blob/master/examples/pids/pipeline.js)
+- [Simple capitalize task](https://github.com/bionode/bionode-watermill/blob/master/examples/capitalize/capitalize.js)
+- [Simple SNP calling](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-simple/pipeline.js)
+- [SNP calling with filtering and fork](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-filtered/pipeline.js)
+
+## Who is this tool for?
+
+Waterwheel is for **programmers** who desire an efficient and easy-to-write methodology for developing complex and dynamic data pipelines, while handling parallelization as much as possible. Waterwheel is an npm module, and is accessible by anyone willing to learn a little JavaScript. This is in contrast to other tools which develop their own DSL (domain specific language), which is not useful outside the tool. By leveraging the npm ecosystem and JavaScript on the client, Waterwheel can be built upon for inclusion on web apis, modern web applications, as well as native applications through [Electron](http://electron.atom.io/). Look forward to seeing Galaxy-like applications backed by a completely configurable Node API.
+
+Waterwheel is for **biologists** who understand it is important to experiment with sample data, parameter values, and tools. Compared to other workflow systems, the ease of swapping around parameters and tools is much improved, allowing you to iteratively compare results and construct more confident inferences. Consider the ability to construct your own [Teaser](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0803-1) for *your data* with a *simple syntax*, and getting utmost performance out of the box.
