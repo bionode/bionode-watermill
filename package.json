@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bionode/bionode-waterwheel.git"
+    "url": "git+https://github.com/bionode/bionode-watermill.git"
   },
   "keywords": [
     "bionode",
@@ -28,9 +28,9 @@
   "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bionode/bionode-waterwheel/issues"
+    "url": "https://github.com/bionode/bionode-watermill/issues"
   },
-  "homepage": "https://github.com/bionode/bionode-waterwheel#readme",
+  "homepage": "https://github.com/bionode/bionode-watermill#readme",
   "devDependencies": {
     "bionode-ncbi": "^1.6.1",
     "cdir": "^0.1.2",

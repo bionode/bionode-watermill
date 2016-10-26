@@ -1,10 +1,10 @@
 # bionode-watermill
 
-[![npm version](https://badge.fury.io/js/bionode-waterwheel.svg)](https://badge.fury.io/js/bionode-waterwheel) [![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() [![Build Status](https://travis-ci.org/bionode/bionode-watermill.svg?branch=master)](https://travis-ci.org/bionode/bionode-waterwheel)  [![codecov.io](https://codecov.io/github/bionode/bionode-watermill/coverage.svg?branch=master)](https://codecov.io/github/bionode/bionode-waterwheel?branch=master)
+[![npm version](https://badge.fury.io/js/bionode-watermill.svg)](https://badge.fury.io/js/bionode-watermill) [![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() [![Build Status](https://travis-ci.org/bionode/bionode-watermill.svg?branch=master)](https://travis-ci.org/bionode/bionode-watermill)  [![codecov.io](https://codecov.io/github/bionode/bionode-watermill/coverage.svg?branch=master)](https://codecov.io/github/bionode/bionode-watermill?branch=master)
 
 *Watermill: A Streaming Workflow Engine*
 
-[![NPM](https://nodei.co/npm/bionode-waterwheel.png?downloads=true&stars=true)](https://nodei.co/npm/bionode-waterwheel/)
+[![NPM](https://nodei.co/npm/bionode-watermill.png?downloads=true&stars=true)](https://nodei.co/npm/bionode-watermill/)
 
 Watermill lets you *orchestrate* **tasks** using operators like **join**, **junction**, and **fork**. Each task has a [lifecycle](https://thejmazz.gitbooks.io/bionode-watermill/content/TaskLifecycle.html) where
 
@@ -25,7 +25,7 @@ const uppercase = task({
   output: '*.uppercase'
 }, function(resolvedProps) {
   const input = resolvedProps.input
-  
+
   return fs.createReadStream(input)
   	.pipe(through function(chunk, enc, next) {
       next(null, chunk.toString().toUpperCase())
