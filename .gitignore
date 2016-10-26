@@ -21,3 +21,8 @@ test/files
 *.sra
 *.fna*
 *.vcf
+
+# example specific files/folders
+examples/variant-calling-filtered/adapters
+examples/variant-calling-filtered/bin
+
