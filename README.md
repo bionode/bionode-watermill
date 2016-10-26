@@ -27,7 +27,7 @@ const uppercase = task({
   const input = resolvedProps.input
 
   return fs.createReadStream(input)
-  	.pipe(through function(chunk, enc, next) {
+  	.pipe(through(function(chunk, enc, next) {
       next(null, chunk.toString().toUpperCase())
   	})
     .pipe(fs.createWriteStream(input.replace(/lowercase$/, 'uppercase')))
