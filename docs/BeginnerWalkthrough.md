@@ -3,6 +3,8 @@
 bionode-watermill can be used to create complicated bioinformatics pipelines,
 but at its core are simple ideas. The first of these is the idea of a *task*.
 
+## Task
+
 A `task` describes the idea that *some input* will be transformed into *some
 output*. For our cases, we will consider input and output to both be a file.
 Before jumping into the JavaScript, let's see what our first task is!
@@ -150,8 +152,113 @@ const uppercaser = watermill.task({
 ### Exercise
 
 1. Write a task that downloads SRA for a given species using
-   [bionode-ncbi][bionode-ncbi]. *HINT: you can use CLI or Node module; watermill
-   needs to be given a flowing stream in the operation creator in order to watch it finish*
+   [bionode-ncbi][bionode-ncbi]. *HINT: you can use CLI or Node module;
+   watermill needs to be given a flowing stream in the operation creator in
+   order to watch it finish*
+
+## Operators
+
+The next core idea of bionode-watermill is that of *operators*. Operators are
+ways to combine tasks. The simplest of the operators is `join`. `join` takes
+any number of tasks as parameters, and will run each of the tasks sequentially.
+Where the first task will check the current working folder for files that match
+`input`, within a join lineage, downstream tasks will attempt to match their
+`input` to an upstream task's `output`.
+
+A simple join pipeline is a download+extract one. For this we can download some
+reads from the NCBI Sequence Read Archive (SRA) and extract them with
+`fastq-dump` from sratools.
+
+```javascript
+// Define getSamples as a higher order task so we can create different ones
+// for different accessions
+const getSamples = (accession) => task({
+  params: {
+    db: 'sra',
+    accession: accession
+  },
+  output: '**/*.sra',
+  dir: process.cwd(), // Set dir to resolve input/output from
+  name: `Download SRA ${config.sraAccession}`
+}, ({ params }) => ncbi.download(params.db, params.accession).resume() )
+
+const fastqDump = task({
+  input: '**/*.sra',
+  output: [1, 2].map(n => `*_${n}.fastq.gz`),
+  name: 'fastq-dump **/*.sra'
+}, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}` )
+
+const pipeline = join(getSamples('2492428'), fastqDump)
+
+pipeline()
+```
+
+The next operator you might use is `junction`. Junction lets you run a set of
+tasks in parallel. If `junction` is used within a `join`, the downstream tasks
+will have access to the outputs of each of the parallelized items from `junction`.
+
+We can use `junction` to run our pipeline above over multiple samples:
+
+```javascript
+const pipeline = junction(
+    join(getSamples('2492428'), fastqDump),
+    join(getSamples('1274026'), fastqDump)
+)
+```
+
+The last operator is `fork`. Fork lets you replace one task in your pipeline
+with more than one, and have the downstream tasks duplicated for each task you
+pass into fork. This is useful for comparing tools or options within a tool.
+
+For a simple example, we can run `ls` with different options before sending
+that output to capitalize. What's important to note is that *we only define one
+uppercaser task, yet it is ran on each task in the `fork`*.
+
+```javascript
+const lsMaker = (opts) => watermill.task({
+    output: '*.lowercase'
+}, () => `ls ${opts} > ls.lowercase`)
+
+// uppercaser task as above
+
+const pipeline = join(
+    fork(lsMaker(''), lsMaker('-lh')),
+    uppercaser
+)
+
+pipeline()
+```
+
+## Summary
+
+You've seen that bionode-watermill can be used to defined `tasks` that *resolve*
+their `input` and `output`. These tasks can be child processes (i.e. a program
+on the command line) or just regular JavaScript functions. As well a brief introduction
+to the operators `join`, `junction`, and `fork` was made.
+
+These are all the tools necessary to make a bioinformatics pipeline! See
+this [variant calling pipeline](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-filtered/pipeline.js):
+
+```javascript
+const pipeline = join(
+  junction(
+    join(getReference, bwaIndex),
+    join(getSamples, fastqDump)
+  ),
+  trim, mergeTrimEnds,
+  decompressReference, // only b/c mpileup did not like fna.gz
+  join(
+    fork(filterKMC, filterKHMER),
+    alignAndSort, samtoolsIndex, mpileupAndCall // 2 instances each of these
+  )
+)
+```
+
+Now go out there and make something cool!
+
+If you would like to help out, see the
+[issues](https://github.com/bionode/bionode-watermill/issues).  There is much to
+be done, and anything and everything is appreciated.
 
 
 [bionode-ncbi]: https://github.com/bionode/bionode-ncbi
