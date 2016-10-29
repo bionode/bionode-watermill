@@ -1,13 +1,12 @@
 'use strict'
 
 // === WATERMILL ===
-// TODO npm publish and require bionode-watermill
 const {
   task,
   join,
   junction,
   fork
-} = require('../..')
+} = require('bionode-watermill')
 
 // === MODULES ===
 const fs = require('fs')
