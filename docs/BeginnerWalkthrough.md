@@ -129,6 +129,9 @@ replace our child processes with a transform stream using the module
 this:
 
 ```javascript
+const fs = require('fs')
+
+const watermill = require('bionode-watermill')
 const through = require('through2')
 
 const uppercaser = watermill.task({
@@ -142,7 +145,7 @@ const uppercaser = watermill.task({
       this.push(chunk.toString().toUpperCase())
       // tell through we are ready for next chunk, pass no error
       next(null)
-    })
+    }))
     .pipe(fs.createWriteStream(input.replace(/lowercase$/, 'uppercase')))
 )
 ```
