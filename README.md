@@ -15,6 +15,10 @@ Watermill lets you *orchestrate* **tasks** using operators like **join**, **junc
 5. Validators are ran over the output. Check for non-null files, can pass in custom validators.
 6. Post-validations are ran. Add task and output to DAG.
 
+## CWL?
+
+Coming soon.
+
 ## What is a task?
 
 A `task` is the fundamental unit pipelines are built with. For more details, see [Task](https://thejmazz.gitbooks.io/bionode-watermill/content/Task.html). At a glance, a task is created by passing in **props** and an **operationCreator**, which will later be called with the resolved input. Consider this task which takes a "lowercase" file and creates an "uppercase" one:
