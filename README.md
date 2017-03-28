@@ -69,10 +69,10 @@ const pipeline = join(
 
 ## Examples
 
-- [Toy pipeline with shell/node](https://github.com/bionode/bionode-watermill/blob/master/examples/pids/pipeline.js)
-- [Simple capitalize task](https://github.com/bionode/bionode-watermill/blob/master/examples/capitalize/capitalize.js)
-- [Simple SNP calling](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-simple/pipeline.js)
-- [SNP calling with filtering and fork](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-filtered/pipeline.js)
+- [Toy pipeline with shell/node](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/pids/pipeline.js)
+- [Simple capitalize task](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/capitalize/capitalize.js)
+- [Simple SNP calling](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/variant-calling-simple/pipeline.js)
+- [SNP calling with filtering and fork](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/variant-calling-filtered/pipeline.js)
 
 ## Who is this tool for?
 
