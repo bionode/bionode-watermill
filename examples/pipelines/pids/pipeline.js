@@ -4,7 +4,7 @@ const split = require('split')
 const fs = require('fs')
 const through = require('through2')
 
-const { task, join, parallel } = require('../..')
+const { task, join, parallel } = require('../../..')
 
 const dumpPIDs = task({
   output: '*.pids',

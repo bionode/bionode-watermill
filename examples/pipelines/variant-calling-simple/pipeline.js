@@ -5,7 +5,7 @@ const {
   task,
   join,
   junction,
-} = require('../..')
+} = require('../../..')
 
 // === MODULES ===
 const fs = require('fs-extra')

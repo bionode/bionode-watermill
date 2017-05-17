@@ -1,6 +1,6 @@
 'use strict'
 
-const { task, shell } = require('../..')()
+const { task, shell } = require('../../..')()
 
 const intoStream = require('into-stream')
 const fs = require('fs')
