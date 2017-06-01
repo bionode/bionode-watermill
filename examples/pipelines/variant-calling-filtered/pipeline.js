@@ -18,15 +18,17 @@ const ncbi = require('bionode-ncbi')
 // === CONFIG ===
 const THREADS = parseInt(process.env.WATERMILL_THREADS) || 4
 const MEMORYGB = parseInt(process.env.WATERMILL_MEMORY) || 4
-const TMPDIR = path.resolve(__dirname, 'temp') // Assume this already exists
+const TMPDIR = path.resolve(__dirname, 'temp') // Now directory is created before running kmc
 const config = {
   name: 'Streptococcus pneumoniae',
   sraAccession: 'ERR045788',
-  referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/195/995/GCF_000195995.1_ASM19599v1/GCF_000195995.1_ASM19599v1_genomic.fna.gz'
+  referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
 }
 
 const KMERSIZE = 20
 const MINCOVERAGE = 5
+const PLOTXMAX = 60 //unused
+const PLOTYMAX = 1200000 //unused
 
 // === TASKS ===
 
@@ -130,7 +132,7 @@ const filterKMC = task({
   output: 'reads.trim.pe.filtered.fastq.gz',
   params: { kmcFile: 'reads.trim.pe.kmc' },
   name: 'Filtering with KMC'
-}, ({ input, params }) => `
+}, ({ input, params }) => ` mkdir ${TMPDIR} > /dev/null &&
 kmc -k${KMERSIZE} -m${MEMORYGB} -t${THREADS} ${input} ${params.kmcFile} ${TMPDIR} && \
 kmc_tools filter ${params.kmcFile} -cx${MINCOVERAGE} ${input} -ci0 -cx0 reads.trim.pe.filtered.fastq.gz
 `)
