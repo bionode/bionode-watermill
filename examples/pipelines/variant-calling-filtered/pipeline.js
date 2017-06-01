@@ -6,7 +6,7 @@ const {
   join,
   junction,
   fork
-} = require('bionode-watermill')
+} = require('../../..')
 
 // === MODULES ===
 const fs = require('fs')
@@ -20,15 +20,13 @@ const THREADS = parseInt(process.env.WATERMILL_THREADS) || 4
 const MEMORYGB = parseInt(process.env.WATERMILL_MEMORY) || 4
 const TMPDIR = path.resolve(__dirname, 'temp') // Assume this already exists
 const config = {
-  name: 'Salmonella enterica',
-  sraAccession: '2492428',
-  referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA_000988525.2_ASM98852v2/GCA_000988525.2_ASM98852v2_genomic.fna.gz'
+  name: 'Streptococcus pneumoniae',
+  sraAccession: 'ERR045788',
+  referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/195/995/GCF_000195995.1_ASM19599v1/GCF_000195995.1_ASM19599v1_genomic.fna.gz'
 }
 
 const KMERSIZE = 20
 const MINCOVERAGE = 5
-const PLOTXMAX = 60
-const PLOTYMAX = 1200000
 
 // === TASKS ===
 
@@ -61,7 +59,7 @@ const bwaIndex = task({
   input: '*_genomic.fna.gz',
   output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix => `*_genomic.fna.gz.${suffix}`),
   name: 'bwa index *_genomic.fna.gz'
-}, ({ input }) => `bwa index ${input}` )
+}, ({ input }) => `bwa index ${input}`)
 
 
 /**
@@ -79,7 +77,7 @@ const getSamples = task({
   output: '**/*.sra',
   dir: process.cwd(), // Set dir to resolve input/output from
   name: `Download SRA ${config.sraAccession}`
-}, ({ params }) => ncbi.download(params.db, params.accession).resume() )
+}, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}` )
 
 
 /**
@@ -230,7 +228,7 @@ const pipeline = join(
   junction(
     join(getReference, bwaIndex),
     join(getSamples, fastqDump)
-  ),
+   ),
   trim, mergeTrimEnds,
   decompressReference, // only b/c mpileup did not like fna.gz
   join(
