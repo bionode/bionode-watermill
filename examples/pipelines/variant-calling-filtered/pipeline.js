@@ -24,7 +24,6 @@ const config = {
   sraAccession: 'ERR045788',
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
 }
-
 const KMERSIZE = 20
 const MINCOVERAGE = 5
 const PLOTXMAX = 60 //unused
@@ -240,4 +239,5 @@ const pipeline = join(
 )
 
 pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
+
 
