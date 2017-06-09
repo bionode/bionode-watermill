@@ -25,4 +25,4 @@ test/files
 # example specific files/folders
 examples/pipelines/variant-calling-filtered/adapters
 examples/pipelines/variant-calling-filtered/bin
-
+.idea/
