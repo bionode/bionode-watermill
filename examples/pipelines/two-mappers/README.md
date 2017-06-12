@@ -156,7 +156,7 @@ Then, we 'forced' each indexing to run before each mapping approach by using
 [here](https://github.com/bionode/bionode-watermill/blob/master/examples
 /pipelines/two-mappers/pipeline.js#L66-L114).
 
-### The challenge!
+### The challenge! :boom:
 
 Now that you have tasted a simple pipeline that is able to map sequences from
  NCBI SRA against a reference genome using two different mappers, feel free 
