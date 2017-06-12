@@ -32,7 +32,7 @@ _Streptococcus pneumoniae_ and the SRA accession 'ERR045788', and then map the
   according to your own needs (which might be a good starting point to 
   understand the mechanics of bionode-watermill).
   
-  This pipeline example is available [here](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/two-mappers/pipeline.js)
+  This example pipeline is available [here](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/two-mappers/pipeline.js)
 
 ## The Pipeline
 ### Fetching sequence data
