@@ -126,7 +126,7 @@ downloading, and in the case of samples being extracted from `.sra` file, the
 
 Now, in fact **fork** isn't really necessary in the above example, however, 
 the idea is for you to continue on your own after this example. For instance 
-you may try to run `samtools faidx`  after the fork, which will render two 
+you may try to run `samtools`  after the fork, which will render two 
 independent results, one for `bowtie` results and another for `bwa` results. 
 The pipeline would look something like this:
 
@@ -142,7 +142,7 @@ const pipeline = join(
     join(IndexReferenceBwa, bwaMapper),
     join(indexReferenceBowtie2, bowtieMapper)
   ),
-  samtoolsFaidx
+  samtoolsStuff
 )
 ```
 
