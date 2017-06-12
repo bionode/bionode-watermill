@@ -166,3 +166,5 @@ Now that you have tasted a simple pipeline that is able to map sequences from
   --> `samtools sort` --> `samtools index` --> `samtools depth`.
 
 
+If you run into trouble, you can find an example of this pipeline 
+[here](https://github.com/bionode/bionode-watermill/tree/master/examples/pipelines/two-mappers/pipeline_lazy.js).
