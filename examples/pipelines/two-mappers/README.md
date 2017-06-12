@@ -153,8 +153,7 @@ But, back to mapping! In this example we set up mapping in two types of tasks:
 
 Then, we 'forced' each indexing to run before each mapping approach by using 
 **join** orchestrator. You can check the definition of these tasks 
-[here](https://github.com/bionode/bionode-watermill/blob/master/examples
-/pipelines/two-mappers/pipeline.js#L66-L114).
+[here](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/two-mappers/pipeline.js#L66-L114).
 
 ### The challenge! :boom:
 
