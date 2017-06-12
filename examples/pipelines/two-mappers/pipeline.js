@@ -18,6 +18,7 @@ const ncbi = require('bionode-ncbi')
 
 // === CONFIG ===
 
+// specifies the number of threads to use by mappers
 const THREADS = parseInt(process.env.WATERMILL_THREADS) || 2
 
 const config = {
@@ -51,14 +52,16 @@ const getSamples = task({
   output: '**/*.sra',
   dir: process.cwd(), // Set dir to resolve input/output from
   name: 'Download SRA ${config.sraAccession}'
-}, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}` )
+}, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}`
+)
 
 // extract the samples from fastq.gz
 const fastqDump = task({
   input: '**/*.sra',
   output: [1, 2].map(n => `*_${n}.fastq.gz`),
   name: 'fastq-dump **/*.sra'
-}, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}` )
+}, ({ input }) => `fastq-dump --split-files --skip-technical --gzip ${input}`
+)
 
 // then index using first bwa ...
 const IndexReferenceBwa = task({
@@ -77,6 +80,8 @@ const indexReferenceBowtie2 = task({
   params: { output: 'bowtie_index'},
   name: 'bowtie2-build -q uncompressed.fa bowtie_index'
 }, ({ params, input }) => `gunzip -c ${input} > uncompressed.fa | bowtie2-build -q uncompressed.fa ${params.output}`
+/* for bowtie we had to uncompress the .fna.gz file first before building
+ the reference */
 )
 
 // now use mappers with bwa
