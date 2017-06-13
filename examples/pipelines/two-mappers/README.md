@@ -22,7 +22,7 @@ run the examples from within the bionode-watermill folders).
 6) **[samtools](http://samtools.sourceforge.net/)**
 
 However, don't worry you can use [this](https://github.com/bionode/bionode-watermill-tutorial/tree/master/docker-watermill-tutorial) 
-docker image instead. You can also check the [docker hub repo](https://hub.docker.com/r/tiagofilipe12/docker-watermill-tutorial/) 
+docker image instead. You can also check the [docker hub repo](https://hub.docker.com/r/tiagofilipe12/bionode-watermill-tutorial/) 
 if you prefer.
 
 ## What for?
