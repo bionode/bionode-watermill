@@ -12,16 +12,18 @@ First of all, you will need to clone bionode-watermill if you haven't done it
 
 Also, you need to have installed:
 
-1) **[bionode-ncbi](https://github.com/bionode/bionode-ncbi)** (however, this 
+1) **Node.js** version 7 or higher.
+2) **[bionode-ncbi](https://github.com/bionode/bionode-ncbi)** (however, this 
 one is not really necessary assuming that you 
 run the examples from within the bionode-watermill folders).
-2) **[sra-toolkit](https://www.ncbi.nlm.nih.gov/books/NBK158900/)**
-3) **[bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)**
-4) **[bwa](http://bio-bwa.sourceforge.net/)**
-5) **[samtools](http://samtools.sourceforge.net/)**
+3) **[sra-toolkit](https://www.ncbi.nlm.nih.gov/books/NBK158900/)**
+4) **[bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)**
+5) **[bwa](http://bio-bwa.sourceforge.net/)**
+6) **[samtools](http://samtools.sourceforge.net/)**
 
-However, don't worry you can use this docker image instead. (**under 
-construction**).
+However, don't worry you can use [this](https://github.com/tiagofilipe12/docker-watermill-tutorial) 
+docker image instead. You can also check the [docker hub repo](https://hub.docker.com/r/tiagofilipe12/docker-watermill-tutorial/) 
+if you prefer.
 
 ## What for?
 
@@ -32,7 +34,7 @@ _Streptococcus pneumoniae_ and the SRA accession 'ERR045788', and then map the
   according to your own needs (which might be a good starting point to 
   understand the mechanics of bionode-watermill).
   
-  This example pipeline is available [here](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/two-mappers/pipeline.js)
+  This example pipeline is available [here](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/two-mappers/pipeline.js).
 
 ## The Pipeline
 ### Fetching sequence data
