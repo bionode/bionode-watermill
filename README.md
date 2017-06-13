@@ -67,6 +67,10 @@ const pipeline = join(
 )
 ```
 
+## Tutorial
+
+- [Try out bionode-watermill tutorial](https://github.com/bionode/bionode-watermill-tutorial)
+
 ## Examples
 
 - [Toy pipeline with shell/node](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/pids/pipeline.js)
