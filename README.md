@@ -6,6 +6,15 @@
 
 [![NPM](https://nodei.co/npm/bionode-watermill.png?downloads=true&stars=true)](https://nodei.co/npm/bionode-watermill/)
 
+
+- [CWL?](#cwl)
+- [What is a task?](#what-is-a-task)
+- [What are orchestrators?](#what-are-orchestrators)
+- [Check out bionode-watermill tutorial!](#check-out-bionode-watermill-tutorial)
+- [Example pipelines](#example-pipelines)
+- [Why bionode-watermill?](#why-bionode-watermill)
+- [Who is this tool for?](#who-is-this-tool-for)
+
 Watermill lets you *orchestrate* **tasks** using operators like **join**, **junction**, and **fork**. Each task has a [lifecycle](https://thejmazz.gitbooks.io/bionode-watermill/content/TaskLifecycle.html) where
 
 1. Input [glob patterns](https://github.com/isaacs/node-glob) are resolved to absolute file paths (e.g. `*.bam` to `reads.bam`)
@@ -67,16 +76,23 @@ const pipeline = join(
 )
 ```
 
-## Tutorial
+## Check out bionode-watermill tutorial!
 
 - [Try out bionode-watermill tutorial](https://github.com/bionode/bionode-watermill-tutorial)
 
-## Examples
+## Example pipelines
 
 - [Toy pipeline with shell/node](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/pids/pipeline.js)
 - [Simple capitalize task](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/capitalize/capitalize.js)
 - [Simple SNP calling](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/variant-calling-simple/pipeline.js)
 - [SNP calling with filtering and fork](https://github.com/bionode/bionode-watermill/blob/master/examples/pipelines/variant-calling-filtered/pipeline.js)
+- [Mapping with bowtie2 and bwa](https://github.com/bionode/bionode-watermill/tree/master/examples/pipelines/two-mappers)
+
+## Why bionode-watermill?
+
+[This blog post](https://jmazz.me/blog/NGS-Workflows)
+compares the available tools to deal with NGS workflows, explaining the 
+advantages of each one, including **bionode-watermill**.
 
 ## Who is this tool for?
 
