@@ -34,7 +34,7 @@ const config = {
 const getReference = task({
   params: { url: config.referenceURL },
   output: '*_genomic.fna.gz',
-  name: 'Download reference genome for Streptococcus pneumoniae'
+  name: `Download reference genome for ${config.name}`
 }, ({ params, dir }) => {
   const { url } = params
   const outfile = url.split('/').pop()
@@ -51,7 +51,7 @@ const getSamples = task({
     },
     output: '**/*.sra',
     dir: process.cwd(), // Set dir to resolve input/output from
-    name: 'Download SRA ${config.sraAccession}'
+    name: `Download SRA ${config.sraAccession}`
   }, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}`
 )
 
