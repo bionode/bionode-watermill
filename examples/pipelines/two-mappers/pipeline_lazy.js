@@ -43,7 +43,7 @@ const getReference = task({
   return request(url).pipe(fs.createWriteStream(dir + '/' + outfile))
 })
 
-//then get samples to work with
+// then get samples to work with
 const getSamples = task({
     params: {
       db: 'sra',
