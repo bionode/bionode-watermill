@@ -34,7 +34,7 @@ const config = {
 const getReference = task({
   params: { url: config.referenceURL },
   output: '*_genomic.fna.gz',
-  name: 'Download reference genome for ${config.name}'
+  name: 'Download reference genome for Streptococcus pneumoniae'
 }, ({ params, dir }) => {
   const { url } = params
   const outfile = url.split('/').pop()
