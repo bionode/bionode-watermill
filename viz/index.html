@@ -24,6 +24,7 @@
   socket.on('message', function(message) {
     console.log(message)
     var jsonEntry = message.graph
+    d3.selectAll("svg > *").remove()
     executeD3graph(jsonEntry)
   })
 
@@ -41,10 +42,8 @@
     .force("center", d3.forceCenter(width / 2, height / 2));
 
   function executeD3graph(graph) {
-    console.log(graph)
 
-    //d3.json("graphson.json", function (error, graph) {
-    //  if (error) throw error;
+    console.log(graph)
 
     //checks if output is from a junction or join and append a variable to
     // that for color definition
@@ -62,8 +61,7 @@
         console.log(graph.vertices[obj])    // useful for debugging
       }
     }
-    //if (graph.graph.edges.values.output.startWith
-    //console.log(graph.graph.vertices)
+
     var link = svg.append("g")
       .attr("class", "links")
       .selectAll("line")
@@ -104,25 +102,25 @@
         .attr("cx", function (d) { return d.x; })
         .attr("cy", function (d) { return d.y; });
     }
-    //});
-
-    function dragstarted (d) {
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
-
-    function dragged (d) {
-      d.fx = d3.event.x;
-      d.fy = d3.event.y;
-    }
-
-    function dragended (d) {
-      if (!d3.event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
   }
+
+  function dragstarted (d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
+
+  function dragged (d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+
+  function dragended (d) {
+    if (!d3.event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+  }
+
 
 </script>
 
