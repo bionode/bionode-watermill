@@ -22,8 +22,8 @@
   var socket = io.connect('http://localhost:8084');
 
   socket.on('message', function(message) {
-    console.log(message.connected)
-    var jsonEntry = message
+    console.log(message)
+    var jsonEntry = message.graph
     executeD3graph(jsonEntry)
   })
 
@@ -48,18 +48,18 @@
 
     //checks if output is from a junction or join and append a variable to
     // that for color definition
-    for (obj in graph.graph.vertices) {
+    for (obj in graph.vertices) {
       // checks if vertex is coming from a junction or a task
       // if object comes from a task it will have an access for output
       // otherwise it will have more objects inside each one with its own output
-      if (graph.graph.vertices[obj].values) {
-        if (graph.graph.vertices[obj].values.output) {
-          graph.graph.vertices[obj]["kind"] = 'task'
+      if (graph.vertices[obj].values) {
+        if (graph.vertices[obj].values.output) {
+          graph.vertices[obj]["kind"] = 'task'
         } else {
-          graph.graph.vertices[obj]["kind"] = 'junction'
+          graph.vertices[obj]["kind"] = 'junction'
         }
       } else {
-        console.log(graph.graph.vertices[obj])    // useful for debugging
+        console.log(graph.vertices[obj])    // useful for debugging
       }
     }
     //if (graph.graph.edges.values.output.startWith
@@ -67,14 +67,14 @@
     var link = svg.append("g")
       .attr("class", "links")
       .selectAll("line")
-      .data(graph.graph.edges)
+      .data(graph.edges)
       .enter().append("line")
       .attr("stroke-width", function (d) { return Math.sqrt(d.value); });
 
     var node = svg.append("g")
       .attr("class", "nodes")
       .selectAll("circle")
-      .data(graph.graph.vertices)
+      .data(graph.vertices)
       .enter().append("circle")
       .attr("r", 5)
       .attr("fill", function (d) { return color(d.kind); })
@@ -87,11 +87,11 @@
       .text(function (d) { return d._id; });
 
     simulation
-      .nodes(graph.graph.vertices)
+      .nodes(graph.vertices)
       .on("tick", ticked);
 
     simulation.force("link")
-      .links(graph.graph.edges);
+      .links(graph.edges);
 
     function ticked () {
       link
