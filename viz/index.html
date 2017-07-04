@@ -22,7 +22,7 @@
   var socket = io.connect('http://localhost:8084')
 
   socket.on('message', function(message) {
-    console.log(message)
+    //console.log(message)
     var jsonEntry = message.graph
     d3.selectAll("svg > *").remove()
     // removes previous graph instance on each message
@@ -46,19 +46,12 @@
 
     //checks if output is from a junction or join and append a variable to
     // that for color definition
-    for (obj in graph.vertices) {
+    for (var obj in graph.vertices) {
       // checks if vertex is coming from a junction or a task
       // if object comes from a task it will have an access for output
       // otherwise it will have more objects inside each one with its own output
-      if (graph.vertices[obj].values) {
-        if (graph.vertices[obj].values.output) {
-          graph.vertices[obj]["kind"] = 'task'
-        } else {
-          graph.vertices[obj]["kind"] = 'junction'
-        }
-      } //else {
-        //console.log(graph.vertices[obj])    // useful for debugging
-      //}
+      graph.vertices[obj]["kind"] = graph.vertices[obj].values.type !==
+      undefined ? 'task' : 'junction'
     }
 
     var link = svg.append("g")
@@ -81,11 +74,17 @@
         .on("end", dragended))
 
     node.append("title")
-      .text(function (d) { return `uid: ${d._id}
-      task name: ${d.values.taskName}
-      output(s): ${d.values.output}
-      input(s): ${JSON.stringify(d.values.input)}
-      params: ${JSON.stringify(d.values.params)}` })
+      .text(function (d) {
+        miniUid = d.values.type !== undefined ?
+          `./data/${d._id.substring(0, 7)}` : 'n/a'
+        return `- uid: ${d._id}
+- Kind: ${d.kind}
+- Task name: ${d.values.taskName}
+- output(s): ${d.values.output}
+- Input pattern: ${JSON.stringify(d.values.input)}
+- params: ${JSON.stringify(d.values.params)}
+- Output folder: ${miniUid}` })
+//this will not handle properly bionode-ncbi output folders
 
     simulation
       .nodes(graph.vertices)
