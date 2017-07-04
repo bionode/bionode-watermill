@@ -44,6 +44,20 @@
 
   function executeD3graph(graph) {
 
+    // arrow ir self
+    svg.append("svg:defs").selectAll("marker")
+      .data(["end"])      // Different link/path types can be defined here
+      .enter().append("svg:marker")    // This section adds in the arrows
+      .attr("id", String)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 15)
+      .attr("refY", -1.5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("d", "M0,-5L10,0L0,5");
+
     //checks if output is from a junction or join and append a variable to
     // that for color definition
     for (var obj in graph.vertices) {
@@ -56,12 +70,13 @@
       // array rather than an object where type is available.
     }
 
-    var link = svg.append("g")
+    var link = svg.selectAll(".link")
       .attr("class", "links")
-      .selectAll("line")
       .data(graph.edges)
       .enter().append("line")
       .attr("stroke-width", function (d) { return Math.sqrt(d.value) })
+      .attr("stroke", "black")
+      .attr("marker-end", "url(#end)")
 
     var node = svg.append("g")
       .attr("class", "nodes")
