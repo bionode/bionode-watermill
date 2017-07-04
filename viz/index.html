@@ -84,7 +84,7 @@
       .text(function (d) { return `uid: ${d._id}
       task name: ${d.values.taskName}
       output(s): ${d.values.output}
-      input(s): ${d.values.input}
+      input(s): ${JSON.stringify(d.values.input)}
       params: ${JSON.stringify(d.values.params)}` })
 
     simulation
