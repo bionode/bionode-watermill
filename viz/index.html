@@ -52,6 +52,8 @@
       // otherwise it will have more objects inside each one with its own output
       graph.vertices[obj]["kind"] = graph.vertices[obj].values.type !==
       undefined ? 'task' : 'junction'
+      // this is only undefined because graph.vertices.values.type returns an
+      // array rather than an object where type is available.
     }
 
     var link = svg.append("g")
