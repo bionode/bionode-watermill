@@ -9,7 +9,13 @@
 
     .nodes circle {
         stroke: #fff;
-        stroke-width: 1.5px;
+        stroke-width: 1px;
+    }
+
+    text {
+        font: 10px sans-serif;
+        pointer-events: none;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
     }
 
 </style>
@@ -37,8 +43,9 @@
 
   var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  var simulation = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d._id; }))
+  var simulation = d3.forceSimulation().velocityDecay(0.08)
+    .force("link",
+      d3.forceLink().id(function(d) { return d._id }).distance(40).strength(1))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2))
 
@@ -50,8 +57,8 @@
       .enter().append("svg:marker")    // This section adds in the arrows
       .attr("id", String)
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 15)
-      .attr("refY", -1.5)
+      .attr("refX", 25)
+      .attr("refY", 0)
       .attr("markerWidth", 6)
       .attr("markerHeight", 6)
       .attr("orient", "auto")
@@ -83,12 +90,25 @@
       .selectAll("circle")
       .data(graph.vertices)
       .enter().append("circle")
-      .attr("r", 5)
+      .attr("r", 10)
       .attr("fill", function (d) { return color(d.kind) })
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended))
+
+    var text = svg.append("g")
+      .attr("class", "labels")
+      .selectAll("g")
+      .data(graph.vertices)
+      .enter().append("g")
+
+    text.append("text")
+      .attr("x", 14)
+      .attr("y", ".31em")
+      .style("font-family", "sans-serif")
+      .style("font-size", "0.7em")
+      .text(function(d) { return d._id.substring(0, 7); });
 
     node.append("title")
       .text(function (d) {
@@ -116,10 +136,11 @@
         .attr("y1", function (d) { return d.source.y })
         .attr("x2", function (d) { return d.target.x })
         .attr("y2", function (d) { return d.target.y })
-
       node
         .attr("cx", function (d) { return d.x })
         .attr("cy", function (d) { return d.y })
+      text
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
     }
   }
 
