@@ -66,10 +66,15 @@ const fastqDump = task({
 // then index using first bwa ...
 const IndexReferenceBwa = task({
   input: '*_genomic.fna.gz',
-  output: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix =>
-    `*_genomic.fna.gz.${suffix}`),
-  name: 'bwa index *_genomic.fna.gz'
-}, ({ input }) => `bwa index ${input}`)
+  output: {
+    indexFile: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix =>
+      `bwa_index.fa.${suffix}`),
+    reference: 'bwa_index.fa' //names must match for bwa - between reference
+    // and index files
+  },
+  params: { output: 'bwa_index.fa' },
+  name: 'bwa index bwa_index.fa -p bwa_index'
+}, ({ params, input }) => `gunzip -c ${input} > bwa_index.fa && bwa index bwa_index.fa -p ${params.output}`)
 
 // and bowtie2
 
@@ -79,7 +84,7 @@ const indexReferenceBowtie2 = task({
       'rev.2.bt2'].map(suffix => `bowtie_index.${suffix}`),
     params: { output: 'bowtie_index' },
     name: 'bowtie2-build -q uncompressed.fa bowtie_index'
-  }, ({ params, input }) => `gunzip -c ${input} > uncompressed.fa | bowtie2-build -q uncompressed.fa ${params.output}`
+  }, ({ params, input }) => `gunzip -c ${input} > uncompressed.fa && bowtie2-build -q uncompressed.fa ${params.output}`
   /* for bowtie we had to uncompress the .fna.gz file first before building
    the reference */
 )
@@ -88,10 +93,10 @@ const indexReferenceBowtie2 = task({
 
 const bwaMapper = task({
     input: {
-      reference: '*_genomic.fna.gz',
+      reference: 'bwa_index.fa',
       reads:[1, 2].map(n => `*_${n}.fastq.gz`),
       indexFiles: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix =>
-        `*_genomic.fna.gz.${suffix}`) //pass index files to bwa mem
+        `bwa_index.fa.${suffix}`) //pass index files to bwa mem
     },
     output: '*.sam',
     params: { output: 'bwa_output.sam' },
