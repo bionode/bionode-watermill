@@ -116,9 +116,9 @@
           `./data/${d._id.substring(0, 7)}` : 'n/a'
         return `- uid: ${d._id}
 - Kind: ${d.kind}
-- Task name: ${d.values.taskName}
-- output(s): ${d.values.output}
-- Input pattern: ${JSON.stringify(d.values.input)}
+- Task name: ${d.values.name}
+- Output(s): ${JSON.stringify(d.values.resolvedOutput)}
+- Input(s): ${JSON.stringify(d.values.resolvedInput)}
 - params: ${JSON.stringify(d.values.params)}
 - Output folder: ${miniUid}` })
 //this will not handle properly bionode-ncbi output folders
