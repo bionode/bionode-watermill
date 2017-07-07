@@ -87,7 +87,6 @@ const indexReferenceBowtie2 = task({
 }, ({ params, input }) => `gunzip -c ${input} > uncompressed.fa && bowtie2-build -q uncompressed.fa ${params.output}`
 /* for bowtie we had to uncompress the .fna.gz file first before building
  the reference */
- the reference */
 )
 
 // now use mappers with bwa
