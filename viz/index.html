@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<style>
+
+    .links line {
+        stroke: #999;
+        stroke-opacity: 0.6;
+    }
+
+    .nodes circle {
+        stroke: #fff;
+        stroke-width: 1px;
+    }
+
+    text {
+        font: 10px sans-serif;
+        pointer-events: none;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    }
+
+</style>
+<svg width="1900" height="800"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+  // socket.io tests
+  var socket = io.connect('http://localhost:8084')
+
+  socket.on('message', function(message) {
+    //console.log(message)
+    var jsonEntry = message.graph
+    d3.selectAll("svg > *").remove()
+    // removes previous graph instance on each message
+    executeD3graph(jsonEntry)
+  })
+
+  //socket.io tests ending...
+
+  var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height")
+
+  var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+  var simulation = d3.forceSimulation().velocityDecay(0.08)
+    .force("link",
+      d3.forceLink().id(function(d) { return d._id }).distance(40).strength(1))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width / 2, height / 2))
+
+  function executeD3graph(graph) {
+
+    // arrow ir self
+    svg.append("svg:defs").selectAll("marker")
+      .data(["end"])      // Different link/path types can be defined here
+      .enter().append("svg:marker")    // This section adds in the arrows
+      .attr("id", String)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 25)
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+      .append("svg:path")
+      .attr("d", "M0,-5L10,0L0,5");
+
+    //checks if output is from a junction or join and append a variable to
+    // that for color definition
+    for (var obj in graph.vertices) {
+      // checks if vertex is coming from a junction or a task
+      // if object comes from a task it will have an access for output
+      // otherwise it will have more objects inside each one with its own output
+      graph.vertices[obj]["kind"] = graph.vertices[obj].values.type !==
+      undefined ? 'task' : 'junction'
+      // this is only undefined because graph.vertices.values.type returns an
+      // array rather than an object where type is available.
+    }
+
+    var link = svg.selectAll(".link")
+      .attr("class", "links")
+      .data(graph.edges)
+      .enter().append("line")
+      .attr("stroke-width", function (d) { return Math.sqrt(d.value) })
+      .attr("stroke", "black")
+      .attr("marker-end", "url(#end)")
+
+    var node = svg.append("g")
+      .attr("class", "nodes")
+      .selectAll("circle")
+      .data(graph.vertices)
+      .enter().append("circle")
+      .attr("r", 10)
+      .attr("fill", function (d) { return color(d.kind) })
+      .call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended))
+
+    var text = svg.append("g")
+      .attr("class", "labels")
+      .selectAll("g")
+      .data(graph.vertices)
+      .enter().append("g")
+
+    text.append("text")
+      .attr("x", 14)
+      .attr("y", ".31em")
+      .style("font-family", "sans-serif")
+      .style("font-size", "0.7em")
+      .text(function(d) { return d._id.substring(0, 7); });
+
+    node.append("title")
+      .text(function (d) {
+        miniUid = d.values.type !== undefined ?
+          `./data/${d._id.substring(0, 7)}` : 'n/a'
+        return `- uid: ${d._id}
+- Kind: ${d.kind}
+- Task name: ${d.values.name}
+- Output(s): ${JSON.stringify(d.values.resolvedOutput)}
+- Input(s): ${JSON.stringify(d.values.resolvedInput)}
+- params: ${JSON.stringify(d.values.params)}
+- Output folder: ${miniUid}` })
+//this will not handle properly bionode-ncbi output folders
+
+    simulation
+      .nodes(graph.vertices)
+      .on("tick", ticked)
+
+    simulation.force("link")
+      .links(graph.edges)
+
+    function ticked () {
+      link
+        .attr("x1", function (d) { return d.source.x })
+        .attr("y1", function (d) { return d.source.y })
+        .attr("x2", function (d) { return d.target.x })
+        .attr("y2", function (d) { return d.target.y })
+      node
+        .attr("cx", function (d) { return d.x })
+        .attr("cy", function (d) { return d.y })
+      text
+        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+    }
+  }
+
+  function dragstarted (d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart()
+    d.fx = d.x
+    d.fy = d.y
+  }
+
+  function dragged (d) {
+    d.fx = d3.event.x
+    d.fy = d3.event.y
+  }
+
+  function dragended (d) {
+    if (!d3.event.active) simulation.alphaTarget(0)
+    d.fx = null
+    d.fy = null
+  }
+
+
+</script>
+
