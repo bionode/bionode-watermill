@@ -112,6 +112,7 @@ const pipeline = join(
       getReference,
       join(getSamples,fastqDump)
   ),
+  gunzipIt,
   fork(
     join(IndexReferenceBwa, bwaMapper),
     join(indexReferenceBowtie2, bowtieMapper)
@@ -140,6 +141,7 @@ const pipeline = join(
       getReference,
       join(getSamples,fastqDump)
   ),
+  gunzipIt,
   fork(
     join(IndexReferenceBwa, bwaMapper),
     join(indexReferenceBowtie2, bowtieMapper)
