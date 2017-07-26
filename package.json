@@ -7,7 +7,9 @@
     "test": "mocha test/**/*.spec.js",
     "coverage": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage",
     "book-build": "gitbook build",
-    "book-serve": "gitbook serve"
+    "book-serve": "gitbook serve",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -72,6 +74,8 @@
     "redux-saga": "^0.11.0",
     "redux-thunk": "^2.1.0",
     "socket.io": "^2.0.3",
-    "stream-from-promise": "^1.0.0"
-  }
+    "stream-from-promise": "^1.0.0",
+    "snyk": "^1.36.2"
+  },
+  "snyk": true
 }
