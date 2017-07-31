@@ -10,7 +10,7 @@ const {
 
 const task0 = task({name: 'coco'}, () => `echo "something0"`)
 
-const task1 = task({name: 'xixi'}, () => `echo "something1"`)
+const task1 = task({name: 'nut'}, () => `echo "something1"`)
 
 const task2 = task({name: 'foo'}, () => `echo "something2"`)
 
