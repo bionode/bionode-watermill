@@ -16,6 +16,13 @@ const task2 = task({name: 'foo'}, () => `echo "something2"`)
 
 const task3 = task({name: 'bar'}, () => `echo "something3"`)
 
-const pipeline = join(task0, join(task1, task2), task3)
+const pipeline = join(
+  task0,
+  join(
+    task1,
+    task2
+  ),
+  task3
+)
 
 pipeline()

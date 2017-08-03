@@ -22,6 +22,20 @@ const task5 = task({name: 'test1'}, () => `echo "something5"`)
 
 const task6 = task({name: 'test6'}, () => `echo "something6"`)
 
-const pipeline = join(task0, junction(join(task1, junction(task4, task5), task6), task2), task3)
+const pipeline = join(
+  task0,
+  junction(
+    join(
+      task1,
+      junction(
+        task4,
+        task5
+      ),
+      task6
+    ),
+    task2
+  ),
+  task3
+)
 
 pipeline()
