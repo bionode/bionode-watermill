@@ -20,6 +20,8 @@ const task4 = task({name: 'task4'}, () => `echo "something4"`)
 
 const task5 = task({name: 'task5'}, () => `echo "something5"`)
 
+const task6 = task({name: 'task6'}, () => `echo "something6"`)
+
 const pipeline = join(
   task0,
   fork(
@@ -27,7 +29,7 @@ const pipeline = join(
       task4,
       fork(
         task1,
-        task3
+        fork(task3,task6)
       )
     ),
     task2
