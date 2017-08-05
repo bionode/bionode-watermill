@@ -29,7 +29,7 @@ const pipeline = join(
       task4,
       fork(
         task1,
-        fork(task3,task6)
+        task3 //fork(task3,task6)
       )
     ),
     task2
