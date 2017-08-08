@@ -25,10 +25,10 @@ const task6 = task({name: 'test6'}, () => `echo "something6"`)
 const pipeline = join(
   task0,
   join(
-    task1,
+    task5,
     join(
       task4,
-      task5
+      task5 //repetitive task... for test purposes
     ),
     task6
   ),
