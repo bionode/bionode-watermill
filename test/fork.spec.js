@@ -46,9 +46,14 @@ describe('fork', function() {
     pipeline().then((results) => {
       console.log('RESULTS: ', results)
       assert.equal(results[0].tasks[0], ls.info.uid)
-      assert.equal(results[0].tasks[1], hash(lineCount.info.uid + 0))
+      // newUid of task is inaccessible because context doesn't exist prior
+      // to task execution
+      // instead the resulting new task id (newUid from task.js) is added to
+      // task.context.trajectory
+      assert.equal(results[0].tasks[1], results[0].context.trajectory[2])
       assert.equal(results[1].tasks[0], lsAL.info.uid)
-      assert.equal(results[1].tasks[1], hash(lineCount.info.uid + 1))
+      // newUid of task is unnaccessible because context doesn't exist prior to task execution
+      assert.equal(results[1].tasks[1], results[1].context.trajectory[2])
 
       done()
     })
