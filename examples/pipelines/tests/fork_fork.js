@@ -52,4 +52,19 @@ const pipeline2 = join(
   task5
 )
 
-pipeline2()
+const pipeline3 = join(
+  task0,
+  fork(
+      fork(
+        task1,
+        task3
+      ),
+      task6
+    //),
+    //task2
+  ),
+  task5
+)
+
+
+pipeline3()
