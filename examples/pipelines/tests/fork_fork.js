@@ -111,4 +111,4 @@ const pipeline5 = join(
   task5
 )
 
-pipeline5()
+pipeline4()
