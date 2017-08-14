@@ -64,7 +64,7 @@ const pipeline3 = join(
   fork(
       fork(
         task1,
-        task3
+        join(task4,task8)
       ),
       task6
   ),
@@ -84,7 +84,7 @@ const pipeline4 = join(
             task3
           )
         ),
-        task6
+        join(task8,task6)
       )
     ),
     task2
@@ -139,4 +139,20 @@ const pipeline6 = join(
   task5
 )
 
-pipeline6()
+const pipeline7 = join(
+  task0,
+  fork(task4, task3),
+  task5,
+  fork(task1, task2),
+  task6
+)
+
+const pipeline8 = join(
+  task0,
+  fork(task4, task3),
+  task5,
+  junction(task1, task2),
+  task6
+)
+
+pipeline3()
