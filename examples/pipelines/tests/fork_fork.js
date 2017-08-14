@@ -24,6 +24,10 @@ const task6 = task({name: 'task6'}, () => `echo "something6"`)
 
 const task7 = task({name: 'task7'}, () => `echo "something7"`)
 
+const task3_2 = task({name: 'task3_2'}, () => `echo "something3_2"`)
+
+const task8 = task({name: 'task8'}, () => `echo "something8"`)
+
 
 // alternative with manual handling of task5 (the last leave of each branch)
 const pipeline = join(
@@ -111,4 +115,28 @@ const pipeline5 = join(
   task5
 )
 
-pipeline4()
+const pipeline6 = join(
+  task0,
+  fork(
+    join(
+      task4,
+      fork(
+        join(
+          task7,
+          fork(
+            join(
+              task1,
+              fork(task3, task3_2)
+            ),
+            task8
+          )
+        ),
+        task6
+      )
+    ),
+    task2
+  ),
+  task5
+)
+
+pipeline6()
