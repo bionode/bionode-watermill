@@ -173,4 +173,4 @@ const pipeline8_2 = join(
   task6
 )
 
-pipeline7_2()
+pipeline8_2()
