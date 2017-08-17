@@ -73,7 +73,6 @@ describe('fork', function() {
     )
     pipeline2().then((results) => {
       console.log('RESULTS: ',results)
-      console.log(results[0][0].context.trajectory)
       // all these tests check if final task is the same in task definition
       // and trajectory
       assert.equal(results[0][0].tasks[1], results[0][0].context.trajectory[3])

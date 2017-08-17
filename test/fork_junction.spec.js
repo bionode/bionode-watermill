@@ -2,9 +2,9 @@
 
 const { task, fork, join, junction } = require('../')
 
-const { assert } = require('chai')
+const { should } = require('chai')
 
-const task0 = task({name: 'task0'}, () => `echo "something0"`)
+const task0 = task({name: 'task0_2"'}, () => `echo "something0"`)
 
 const task1 = task({name: 'task1'}, () => `echo "something1"`)
 
@@ -19,7 +19,7 @@ const task5 = task({name: 'task5'}, () => `echo "something5"`)
 const task6 = task({name: 'task6'}, () => `echo "something6"`)
 
 describe('fork_junction', function() {
-  it('junction should work after a fork', function(done) {
+  it('junction should work after a fork', function() {
     const pipeline = join(
       task0,
       fork(
@@ -38,12 +38,12 @@ describe('fork_junction', function() {
     pipeline().then((results) => {
       console.log('RESULTS: ',results)
       // should assure that junction node exists
-      assert.isOk(results[0].context.trajectory[0])
+      should.exist(results[0].context.trajectory[0])
       // should assure that both ends of the pipeline exist
-      assert.isOk(results[0].context.trajectory[2])
-      assert.isOk(results[1].context.trajectory[2])
+      should.exist(results[0].context.trajectory[2])
+      should.exist(results[1].context.trajectory[2])
 
-      done()
+      //done()
     })
   })
 })
