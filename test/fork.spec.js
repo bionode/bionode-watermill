@@ -16,12 +16,15 @@ const lsTask = (flags = '') => task({
 
 const ls = lsTask()
 const lsAL = lsTask('-al')
+const lsLAH = lsTask('-lah')
 
 const lineCount = task({
   input: '*.txt',
   output: '*.count',
   name: 'Count lines from *.txt'
 }, ({ input }) => `cat ${input} | wc -l > lines.count`)
+
+const task0 = task({name: 'task0'}, () => `echo "something0"`)
 
 describe('fork', function() {
   // Running this adds nodes to DAG breaking other tests
@@ -54,6 +57,28 @@ describe('fork', function() {
       assert.equal(results[1].tasks[0], lsAL.info.uid)
       // newUid of task is unnaccessible because context doesn't exist prior to task execution
       assert.equal(results[1].tasks[1], results[1].context.trajectory[2])
+
+      done()
+    })
+  })
+
+  it('should have a fork inside a fork without any wrapping', function(done) {
+    const pipeline2 = join(
+      task0,
+      fork(
+        fork(lsLAH, lsAL),
+        ls
+      ),
+      lineCount
+    )
+    pipeline2().then((results) => {
+      console.log('RESULTS: ',results)
+      console.log(results[0][0].context.trajectory)
+      // all these tests check if final task is the same in task definition
+      // and trajectory
+      assert.equal(results[0][0].tasks[1], results[0][0].context.trajectory[3])
+      assert.equal(results[0][1].tasks[1], results[0][1].context.trajectory[3])
+      assert.equal(results[1].tasks[1], results[1].context.trajectory[3])
 
       done()
     })

@@ -176,4 +176,6 @@ const pipeline8_2 = join(
 // edit this line to run the desired pipeline.
 // documentation on the usage of these pipelines may be found in the link below
 // https://github.com/bionode/GSoC17/blob/master/Journal/Week_11.md
-pipeline5()
+pipeline2().then((results) => {
+  console.log('RESULTSNEW: ', results)
+})
