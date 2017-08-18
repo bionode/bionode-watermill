@@ -81,5 +81,5 @@ describe('fork', function() {
 
       done()
     })
-  })
+  }).timeout(5000)
 })
