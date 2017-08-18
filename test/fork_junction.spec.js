@@ -36,14 +36,14 @@ describe('fork_junction', () => {
       ),
       task3
     )
-    return pipeline().then((results) => {
+    pipeline().then((results) => {
       console.log('RESULTS: ',results)
       // should assure that junction node exists
       assert.isOk(results[0].context.trajectory[0])
       // should assure that both ends of the pipeline exist
       assert.isOk(results[0].context.trajectory[2])
       assert.isOk(results[1].context.trajectory[2])
-      //done()
+      //done()  // without done it is not really testing anything
     })
   }).timeout(5000)
 })
