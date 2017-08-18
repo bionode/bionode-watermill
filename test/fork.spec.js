@@ -31,7 +31,7 @@ describe('fork', function() {
   // TODO setup/teadown
   it.skip('should return an array of results', function (done) {
     fork(ls, lsAL)().then((results) => {
-      console.log('results: ', results)
+      //console.log('results: ', results)
       assert.isOk(_.isArray(results))
       done()
     })
@@ -47,7 +47,7 @@ describe('fork', function() {
     const pipeline = join(fork(ls, lsAL), lineCount)
 
     pipeline().then((results) => {
-      console.log('RESULTS: ', results)
+      //console.log('RESULTS: ', results)
       assert.equal(results[0].tasks[0], ls.info.uid)
       // newUid of task is inaccessible because context doesn't exist prior
       // to task execution
@@ -72,7 +72,7 @@ describe('fork', function() {
       lineCount
     )
     pipeline2().then((results) => {
-      console.log('RESULTS: ',results)
+      //console.log('RESULTS: ',results)
       // all these tests check if final task is the same in task definition
       // and trajectory
       assert.equal(results[0][0].tasks[1], results[0][0].context.trajectory[3])

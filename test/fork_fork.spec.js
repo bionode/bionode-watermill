@@ -4,22 +4,23 @@ const { task, fork, join, junction } = require('../')
 
 const { assert } = require('chai')
 
-const task0 = task({name: 'task0_3"'}, () => `echo "something0"`)
+describe('fork_fork', () => {
+  it('fork should work after a fork, wrapped in a join', () => {
 
-const task1 = task({name: 'task1_3'}, () => `echo "something1"`)
+    const task0 = task({name: 'task0_2"'}, () => `echo "something0_2"`)
 
-const task2 = task({name: 'task2_3'}, () => `echo "something2"`)
+    const task1 = task({name: 'task1_2'}, () => `echo "something1_2"`)
 
-const task3 = task({name: 'task3_3'}, () => `echo "something3"`)
+    const task2 = task({name: 'task2_2'}, () => `echo "something2_2"`)
 
-const task4 = task({name: 'task4_3'}, () => `echo "something4"`)
+    const task3 = task({name: 'task3_2'}, () => `echo "something3_2"`)
 
-const task5 = task({name: 'task5_3'}, () => `echo "something5"`)
+    const task4 = task({name: 'task4_2'}, () => `echo "something4_2"`)
 
-const task6 = task({name: 'task6_3'}, () => `echo "something6"`)
+    const task5 = task({name: 'task5_2'}, () => `echo "something5_2"`)
 
-describe('fork_fork', function() {
-  it('fork should work after a fork, wrapped in a join', function() {
+    const task6 = task({name: 'task6_2'}, () => `echo "something6_2"`)
+
     const pipeline = join(
       task0,
       fork(
@@ -39,7 +40,8 @@ describe('fork_fork', function() {
       console.log('RESULTS: ',results)
 
       // should assure that both ends of the pipeline exist
-      assert.equal(results[1].tasks[1],results[1].context.trajectory[2])
-    })
-  })
+      assert.equal(results[1].tasks[1], results[1].context.trajectory[2])
+      //done()
+    })//.then(done, done)
+  }).timeout(5000)
 })

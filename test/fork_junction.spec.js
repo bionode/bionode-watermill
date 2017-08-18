@@ -2,24 +2,25 @@
 
 const { task, fork, join, junction } = require('../')
 
-const { should } = require('chai')
+const { assert } = require('chai')
 
-const task0 = task({name: 'task0_2"'}, () => `echo "something0"`)
+describe('fork_junction', () => {
+  it('junction should work after a fork', () => {
 
-const task1 = task({name: 'task1'}, () => `echo "something1"`)
+    const task0 = task({name: 'task0_3"'}, () => `echo "something0_3"`)
 
-const task2 = task({name: 'task2'}, () => `echo "something2"`)
+    const task1 = task({name: 'task1_3'}, () => `echo "something1_3"`)
 
-const task3 = task({name: 'task3'}, () => `echo "something3"`)
+    const task2 = task({name: 'task2_3'}, () => `echo "something2_3"`)
 
-const task4 = task({name: 'task4'}, () => `echo "something4"`)
+    const task3 = task({name: 'task3_3'}, () => `echo "something3_3"`)
 
-const task5 = task({name: 'task5'}, () => `echo "something5"`)
+    const task4 = task({name: 'task4_3'}, () => `echo "something4_3"`)
 
-const task6 = task({name: 'task6'}, () => `echo "something6"`)
+    const task5 = task({name: 'task5_3'}, () => `echo "something5_3"`)
 
-describe('fork_junction', function() {
-  it('junction should work after a fork', function() {
+    const task6 = task({name: 'task6_3'}, () => `echo "something6_3"`)
+
     const pipeline = join(
       task0,
       fork(
@@ -35,15 +36,14 @@ describe('fork_junction', function() {
       ),
       task3
     )
-    pipeline().then((results) => {
+    return pipeline().then((results) => {
       console.log('RESULTS: ',results)
       // should assure that junction node exists
-      should.exist(results[0].context.trajectory[0])
+      assert.isOk(results[0].context.trajectory[0])
       // should assure that both ends of the pipeline exist
-      should.exist(results[0].context.trajectory[2])
-      should.exist(results[1].context.trajectory[2])
-
+      assert.isOk(results[0].context.trajectory[2])
+      assert.isOk(results[1].context.trajectory[2])
       //done()
     })
-  })
+  }).timeout(5000)
 })
