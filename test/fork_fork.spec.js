@@ -4,7 +4,6 @@ const { task, fork, join, junction } = require('../')
 
 const { assert } = require('chai')
 const fs = require('fs');
-const obj = JSON.parse(fs.readFileSync('./graphson.json', 'utf8'));
 
 // Define tasks
 
@@ -41,13 +40,14 @@ describe('fork_fork', () => {
     )
     pipeline().then((results) => {
       console.log('RESULTS: ',results)
+      const obj = JSON.parse(fs.readFileSync('./graphson.json', 'utf8'));
 
       // should assure that both ends of the pipeline exist
       assert.equal(results[1].tasks[1], results[1].context.trajectory[2])
       //checks if pipeline rendered the right number of vertices and edges
       assert.equal(obj.graph.vertices.length, 10)
       assert.equal(obj.graph.edges.length, 9)
-      //done() // without done it is not really testing anything
+      done() // without done it is not really testing anything
     })
   }).timeout(5000)
 })

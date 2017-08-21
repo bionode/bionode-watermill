@@ -3,9 +3,10 @@
 const { task, fork, join, junction } = require('../')
 
 const { assert } = require('chai')
+const fs = require('fs');
 
 describe('fork_junction', () => {
-  it('junction should work after a fork', () => {
+  it('junction should work after a fork', (done) => {
 
     const task0 = task({name: 'task0_3"'}, () => `echo "something0_3"`)
 
@@ -38,12 +39,17 @@ describe('fork_junction', () => {
     )
     pipeline().then((results) => {
       console.log('RESULTS: ',results)
+      const obj = JSON.parse(fs.readFileSync('./graphson.json', 'utf8'));
+
       // should assure that junction node exists
       assert.isOk(results[0].context.trajectory[0])
       // should assure that both ends of the pipeline exist
       assert.isOk(results[0].context.trajectory[2])
       assert.isOk(results[1].context.trajectory[2])
-      //done()  // without done it is not really testing anything
+      //checks if pipeline rendered the right number of vertices and edges
+      assert.equal(obj.graph.vertices.length, 9)
+      assert.equal(obj.graph.edges.length, 9)
+      done()  // without done it is not really testing anything
     })
   }).timeout(5000)
 })
