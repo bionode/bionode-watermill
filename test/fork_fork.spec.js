@@ -26,11 +26,11 @@ const lineCount = task({
 
 const task0 = task({name: 'task0_3'}, () => `echo "something0"`)
 
-const task1 = task({name: 'task1_3'}, () => `echo "something1"`)
-
-const task2 = task({name: 'task2_3'}, () => `echo "something2"`)
-
-const task3 = task({name: 'task3_3'}, () => `echo "something3"`)
+// const task1 = task({name: 'task1_3'}, () => `echo "something1"`)
+//
+// const task2 = task({name: 'task2_3'}, () => `echo "something2"`)
+//
+// const task3 = task({name: 'task3_3'}, () => `echo "something3"`)
 
 const task4 = task({name: 'task4_3'}, () => `echo "something4"`)
 
@@ -64,8 +64,8 @@ describe('fork_fork', () => {
       // should assure that both ends of the pipeline exist
       //assert.equal(results[1].tasks[1], results[1].context.trajectory[2])
       //checks if pipeline rendered the right number of vertices and edges
-      assert.equal(obj.graph.vertices.length, 11)
-      assert.equal(obj.graph.edges.length, 9)
+      assert.equal(obj.graph.vertices.length, 17)
+      assert.equal(obj.graph.edges.length, 14)
       done() // without done it is not really testing anything
     })
   }).timeout(5000)

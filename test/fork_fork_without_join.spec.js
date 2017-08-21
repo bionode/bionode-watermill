@@ -49,8 +49,8 @@ describe('fork_fork_without_join', () => {
       //console.log(obj)
       // This counts every vertex and edge created in this test and not only
       // this last pipeline2 graph
-      assert.equal(obj.graph.vertices.length, 23) // 7 in this pipeline
-      assert.equal(obj.graph.edges.length, 20) //6 in this pipeline
+      assert.equal(obj.graph.vertices.length, 29) // 7 in this pipeline
+      assert.equal(obj.graph.edges.length, 25) //6 in this pipeline
 
       done()
     })

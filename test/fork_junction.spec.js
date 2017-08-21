@@ -58,8 +58,8 @@ describe('fork_junction', () => {
       assert.isOk(results[0].context.trajectory[2])
       assert.isOk(results[1].context.trajectory[2])
       //checks if pipeline rendered the right number of vertices and edges
-      assert.equal(obj.graph.vertices.length, 33)
-      assert.equal(obj.graph.edges.length, 30)
+      assert.equal(obj.graph.vertices.length, 39)
+      assert.equal(obj.graph.edges.length, 35)
       done()  // without done it is not really testing anything
     })
   }).timeout(5000)
