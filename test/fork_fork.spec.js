@@ -59,7 +59,6 @@ describe('fork_fork', () => {
     pipeline4().then((results) => {
       console.log('RESULTS test: ',results)
       const obj = JSON.parse(fs.readFileSync('graphson.json', 'utf8'))
-      console.log('debug2: ', obj.graph)
 
       // should assure that both ends of the pipeline exist
       //assert.equal(results[1].tasks[1], results[1].context.trajectory[2])

@@ -50,7 +50,6 @@ describe('fork_junction', () => {
     pipeline3().then((results) => {
       console.log('RESULTS: ',results)
       const obj = JSON.parse(fs.readFileSync('graphson.json', 'utf8'))
-      console.log('debug3: ', obj.graph)
 
       // should assure that junction node exists
       assert.isOk(results[0].context.trajectory[0])

@@ -4,10 +4,6 @@ const { task, fork, join, junction } = require('../')
 
 const { assert } = require('chai')
 const _ = require('lodash')
-//const fs = require('fs-extra')
-//const path = require('path')
-//const twd = path.resolve(__dirname, 'files', 'fork')
-//const hash = require('../lib/utils/hash.js')
 
 const lsTask = (flags = '') => task({
   output: `*.txt`,
@@ -17,12 +13,6 @@ const lsTask = (flags = '') => task({
 
 const ls = lsTask()
 const lsAL = lsTask('-al')
-
-// const lineCount = task({
-//   input: '*.txt',
-//   output: '*.count',
-//   name: 'Count lines from *.txt'
-// }, ({ input }) => `cat ${input} | wc -l > lines.count`)
 
 const task1 = task({name: 'task1'}, () => `echo "something1"`)
 
@@ -64,23 +54,4 @@ describe('fork', () => {
     })
     done()
   })
-
-
-  // it('should work with join', function(done) {
-  //   const pipeline = join(task2, fork(ls, lsAL), lineCount)
-  //
-  //   pipeline().then((results) => {
-  //     console.log('RESULTS: ', results)
-  //     assert.equal(results[0].tasks[0], ls.info.uid)
-  //     // newUid of task is inaccessible because context doesn't exist prior
-  //     // to task execution
-  //     // instead the resulting new task id (newUid from task.js) is added to
-  //     // task.context.trajectory
-  //     assert.equal(results[0].tasks[1], results[0].context.trajectory[3])
-  //     assert.equal(results[1].tasks[0], lsAL.info.uid)
-  //     // newUid of task is unnaccessible because context doesn't exist prior to task execution
-  //     assert.equal(results[1].tasks[1], results[1].context.trajectory[3])
-  //     done()
-  //   })
-  // })
 })

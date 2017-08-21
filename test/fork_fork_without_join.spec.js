@@ -39,14 +39,12 @@ describe('fork_fork_without_join', () => {
     pipeline2().then((results) => {
       console.log('RESULTS: ', results)
       const obj = JSON.parse(fs.readFileSync('graphson.json', 'utf8'))
-      console.log('debug: ', obj.graph)
       // all these tests check if final task is the same in task definition
       // and trajectory
       assert.equal(results[0][0].tasks[1], results[0][0].context.trajectory[3])
       assert.equal(results[0][1].tasks[1], results[0][1].context.trajectory[3])
       assert.equal(results[1].tasks[1], results[1].context.trajectory[3])
 
-      //console.log(obj)
       // This counts every vertex and edge created in this test and not only
       // this last pipeline2 graph
       assert.equal(obj.graph.vertices.length, 29) // 7 in this pipeline
