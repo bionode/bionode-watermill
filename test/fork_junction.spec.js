@@ -2,48 +2,64 @@
 
 const { task, fork, join, junction } = require('../')
 
-const { should } = require('chai')
+const { assert } = require('chai')
+const fs = require('fs-extra')
 
-const task0 = task({name: 'task0_2"'}, () => `echo "something0"`)
+// Define tasks
 
-const task1 = task({name: 'task1'}, () => `echo "something1"`)
+const lsTask = (flags = '') => task({
+  output: `*.txt`,
+  params: { flags },
+  name: `ls ${flags} 2`
+}, ({ params }) => `ls ${params.flags} > files.txt`)
 
-const task2 = task({name: 'task2'}, () => `echo "something2"`)
+const ls = lsTask()
+const lsAL = lsTask('-al')
+const lsLAH = lsTask('-lah')
 
-const task3 = task({name: 'task3'}, () => `echo "something3"`)
+const lineCount = task({
+  input: '*.txt',
+  output: '*.count',
+  name: 'Count lines from *.txt 2'
+}, ({ input }) => `cat ${input} | wc -l > lines.count`)
 
-const task4 = task({name: 'task4'}, () => `echo "something4"`)
+const task0 = task({name: 'task0_2'}, () => `echo "something0"`)
 
-const task5 = task({name: 'task5'}, () => `echo "something5"`)
+const task1 = task({name: 'task1_2'}, () => `echo "something1"`)
 
-const task6 = task({name: 'task6'}, () => `echo "something6"`)
+const task2 = task({name: 'task2_2'}, () => `echo "something2"`)
 
-describe('fork_junction', function() {
-  it('junction should work after a fork', function() {
-    const pipeline = join(
+
+describe('fork_junction', () => {
+  it('junction should work after a fork', (done) => {
+    const pipeline3 = join(
       task0,
       fork(
         join(
           task1,
           junction(
-            task4,
-            task5
+            ls,
+            lsAL
           ),
-          task6
+          task2
         ),
-        task2
+        lsLAH
       ),
-      task3
+      lineCount
     )
-    pipeline().then((results) => {
+    pipeline3().then((results) => {
       console.log('RESULTS: ',results)
-      // should assure that junction node exists
-      should.exist(results[0].context.trajectory[0])
-      // should assure that both ends of the pipeline exist
-      should.exist(results[0].context.trajectory[2])
-      should.exist(results[1].context.trajectory[2])
+      const obj = JSON.parse(fs.readFileSync('graphson.json', 'utf8'))
 
-      //done()
+      // should assure that junction node exists
+      assert.isOk(results[0].context.trajectory[0])
+      // should assure that both ends of the pipeline exist
+      assert.isOk(results[0].context.trajectory[2])
+      assert.isOk(results[1].context.trajectory[2])
+      //checks if pipeline rendered the right number of vertices and edges
+      assert.equal(obj.graph.vertices.length, 39)
+      assert.equal(obj.graph.edges.length, 35)
+      done()  // without done it is not really testing anything
     })
-  })
+  }).timeout(5000)
 })
