@@ -23,6 +23,8 @@ const myTask = task(props, operationCreator)
 
 **props** is an object with the following structure:
 
+#### Input / output tasks
+
 ```javascript
 const props = {
   input: '*.txt', // valid input, see below
@@ -52,9 +54,12 @@ const task = ({
 )
 ```
 
-If either (input and output) is 
+## Streamable tasks
+
+If either (input or output) is 
 not provided, it will be assumed the task is then a *streaming task* - i.e., it 
-is a duplex stream with writable and/or readable portions. Consider:
+is a duplex stream with writable and/or readable portions. Consider this 
+javascript function:
 
 ```javascript
 const throughCapitalize = through(function (chunk, env, next) {
@@ -65,19 +70,19 @@ const throughCapitalize = through(function (chunk, env, next) {
   // then call next so that next chunk can be handled
   next()
 })
+```
 
+And the following tasks:
+
+```javascript
 const capitalize = task({
   name: 'Capitalize Through Stream'
 },
 // Here, input is a readable stream that came from the previous task
 // Let's return a through stream that takes the input and capitalizes it
 ({ input }) => input.pipe(throughCapitalize) )
-```
 
-You could connect `capitalize` to a readable and writable file stream with:
-
-```javascript
-const readFile = ({
+const readFile = task({
   input: '*.lowercase',
   name: 'Read from *.lowercase'
 }, ({ input }) => {
@@ -86,11 +91,17 @@ const readFile = ({
   rs.inFile = input
 })
 
-const writeFile = ({
+const writeFile = task({
   output: '*.uppercase',
   name: 'Write to *.uppercase'
 }, ({ input }) => fs.createWriteStream(input.inFile.swapExt('uppercase')))
+```
 
+You could connect `capitalize` to a readable (`readFile`) and writable 
+(`writeFile`) file 
+stream with:
+
+```javascript
 // Can now connect the three:
 join(readFile, capitalize, writeFile)
 ```
