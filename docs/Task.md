@@ -19,19 +19,42 @@ const { task } = watermill
 const myTask = task(props, operationCreator)
 ```
 
+### props
+
 **props** is an object with the following structure:
 
 ```javascript
 const props = {
-  input: 'foo.txt', // valid input, see below
-  output: 'bar.txt', // valid output, see below
+  input: '*.txt', // valid input, see below
+  output: '*.txt', // valid output, see below
   name: 'My Task',
+  params: { output: 'bar.txt' }, //the actual output name that can be passed to 
+  // operationCreator or even other params that you may wish to pass to 
+  // operationCreator.
   alwaysRun: true // force rerun even if output already exists
   // other options, see options
 }
 ```
 
-*input* and *output* are required for tasks that deal with files. If either is not provided, it will be assumed the task is then a *streaming task* - i.e., it is a duplex stream with writable and/or readable portions. Consider:
+*input* and *output* patterns are required for tasks that deal with files. 
+*params.output* allows to name the output files, while *output* is used to 
+check if output was properly resolved.
+
+```javascript
+// example task with input/output files
+const task = ({
+  input: '*.txt',
+  output: '*.txt',
+  params: {
+    output: 'bar.txt'
+  }
+}, ({ input, params }) => `cp ${input} ${params.output}`
+)
+```
+
+If either (input and output) is 
+not provided, it will be assumed the task is then a *streaming task* - i.e., it 
+is a duplex stream with writable and/or readable portions. Consider:
 
 ```javascript
 const throughCapitalize = through(function (chunk, env, next) {
@@ -72,7 +95,11 @@ const writeFile = ({
 join(readFile, capitalize, writeFile)
 ```
 
-Of course, this could be written as one single task. This is somewhat simpler, but the power of splitting up the read, transform, and write portions of a task will become apparent once we can provide multiple sets of parameters to the transform and observe the effect, *without having to manually rewire input and output filenames*. As a single task the above would become:
+Of course, this could be written as one single task. This is somewhat simpler, 
+but the power of splitting up the read, transform, and write portions of a task 
+will become apparent once we can provide multiple sets of parameters to the 
+transform and observe the effect, *without having to manually rewire input and 
+output filenames*. As a single task the above would become:
 
 TODO introduce single task version first
 
@@ -90,6 +117,8 @@ const capitalize = task({
 
 It is fine to run with no task name, a hashed one will be made for you. However, properly named tasks will help greatly reading pipeline output
 
+### operationCreator
+
 **operationCreator** is a function that will be provided with a **resolved props object**. `operationCreator` should return a **stream** or a **promise**. If the operation creator does not return a stream, it will be wrapped into a stream internally (e.g. `StreamFromPromise`). An example operation creator is
 
 ```javascript
@@ -104,14 +133,16 @@ function operationCreator(resolvedProps) {
 > *Note*
 >
 > With assignment destructuring and arrow functions, you can write cleaner operation creators:
+>
+>```javascript
+>const operationCreator = ({ input }) => intoStream(input).pipe(fs.createWriteStream('bar.txt'))
+>```
 
-```javascript
-const operationCreator = ({ input }) => intoStream(input).pipe(fs.createWriteStream('bar.txt'))
-```
+### Input and Output
 
-## Input and Output
-
-The `input` and `output` objects can be a **string glob pattern**, or a plain object of them. TODO an array will introduce task forking. The glob will be **resolved to an absolute path** when it is passed to the `operationCreator`.
+The `input` and `output` objects can be a **string glob pattern**, or a plain 
+object of them. The glob will be 
+**resolved to an absolute path** when it is passed to the `operationCreator`.
 
 For example,
 
@@ -141,13 +172,17 @@ will resolve to something like:
 ```javascript
 {
   input: {
-    reference: '/data/GCA_000988525.2_ASM98852v2_genomic.fna.gz',
-    reads: ['/data/ERR1229296_1.fastq.gz', '/data/ERR1229296_2.fastq.gz']
+    reference: '/data/<uid>/GCA_000988525.2_ASM98852v2_genomic.fna.gz',
+    reads: ['/data/<uid>/ERR1229296_1.fastq.gz', '/data/ERR1229296_2.fastq.gz']
   }
 }
 ```
 
-If `input` is not provided, the `operation` will be a duplexify stream with the writable portion set. Similarly, if `output` is not provided, the `operation` will be a duplexify stream with the readable portion set. If neither is provided, both the readable and writable portions will be set: the task becomes a *through task*.
+If `input` is not provided, the `operation` will be a duplexify stream with the 
+writable portion set. Similarly, if `output` is not provided, the `operation` 
+will be a duplexify stream with the readable portion set. If neither is 
+provided, both the readable and writable portions will be set: the task becomes 
+a *through task*.
 
 An example *through task*:
 
@@ -165,15 +200,15 @@ const filterSpecies = task({
 )
 ```
 
-## Resolution
+### Resolution
 
 Input resolution is  a **reduction over the task props**.
 
-### Input Resolution
+#### Input Resolution
 
 Match to filesystem if in first task in pipeline, otherwise glob patterns are matched to the **collection**.
 
-### Output Resolution
+#### Output Resolution
 
 The resolved values can be accessed from `myTask.resolvedOutput` after the task has emitted a `task.finish` event.
 
