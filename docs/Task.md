@@ -259,3 +259,33 @@ The resolved values can be accessed from `myTask.resolvedOutput` after the task 
   alignment: 'reads.bam'
 }
 ```
+
+To sum up, a **task** is the fundamental **unit** for building pipelines. It
+           
+* has a **unique input/output pair** defined by glob pattern(s) and/or streams
+* has a **single params object**. Params should be used when they can be applied
+             to a task with the same I/O but alter the output. e.g. command flags
+* **emits** `task.finish` with a reference to that task object in state
+           
+*Example*
+           
+```javascript
+/*
+* Usage: samtools index [-bc] [-m INT] <in.bam> [out.index]
+* Options:
+*   -b       Generate BAI-format index for BAM files [default]
+*   -c       Generate CSI-format index for BAM files
+*   -m INT   Set minimum interval size for CSI indices to 2^INT [14]
+*/
+           
+const samtoolsIndex = task({
+  input: '*.bam',
+  output: '*.bai',
+  params: { format: 'b' }
+  name: 'samtools index'
+}, ({ input, params }) => shell(`samtools index -${params.format} ${input}`))
+
+
+samtoolsIndex()
+  .on('task.finish', (results) => console.log(results.resolvedOutput))
+```
