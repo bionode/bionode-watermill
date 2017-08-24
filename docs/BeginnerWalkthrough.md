@@ -211,7 +211,7 @@ make a manifest file with all `.fna.gz` files that were downloaded:
 const listFiles = task({
   input: '*.fna.gz',    // this is used to symlink files to this task directory
   output: '*.txt',
-}, ({ input}) => `ls | grep ".fna.gz" > listFiles.txt`
+}, ({ input}) => `ls *.fna.gz > listFiles.txt`
 )
 
 const pipeline = join(
