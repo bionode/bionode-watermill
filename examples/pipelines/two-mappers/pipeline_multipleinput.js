@@ -22,7 +22,7 @@ const THREADS = parseInt(process.env.WATERMILL_THREADS) || 2
 
 const config = {
   name: 'Streptococcus pneumoniae',
-  sraAccession: ['ERR045788', 'ERR045787'],
+  sraAccession: ['ERR045788', 'ERR016633'],
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
 }
 
@@ -49,7 +49,7 @@ const getSamples = (sraAccession) => task({
   },
   output: '**/*.sra',
   dir: process.cwd(), // Set dir to resolve input/output from
-  name: `Download SRA ${config.sraAccession}`
+  name: `Download SRA ${sraAccession}`
 }, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}`
 )
 
@@ -130,7 +130,8 @@ const bowtieMapper = task({
 
 const pipeline = (sraAccession) => join(
   junction(
-      getReference(config.referenceURL, config.name),
+      getReference, // maybe this can done in anorther task outside this
+    // pipeline... then hardcode the path
       join(getSamples(sraAccession),fastqDump)
   ),
   gunzipIt,
@@ -143,6 +144,7 @@ const pipeline = (sraAccession) => join(
 // actual run pipelines and return results
 //pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
 for (const sra of config.sraAccession) {
+  console.log("sample:", sra)
   const pipelineMaster = pipeline(sra)
   pipelineMaster()
 }
