@@ -11,19 +11,17 @@ const task = watermill.task
 const { task } = watermill
 ```
 
-## API
-
 `task` takes two parameters: **props** and **operationCreator**:
 
 ```javascript
 const myTask = task(props, operationCreator)
 ```
 
-### props
+## props
 
 **props** is an object with the following structure:
 
-#### Input / output tasks
+### Input / output tasks
 
 ```javascript
 const props = {
@@ -54,7 +52,7 @@ const task = ({
 )
 ```
 
-## Streamable tasks
+### Streamable tasks
 
 If either (input or output) is 
 not provided, it will be assumed the task is then a *streaming task* - i.e., it 
@@ -121,7 +119,7 @@ const capitalize = task({
 
 It is fine to run with no task name, a hashed one will be made for you. However, properly named tasks will help greatly reading pipeline output
 
-### operationCreator
+## operationCreator
 
 **operationCreator** is a function that will be provided with a **resolved 
 props object** and that is responsible for the execution of the task itself. 
@@ -133,7 +131,7 @@ creator does not return a stream, it will be wrapped into a stream internally
 function operationCreator(resolvedProps) {
    const fs = require('fs')
    const intoStream = require('into-stream')
-   const ws = intoStream(resolvedProps.input).pipe( fs.createWriteStream('bar.txt') )
+   const ws = intoStream(resolvedProps.input).pipe(fs.createWriteStream('bar.txt') )
    return ws
 }
 ```
@@ -146,10 +144,23 @@ function operationCreator(resolvedProps) {
 >const operationCreator = ({ input }) => intoStream(input).pipe(fs.createWriteStream('bar.txt'))
 >```
 
-#### shell commands
+### Shell commands
 
-Unix shell commands can be executed within tasks by returning a string from 
-`operationCreator`. HOW?!
+Bionode-watermill allows users to both execute code in javascript within 
+`operationCreator` or run unix **shell commands** within 
+tasks by returning a string from 
+`operationCreator`:
+
+*Example*
+
+```javascript
+// creates a test.txt file
+const operationCreator = () => `touch test.txt`
+// or non ES6 code style
+function operationCreator() {
+  return 'touch test.txt'
+}
+```
 
 ### Input and Output
 
