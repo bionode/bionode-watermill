@@ -218,8 +218,8 @@ const pipeline = join(
   junction(
     join(getSamples('2492428'), fastqDump),
     join(getSamples('1274026'), fastqDump)
-    ),
-    listFiles
+  ),
+  listFiles
 )
 ```
 
