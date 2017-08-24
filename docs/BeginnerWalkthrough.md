@@ -1,13 +1,13 @@
 # Beginner Walkthrough
 
-bionode-watermill can be used to create complicated bioinformatics pipelines,
+Bionode-watermill can be used to create complex bioinformatics pipelines,
 but at its core are simple ideas. The first of these is the idea of a *task*.
 
 ## Task
 
 A `task` describes the idea that *some input* will be transformed into *some
-output*. For our cases, we will consider input and output to both be a file.
-Before jumping into the JavaScript, let's see what our first task is!
+output*. First, we will consider input and output to both be a file.
+Before jumping into JavaScript, let's see what our first task is!
 
 Our first simple pipeline will convert a file with lowercase characters into one
 with upper case characters.  On your UNIX command line (on Windows, see
@@ -27,27 +27,27 @@ cat alphabet.lowercase | tr '[:lower:]' '[:upper:]' > alphabet.uppercase
 cat alphabet.uppercase
 ```
 
-Okay, so how to the same thing with bionode-watermill? We can create a `task`
+Okay, so how to do the same thing with bionode-watermill? We can create a `task`
 for it. A `task` is created by passing `watermill.task` two parameters
 
-- object describing `input`, `output`, `name`
-- the "operation creator", a function which will receive "resolved props"
+- object describing `input`, `output`, `params`, `name` ("props")
+- the "operation creator", a function which will receive "props"
 
-For now, let's forget about resolved props and just translate the simple pipeline
+For now, let's forget about props and just translate the simple pipeline
 above into a `task`:
 
 ```javascript
 // pipeline.js
 
 // Make sure to "npm install bionode-watermill" first
-const watermill = require('bionode-watermill')
+const { task } = require('bionode-watermill')
 
-const uppercaser = watermill.task({
+const uppercaser = task({
   input: '*.lowercase',
   output: '*.uppercase',
   name: 'Uppercase *.lowercase -> *.uppercase'
-}, function(resolvedProps) {
-  const input = resolvedProps.input
+}, function(props) {
+  const input = props.input
   const output = input.replace(/lowercase$/, 'uppercase')
 
   return `cat ${input} | tr '[:lower:]' '[:upper:]' > ${output}`
@@ -65,12 +65,12 @@ node pipeline.js
 ```
 
 What's going on here? Behind the scenes bionode-watermill will start looking for
-files matching the [glob][node-glob] pattern `*.alphabet`. The file you created
+files matching the [glob][node-glob] pattern `*.lowercase`. The file you created
 earlier will be found, *and its absolute path will be stored*. Then a unique
 folder to run the task is created within the `data` folder - this prevents us
 from worrying about file overwriting in larger pipelines. Within the folder for
-the instance of this task, a symlink to the `*.alphabet` file is created.
-Finally, `resolvedProps`, which holds the absolute path of `*.alphabet` inside
+the instance of this task, a symlink to the `*.lowercase` file is created.
+Finally, `props`, which holds the absolute path of `*.lowercase` inside
 `input` (the same as it was for "props", just now the glob pattern is a valid file
 path) is passed to our "operation creator". The operation creator returns a String
 (using ES6 template literals). When watermill finds a string returned from a task,
@@ -78,11 +78,12 @@ it will run it as a shell child process within that task instance's folder.
 
 The log output will have each line prefixed with a hash: this is the ID of the
 instance of that task, and is the name of the folder in `data` which was made
-for this task, look inside there and you will find the `alphabet.uppercase` file.
+for this task, look inside there and you will find the `*.uppercase` file.
 
 [node-glob]: https://github.com/isaacs/node-glob
 
 There are two ways we can improve the readability of our task:
+
 - assignment destructuring
 
 ```javascript
@@ -98,17 +99,17 @@ const { input } = obj
 
 ```javascript
 // Without =>
-function actionCreator(resolvedProps) {
+function operationCreator(props) {
     return '...'
 }.bind(this) // => will automatically ".bind(this)" (so that this is the same inside and outside the function)
 // With =>, can return object directly instead of having a function body
-const actionCreator = (resolvedProps) => '...'
+const operationCreator = (props) => '...'
 ```
 
-With those syntax features, our task looks like:
+With those syntax features, our task looks will look like this:
 
 ```javascript
-const uppercaser = watermill.task({
+const uppercaser = task({
   input: '*.lowercase',
   output: '*.uppercase',
   name: 'Uppercase *.lowercase -> *.uppercase'
@@ -131,7 +132,7 @@ this:
 ```javascript
 const fs = require('fs')
 
-const watermill = require('bionode-watermill')
+const { task } = require('bionode-watermill')
 const through = require('through2')
 
 const uppercaser = watermill.task({
@@ -159,16 +160,18 @@ const uppercaser = watermill.task({
    watermill needs to be given a flowing stream in the operation creator in
    order to watch it finish*
 
-## Operators
+## Orchestrators
 
-The next core idea of bionode-watermill is that of *operators*. Operators are
+The next core idea of bionode-watermill is that of *orchestrators*. 
+Orchestrators are
 ways to combine tasks. The simplest of the operators is `join`. `join` takes
 any number of tasks as parameters, and will run each of the tasks sequentially.
 Where the first task will check the current working folder for files that match
 `input`, within a join lineage, downstream tasks will attempt to match their
 `input` to an upstream task's `output`.
 
-A simple join pipeline is a download+extract one. For this we can download some
+A simple join pipeline is a download + extract one. For this we can download 
+some
 reads from the NCBI Sequence Read Archive (SRA) and extract them with
 `fastq-dump` from sratools.
 
@@ -200,47 +203,74 @@ The next operator you might use is `junction`. Junction lets you run a set of
 tasks in parallel. If `junction` is used within a `join`, the downstream tasks
 will have access to the outputs of each of the parallelized items from `junction`.
 
-We can use `junction` to run our pipeline above over multiple samples:
+We can use `junction` to run our pipeline above over multiple samples and 
+make a manifest file with all `.fna.gz` files that were downloaded:
 
 ```javascript
-const pipeline = junction(
+// task to create manifest file with all .fna.gz files downloaded
+const listFiles = task({
+  input: '*.fna.gz',    // this is used to symlink files to this task directory
+  output: '*.txt',
+}, ({ input}) => `ls | grep ".fna.gz" > listFiles.txt`
+)
+
+const pipeline = join(
+  junction(
     join(getSamples('2492428'), fastqDump),
     join(getSamples('1274026'), fastqDump)
+    ),
+    listFiles
 )
 ```
 
 The last operator is `fork`. Fork lets you replace one task in your pipeline
 with more than one, and have the downstream tasks duplicated for each task you
-pass into fork. This is useful for comparing tools or options within a tool.
+pass into fork. This is useful for comparing tools, options within a tool or 
+even perform a couple of repetitive tasks for many samples from
+ a given pipeline.
 
-For a simple example, we can run `ls` with different options before sending
-that output to capitalize. What's important to note is that *we only define one
-uppercaser task, yet it is ran on each task in the `fork`*.
+For example, we can run use fork to fetch many samples using 
+`getSamples` and extract each one `fastqDump` and then uncompressed them all 
+using out new `gunzipIt` task:
 
 ```javascript
-const lsMaker = (opts) => watermill.task({
-    output: '*.lowercase'
-}, () => `ls ${opts} > ls.lowercase`)
-
-// uppercaser task as above
-
-const pipeline = join(
-    fork(lsMaker(''), lsMaker('-lh')),
-    uppercaser
+const gunzipIt = task({
+  input: '*.fna.gz',
+  output: '*.fa',
+}, ({ input}) => `gunzip -c ${input} > ${input.split('.')[0]}.fa`
 )
 
-pipeline()
+const pipeline = join(
+  fork(
+    join(getSamples('2492428'), fastqDump),
+    join(getSamples('1274026'), fastqDump)
+  ),
+  gunzipIt
+)
 ```
+
+What's important to note is that *we only define one
+`gunzipIt` task, yet it is ran on each task in the `fork`*. Also, `gunzipIt` 
+will start running once each task within the `fork` gets finished and thus it
+ does not have to wait for all tasks within `fork` to finish.
 
 ## Summary
 
 You've seen that bionode-watermill can be used to defined `tasks` that *resolve*
 their `input` and `output`. These tasks can be child processes (i.e. a program
-on the command line) or just regular JavaScript functions. As well a brief introduction
+on the command line) or just regular JavaScript functions. As well, a brief 
+introduction
 to the operators `join`, `junction`, and `fork` was made.
 
-These are all the tools necessary to make a bioinformatics pipeline! See
-this [variant calling pipeline](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-filtered/pipeline.js):
+These are all the tools necessary to make a bioinformatics pipeline! 
+
+Check out our [tutorial](https://github.com/bionode/bionode-watermill-tutorial)
+if you want to get a feel on how it looks like and start assembling your own 
+pipelines.
+
+Here are some **example pipelines** 
+
+[Variant calling pipeline](https://github.com/bionode/bionode-watermill/blob/master/examples/variant-calling-filtered/pipeline.js):
 
 ```javascript
 const pipeline = join(
@@ -254,6 +284,27 @@ const pipeline = join(
     fork(filterKMC, filterKHMER),
     alignAndSort, samtoolsIndex, mpileupAndCall // 2 instances each of these
   )
+)
+```
+
+[Mapping with bowtie2 and bwa](https://github.com/bionode/bionode-watermill/tree/master/examples/pipelines/two-mappers)
+
+```javascript
+const pipeline = join(
+  junction(
+    getReference,
+    join(getSamples,fastqDump)
+  ),
+  samtoolsFaidx, gunzipIt, /* since this will be common to both mappers, there
+   is no
+   need to be executed after fork duplicating the effort. */
+  fork(
+    join(indexReferenceBwa, bwaMapper),
+    join(indexReferenceBowtie2, bowtieMapper)
+  ),
+  /* here the pipeline will break into two distinct branches, one for each
+   mapping approach used. */
+  samtoolsView, samtoolsSort, samtoolsIndex, samtoolsDepth
 )
 ```
 

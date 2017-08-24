@@ -56,9 +56,9 @@ same time.
 A `fork` is used to run `a set of tasks simultaneously` but **it does not 
 wait for the results** from all tasks within `fork`. Instead, it will branch 
 the pipeline in the sense that each task within `fork` will have their own 
-set of upstream tasks. It
+set of downstream tasks. It
 
-* must **multiply each upstream task** (tasks proceeding the `fork`) as many 
+* must **multiply each downstream task** (tasks proceeding the `fork`) as many 
 times 
 as the `fork` branches (number of tasks within `fork`).
 * currently uses `join` operator to create each branch.
@@ -75,7 +75,7 @@ pipeline3()
 ```
 
 The above referenced `pipeline3` will run both tasks  (`task1` and `task2`) 
-simultaneously and will run upstream task (`task3`) twice, after `task1` and 
+simultaneously and will run downstream task (`task3`) twice, after `task1` and 
 after 
 `task2`, respectively.
 
@@ -99,7 +99,7 @@ then `taskC` will be waiting for the `task.finish` event for both `taskA` and
  tasks (`taskA` and `taskB`) outputs.
  
  On the other hand, `fork` should be used everytime the user **do not want to 
- wait** for all tasks to finish before running upstream tasks:
+ wait** for all tasks to finish before running downstream tasks:
  
  ```javascript
 const pipeline5 = join(fork(task1, task2), task3)

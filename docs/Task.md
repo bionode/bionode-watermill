@@ -148,7 +148,7 @@ function operationCreator(resolvedProps) {
 
 Bionode-watermill allows users to both execute code in javascript within 
 `operationCreator` or run unix **shell commands** within 
-tasks by returning a string from 
+tasks by returning a string (using ES6 template literals) from 
 `operationCreator`:
 
 *Example*
@@ -158,7 +158,7 @@ tasks by returning a string from
 const operationCreator = () => `touch test.txt`
 // or non ES6 code style
 function operationCreator() {
-  return 'touch test.txt'
+  return `touch test.txt`
 }
 ```
 
