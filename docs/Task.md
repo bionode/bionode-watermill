@@ -168,7 +168,7 @@ Otherwise glob patterns are matched
 // now, this is not the first task
 '*.fas'
 // Resolved Input
-'./data/<uid>/some.fas
+'./data/<uid>/some.fas'
 ```
 
 Notice the difference in the location of the inputs.
