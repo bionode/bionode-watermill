@@ -114,3 +114,8 @@ We welcome all kinds of contributions at all levels of experience, please
 refer to 
 the [Issues section](https://github.com/bionode/bionode-watermill/issues). 
 Also, you can allways reach us on [gitter](https://gitter.im/bionode/bionode-watermill).
+
+### Feel free to submit your pipeline to us
+
+Just make a PR for us, that adds a pipeline under `./examples/pipelines/`. 
+You can check some of the already existing examples [there](examples/pipelines).
