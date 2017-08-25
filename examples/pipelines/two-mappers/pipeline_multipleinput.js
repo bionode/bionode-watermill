@@ -35,10 +35,10 @@ const config = {
 // === TASKS ===
 
 // first lets get the reference genome for our mapping
-const getReference = (referenceURL, name) => task({
-  params: { url: referenceURL },
+const getReference = task({
+  params: { url: config.referenceURL },
   output: '*_genomic.fna.gz',
-  name: `Download reference genome for ${name}`
+  name: `Download reference genome for ${config.name}`
 }, ({ params, dir }) => {
   const { url } = params
   const outfile = url.split('/').pop()
@@ -136,7 +136,7 @@ const bowtieMapper = task({
 
 const pipeline = (sraAccession) => join(
   junction(
-      getReference, // maybe this can done in anorther task outside this
+      getReference, // maybe this can done in another task outside this
     // pipeline... then hardcode the path
       join(getSamples(sraAccession),fastqDump)
   ),
