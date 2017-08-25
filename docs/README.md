@@ -5,7 +5,7 @@
 * API
     * [Task](Task.md)
         - [Lifecycle](TaskLifecycle.md)
-        - [Multiple input]
+        - [Multiple input](MultipleInput.md)
     * [Orchestration](Orchestration.md)
         * [Forkception]
     * [Uids]
