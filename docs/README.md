@@ -12,3 +12,5 @@
     * [Comparison](Comparison.md)
     * [Internals](Internals.md)
 * Example Pipelines
+    * [two-mappers](../examples/pipelines/two-mappers/README.md) - a pipeline
+     that uses two mappers for benchmark purposes.
