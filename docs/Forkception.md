@@ -20,8 +20,8 @@ everything that follows the tasks within the `fork`. In current API there is
   >```
   > This will end up in three different branches (or lineages) with three 
   >leaves:
-  > `task0 --> task1 --> task4`, `task0 --> task2 --> task4` and `task0 --> 
-  task3 --> task4`.
+  > `task0 --> task1 --> task4A`, `task0 --> task2 --> task4B` and `task0 --> 
+  task3 --> task4C`.
   >
   > Note: here task4 is a downstream task.
   
@@ -40,12 +40,13 @@ everything that follows the tasks within the `fork`. In current API there is
    Take the following pipeline as an example:
    
    ```javascript
-const pipeline2 = join(
+const pipeline = join(
   task0,
-  fork(task1, task2), 
-  task3, 
-  fork(task4, task5), 
-  task6)
+  fork(task4, task3),
+  task5,
+  fork(task1, task2),
+  task6
+)
 ```
   
   This pipeline represents a further challenge since it requires to 
@@ -60,16 +61,20 @@ However, there is a workaround this issue that may be used for now:
 const pipeline2 = join(
   task0,
   fork(
-    join(task1, task3, fork(task4, task5)), 
-    join(task2, task3, fork(task4, task5))
+    join(task4,task5,fork(task1,task2)), 
+    join(task3,task5,fork(task1,task2))
     ),
   task6
 )
 ```
 
-In the above pice of code I just added `fork(task4, task5)` inside the 
+*Diagram of pipeline and pipeline2*
+
+![](https://github.com/bionode/GSoC17/blob/master/Experimental_code/Experimental_Pipelines/fork_fork/fork_after_fork.png)
+
+In the above piece of code I just added `fork(task1, task2)` inside the 
 first `fork` in order to be able to get the same structure. To sum up,
-the tasks between the two forks (`task3`) as well as the second `fork` (`fork
-(task4, task5)`) have to be manually duplicated.
+the tasks between the two forks (`task5`) as well as the second `fork` (`fork
+(task1, task2)`) have to be manually duplicated.
   
   
