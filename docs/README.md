@@ -7,8 +7,8 @@
         - [Lifecycle](TaskLifecycle.md)
         - [Multiple input](MultipleInput.md)
     * [Orchestration](Orchestration.md)
-        * [Forkception]
-    * [Uids]
+        * [Forkception](Forkception.md)
+    * [Uids](Uid.md)
     * [Comparison](Comparison.md)
     * [Internals](Internals.md)
 * Example Pipelines

@@ -1,4 +1,4 @@
-# Multiple inputs on tasks
+# Multiple inputs
 
 There are two ways multiple inputs can be given to tasks - within the **task 
 scope** or within the **pipeline scope**.
