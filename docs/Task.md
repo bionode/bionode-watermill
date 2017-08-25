@@ -160,7 +160,8 @@ directoty to search for the input files.
 
 Otherwise glob patterns are matched
  to the **collection**. **collection** allows bionode-watermill to search 
- within `./data` folder for the first files that match the glob pattern. Have
+ within `./data` folder for the **first** folder that has files that match the 
+ glob pattern. Have
   into account that it crawls the tasks tree from downstream to upstream 
   until it finds the desired match.
   
