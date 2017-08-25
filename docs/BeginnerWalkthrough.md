@@ -254,6 +254,37 @@ What's important to note is that *we only define one
 will start running once each task within the `fork` gets finished and thus it
  does not have to wait for all tasks within `fork` to finish.
 
+## Pipeline execution
+
+Once you have defined your **tasks** and their **orchestration** make sure 
+you call at the end of each `pipeline.js`:
+
+```javascript
+pipeline() // makes the assembled pipeline executed
+``` 
+
+and then on your terminal:
+
+```bash
+node pipeline.js
+```
+
+You can also use **google chrome inspector** if you want to debug something:
+
+```bash
+node --inspect pipeline.js
+```
+
+>**[Only recommended for more advanced users]**
+>
+>You may even go further by using an environmental variable 
+>`REDUX_LOGGER=1`, which basically lets you log more information (*redux* 
+>*actions* and *states*) on the workflow within each `bionode-watermill` task:
+>
+>```bash
+>REDUX_LOGGER=1 node --inspect pipeline.js
+>```
+
 ## Summary
 
 You've seen that bionode-watermill can be used to defined `tasks` that *resolve*

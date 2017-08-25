@@ -1,5 +1,11 @@
 'use strict'
 
+/* DISCLAIMER: This is a very experimental pipeline and currently it is not
+* solved. If you have an idea on how to solve this problem please make a PR.
+* The idea with this pipeline is for the two-mappers pipeline.js to be able
+* to process several samples.
+*/
+
 // === WATERMILL ===
 const {
   task,
