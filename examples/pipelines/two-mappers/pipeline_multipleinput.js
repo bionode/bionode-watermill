@@ -45,6 +45,7 @@ const getReference = task({
 
   // essentially curl -O
   return request(url).pipe(fs.createWriteStream(dir + '/' + outfile))
+
 })
 
 //then get samples to work with
@@ -68,11 +69,13 @@ const fastqDump = task({
 )
 
 // first lets uncompress the gz
-const gunzipIt = task({
-    input: '*_genomic.fna.gz',
-    output: '*.fa',
-    params: { output: 'uncompressed.fa' }
-  }, ({ params, input}) => `gunzip -c ${input} > ${params.output}`
+const gunzipIt = (referenceFile) => task({
+    input: referenceFile,
+    output: '*.fna'
+  }, ({ input}) => {
+  console.log("gunzipit:", input)
+  return `gunzip -c ${input} > ${input.split('.')[0]}.fna`
+  }
 )
 
 // then index using first bwa ...
@@ -134,23 +137,21 @@ const bowtieMapper = task({
 
 // === PIPELINE ===
 
-const pipeline = (sraAccession) => join(
-  junction(
-      getReference, // maybe this can done in another task outside this
-    // pipeline... then hardcode the path
-      join(getSamples(sraAccession),fastqDump)
-  ),
-  gunzipIt,
-  fork(
-    join(indexReferenceBwa, bwaMapper),
-    join(indexReferenceBowtie2, bowtieMapper)
+// first gets reference
+getReference().then(results => {
+  const pipeline = (sraAccession, referenceFile) => join(
+    getSamples(sraAccession),
+    fastqDump,
+    gunzipIt(referenceFile),
+    fork(
+      join(indexReferenceBwa, bwaMapper),
+      join(indexReferenceBowtie2, bowtieMapper)
+    )
   )
-)
-
-// actual run pipelines and return results
-//pipeline().then(results => console.log('PIPELINE RESULTS: ', results))
-for (const sra of config.sraAccession) {
-  console.log("sample:", sra)
-  const pipelineMaster = pipeline(sra)
-  pipelineMaster()
-}
+// then fetches the samples and executes the remaining pipeline
+  for (const sra of config.sraAccession) {
+    console.log("sample:", sra)
+    const pipelineMaster = pipeline(sra, results.resolvedOutput)
+    pipelineMaster()
+  }
+})
