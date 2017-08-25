@@ -8,7 +8,7 @@
 
 # bionode-watermill
 
-> Bionode-watermill: A Streaming Workflow Engine
+> Bionode-watermill: A (Not Yet Streaming) Workflow Engine
 
 [![npm version](https://badge.fury.io/js/bionode-watermill.svg)](https://badge.fury.io/js/bionode-watermill) 
 [![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() 
