@@ -48,6 +48,8 @@ assembled in the final *pipeline* using [orchestrators](docs/BeginnerWalkthrough
 * Automated Input/Output handling
 * Ability to run programs using Unix shell
 * Node.js integration
+* [Streamable tasks](docs/Task.md#streamable-tasks-potential) (still not 
+implemented - Issue [#79](https://github.com/bionode/bionode-watermill/issues/79))
 
 ### Who is this tool for?
 
@@ -120,4 +122,4 @@ Also, you can allways reach us on [gitter](https://gitter.im/bionode/bionode-wat
 ### Feel free to submit your pipeline to us
 
 Just make a PR for us, that adds a pipeline under `./examples/pipelines/`. 
-You can check some of the already existing examples [there](examples/pipelines).
+You can check some of the already existing examples [here](examples/pipelines).
