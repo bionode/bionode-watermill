@@ -28,7 +28,7 @@ const THREADS = parseInt(process.env.WATERMILL_THREADS) || 2
 
 const config = {
   name: 'Streptococcus pneumoniae',
-  sraAccession: ['ERR045788', 'ERR016633'],
+  sraAccession: ['ERR045788'],// 'ERR016633'],
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
 }
 
@@ -38,13 +38,14 @@ const config = {
 const getReference = task({
   params: { url: config.referenceURL },
   output: '*_genomic.fna.gz',
+  dir: process.cwd(),   // this sets directory for outputs!
   name: `Download reference genome for ${config.name}`
 }, ({ params, dir }) => {
   const { url } = params
   const outfile = url.split('/').pop()
 
   // essentially curl -O
-  return request(url).pipe(fs.createWriteStream(dir + '/' + outfile))
+  return request(url).pipe(fs.createWriteStream(outfile))
 
 })
 
@@ -69,10 +70,10 @@ const fastqDump = task({
 )
 
 // first lets uncompress the gz
-const gunzipIt = (referenceFile) => task({
-    input: referenceFile,
+const gunzipIt = task({
+    input: process.cwd() + '/*_genomic.fna.gz',
     output: '*.fna'
-  }, ({ input}) => {
+  }, ({ input }) => {
   console.log("gunzipit:", input)
   return `gunzip -c ${input} > ${input.split('.')[0]}.fna`
   }
@@ -139,10 +140,11 @@ const bowtieMapper = task({
 
 // first gets reference
 getReference().then(results => {
-  const pipeline = (sraAccession, referenceFile) => join(
+  console.log("results:", results.resolvedOutput)
+  const pipeline = (sraAccession) => join(
     getSamples(sraAccession),
     fastqDump,
-    gunzipIt(referenceFile),
+    gunzipIt,
     fork(
       join(indexReferenceBwa, bwaMapper),
       join(indexReferenceBowtie2, bowtieMapper)
@@ -150,8 +152,8 @@ getReference().then(results => {
   )
 // then fetches the samples and executes the remaining pipeline
   for (const sra of config.sraAccession) {
-    console.log("sample:", sra)
-    const pipelineMaster = pipeline(sra, results.resolvedOutput)
+    console.log("sample:", sra, results.resolvedOutput)
+    const pipelineMaster = pipeline(sra)
     pipelineMaster()
   }
 })
