@@ -272,7 +272,7 @@ const throughCapitalize = through(function (chunk, env, next) {
   this.push(chunk.toString().toUpperCase())
   // then call next so that next chunk can be handled
   next()
-}
+})
 ````
 
 You could connect `capitalize` to a readable (`readFile`) and writable 
@@ -322,7 +322,8 @@ const capitalize = task({
 }, ({ input }) =>
 	fs.createReadStream(input)
 	.pipe(throughCapitalize)
-	.pipe(fs.createWriteStream(input.swapExt('lowercase')))
+	.pipe(fs.createWriteStream(input.split('/').slice(0, -1).join('/') + 
+	'uppercase'))
 )
 ```
 
