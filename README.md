@@ -13,7 +13,7 @@
 [![npm](https://img.shields.io/npm/v/bionode-watermill.svg?style=flat-square)](http://npmjs.org/package/bionode-watermill)
 [![Travis](https://img.shields.io/travis/bionode/bionode-watermill/master.svg?label=master&style=flat-square)](https://travis-ci.org/bionode/bionode-watermill)
 [![Travis](https://img.shields.io/travis/bionode/bionode-watermill/dev.svg?label=dev&style=flat-square)](https://travis-ci.org/bionode/bionode-watermill)
-[![codecov.io](https://codecov.io/github/bionode/bionode-watermill/coverage.svg?style=flat-square)](https://codecov.io/github/bionode/bionode-watermill?branch=master)
+[![Codecov private](https://img.shields.io/codecov/c/github/bionode/bionode-watermill.svg?style=flat-square)](https://github.com/bionode/bionode-watermill/tree/master)
 [![Dependencies](http://img.shields.io/david/bionode/bionode-watermill.svg?style=flat-square)](http://david-dm.org/bionode/bionode-watermill)
 [![npm](https://img.shields.io/npm/dt/bionode-watermill.svg?style=flat-square)](https://www.npmjs.com/package/bionode-watermill)
 [![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/bionode/bionode-watermill)
