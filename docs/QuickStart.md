@@ -66,17 +66,3 @@ In the above represented `pipeline`, first bionode-watermill will fetch input
     is wrapping everything else! It is in fact making sure everything is run 
     in the order you desire. **Commas are like pauses in join**, it makes 
     sure the pipeline waits for the task before to be finished.
-
-## Ok, but what are the advantages?
-
-* Lots of **modularity** - tasks can be recycled as many times as you want!
-* **Reusability** - tasks can be reused many times within and between pipelines.
-* **Automated Input/Output handling** - no need to worry about input/output 
-location, bionode-watermill does that for you.
-* Ability to **run programs using Unix shell** - As demonstrated by `myTask`.
- So, there is no need to reinvent the wheel, you can use your previous 
- scripts and programs within bionode-watermill framework.
-* **Node.js integration** - not explored here, but you can use javascript 
-alongside with bionode-watermill tasks and pipelines and even inside tasks 
-instead of Unix commands.
-
