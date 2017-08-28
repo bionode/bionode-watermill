@@ -53,7 +53,7 @@ describe('junction', function() {
     pipeline().then((results) => {
       console.log('pipeline: ', results)
       const lastTaskUid = results.context.trajectory[results.context.trajectory.length - 1]
-      const finalOutput = store.getState().collection.vertexValue(lastTaskUid)
+      const finalOutput = store.getState().collection.vertexValue(lastTaskUid).resolvedOutput
       fs.readFile(finalOutput, (err, data) => {
         if (err) return done(err)
         assert.equal(data, 'foobar')

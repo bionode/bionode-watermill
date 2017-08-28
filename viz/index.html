@@ -18,8 +18,16 @@
         text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
     }
 
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+
 </style>
-<svg width="1900" height="800"></svg>
+<body>
+<svg width="1920" height="920"></svg>
+</body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -43,7 +51,7 @@
 
   var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  var simulation = d3.forceSimulation().velocityDecay(0.08)
+  var simulation = d3.forceSimulation().velocityDecay(0.2)
     .force("link",
       d3.forceLink().id(function(d) { return d._id }).distance(40).strength(1))
     .force("charge", d3.forceManyBody())
@@ -120,7 +128,8 @@
 - Output(s): ${JSON.stringify(d.values.resolvedOutput)}
 - Input(s): ${JSON.stringify(d.values.resolvedInput)}
 - params: ${JSON.stringify(d.values.params)}
-- Output folder: ${miniUid}` })
+- Output folder: ${miniUid}
+- Cmd: ${JSON.stringify(d.values.operationString)}` })
 //this will not handle properly bionode-ncbi output folders
 
     simulation
