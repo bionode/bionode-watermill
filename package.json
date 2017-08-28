@@ -1,7 +1,7 @@
 {
   "name": "bionode-watermill",
   "version": "0.4.0",
-  "description": "Streaming workflow engine for bionformatics pipelines",
+  "description": "A (Not Yet Streaming) Workflow Engine",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*.spec.js",
@@ -28,6 +28,9 @@
     "biology"
   ],
   "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
+  "contributors": [
+    "Tiago Filipe Salgueiro de Jesus <tiagofilipe12@gmail.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bionode/bionode-watermill/issues"
