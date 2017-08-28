@@ -40,11 +40,16 @@ assembled in the final *pipeline* using [orchestrators](docs/BeginnerWalkthrough
 
 ### Main features
 
-* Modularity
-* Reusability
-* Automated Input/Output handling
-* Ability to run programs using Unix shell
-* Node.js integration
+* Lots of **modularity** - tasks can be recycled as many times as you want!
+* **Reusability** - tasks can be reused many times within and between pipelines.
+* **Automated Input/Output handling** - no need to worry about input/output 
+location, bionode-watermill does that for you.
+* Ability to **run programs using Unix shell** - As demonstrated by `myTask`.
+ So, there is no need to reinvent the wheel, you can use your previous 
+ scripts and programs within bionode-watermill framework.
+* **Node.js integration** - not explored here, but you can use javascript 
+alongside with bionode-watermill tasks and pipelines and even inside tasks 
+instead of Unix commands.
 * [Streamable tasks](docs/Task.md#streamable-tasks-potential) (still not 
 implemented - Issue [#79](https://github.com/bionode/bionode-watermill/issues/79))
 
