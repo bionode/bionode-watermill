@@ -7,11 +7,11 @@ what bionode-watermill can do for you, you have just come to the right place!
 
 ```javascript
 const myTask = task({
-  input: '.fas',  //fasta files present in your current working directory
-  output: '.fas'
+  input: '*.fas',  //fasta files present in your current working directory
+  output: '*.fas'
 }, ({ input }) => {
-  stringInputs = input.join(' ') //puts all files in input array in a single 
-  //string
+  const stringInputs = input.join(' ') //puts all files in input array in a
+  // single string
   return `cat ${stringInputs} > concatenated.fas`
 }  
 )
