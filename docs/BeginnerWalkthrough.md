@@ -164,7 +164,11 @@ const uppercaser = watermill.task({
 
 The next core idea of bionode-watermill is that of *orchestrators*. 
 Orchestrators are
-ways to combine tasks. The simplest of the operators is `join`. `join` takes
+ways to combine tasks. 
+
+### Join
+
+The simplest of the operators is `join`. `join` takes
 any number of tasks as parameters, and will run each of the tasks sequentially.
 Where the first task will check the current working folder for files that match
 `input`, within a join lineage, downstream tasks will attempt to match their
@@ -199,6 +203,8 @@ const pipeline = join(getSamples('2492428'), fastqDump)
 pipeline()
 ```
 
+### Junction
+
 The next operator you might use is `junction`. Junction lets you run a set of
 tasks in parallel. If `junction` is used within a `join`, the downstream tasks
 will have access to the outputs of each of the parallelized items from `junction`.
@@ -224,6 +230,8 @@ const pipeline = join(
 ```
 
 > For more details on multiple inputs check this [link](MultipleInput.md).
+
+### Fork
 
 The last operator is `fork`. Fork lets you replace one task in your pipeline
 with more than one, and have the downstream tasks duplicated for each task you
