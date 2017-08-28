@@ -28,7 +28,7 @@ const THREADS = parseInt(process.env.WATERMILL_THREADS) || 2
 
 const config = {
   name: 'Streptococcus pneumoniae',
-  sraAccession: ['ERR045788'],// 'ERR016633'],
+  sraAccession: ['ERR045788', 'ERR016633'],
   referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
 }
 
@@ -71,17 +71,15 @@ const fastqDump = task({
 
 // first lets uncompress the gz
 const gunzipIt = task({
-    input: process.cwd() + '/*_genomic.fna.gz',
-    output: '*.fna'
-  }, ({ input }) => {
-  console.log("gunzipit:", input)
-  return `gunzip -c ${input} > ${input.split('.')[0]}.fna`
-  }
+    input: '*_genomic.fna.gz',
+    output: '*.fna',
+    name: 'gunzipIt task'
+  }, ({ input }) => `gunzip -c ${input} > ${input.split('.').slice(0,2).join('.')}.fna`
 )
 
 // then index using first bwa ...
 const indexReferenceBwa = task({
-  input: '*.fa',
+  input: '*.fna',
   output: {
     indexFile: ['amb', 'ann', 'bwt', 'pac', 'sa'].map(suffix =>
       `bwa_index.${suffix}`),
@@ -89,17 +87,17 @@ const indexReferenceBwa = task({
     // and index files
   },
   //params: { output: 'bwa_index.fa' },
-  name: 'bwa index bwa_index.fa -p bwa_index'
+  name: 'bwa index bwa_index.fna -p bwa_index'
 }, ({ input }) => `bwa index ${input} -p bwa_index`)
 
 // and bowtie2
 
 const indexReferenceBowtie2 = task({
-    input: '*.fa',
+    input: '*.fna',
     output: ['1.bt2', '2.bt2', '3.bt2', '4.bt2', 'rev.1.bt2',
       'rev.2.bt2'].map(suffix => `bowtie_index.${suffix}`),
     params: { output: 'bowtie_index' },
-    name: 'bowtie2-build -q uncompressed.fa bowtie_index'
+    name: 'bowtie2-build -q uncompressed.fna bowtie_index'
   }, ({ params, input }) => `bowtie2-build -q ${input} ${params.output}`
   /* for bowtie we had to uncompress the .fna.gz file first before building
    the reference */
@@ -140,7 +138,7 @@ const bowtieMapper = task({
 
 // first gets reference
 getReference().then(results => {
-  console.log("results:", results.resolvedOutput)
+//  console.log("results:", results.resolvedOutput)
   const pipeline = (sraAccession) => join(
     getSamples(sraAccession),
     fastqDump,
@@ -152,8 +150,9 @@ getReference().then(results => {
   )
 // then fetches the samples and executes the remaining pipeline
   for (const sra of config.sraAccession) {
-    console.log("sample:", sra, results.resolvedOutput)
+    //console.log("sample:", sra, results.resolvedOutput)
+    console.log("cwd_check", process.cwd())
     const pipelineMaster = pipeline(sra)
-    pipelineMaster()
+    pipelineMaster().then(results => console.log("Results: ", results))
   }
 })
