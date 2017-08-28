@@ -10,13 +10,13 @@
 
 > Bionode-watermill: A (Not Yet Streaming) Workflow Engine
 
-[![npm version](https://badge.fury.io/js/bionode-watermill.svg)](https://badge.fury.io/js/bionode-watermill) 
-[![node](https://img.shields.io/badge/node-v6.x-blue.svg)]() 
-[![Build Status](https://travis-ci.org/bionode/bionode-watermill.svg?branch=dev)](https://travis-ci.org/bionode/bionode-watermill)  
-[![codecov.io](https://codecov.io/github/bionode/bionode-watermill/coverage.svg?branch=master)](https://codecov.io/github/bionode/bionode-watermill?branch=master)
-[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/bionode/bionode-watermill)
-
-[![NPM](https://nodei.co/npm/bionode-watermill.png?downloads=true&stars=true)](https://nodei.co/npm/bionode-watermill/)
+[![npm](https://img.shields.io/npm/v/bionode-watermill.svg?style=flat-square)](http://npmjs.org/package/bionode-watermill)
+[![Travis](https://img.shields.io/travis/bionode/bionode-watermill/master.svg?label=master&style=flat-square)](https://travis-ci.org/bionode/bionode-watermill)
+[![Travis](https://img.shields.io/travis/bionode/bionode-watermill/dev.svg?label=dev&style=flat-square)](https://travis-ci.org/bionode/bionode-watermill)
+[![Codecov private](https://img.shields.io/codecov/c/github/bionode/bionode-watermill.svg?style=flat-square)](https://github.com/bionode/bionode-watermill/tree/master)
+[![Dependencies](http://img.shields.io/david/bionode/bionode-watermill.svg?style=flat-square)](http://david-dm.org/bionode/bionode-watermill)
+[![npm](https://img.shields.io/npm/dt/bionode-watermill.svg?style=flat-square)](https://www.npmjs.com/package/bionode-watermill)
+[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/bionode/bionode-watermill)
 
 ## Table of Contents
 
@@ -30,9 +30,6 @@
 * [Why bionode-watermill?](#why-bionode-watermill)
 * [Contributing](#contributing)
 
-
-
-
 ## What is bionode-watermill
 
 **Bionode-watermill** is a workflow engine that lets you assemble and run 
@@ -43,11 +40,16 @@ assembled in the final *pipeline* using [orchestrators](docs/BeginnerWalkthrough
 
 ### Main features
 
-* Modularity
-* Reusability
-* Automated Input/Output handling
-* Ability to run programs using Unix shell
-* Node.js integration
+* Lots of **modularity** - tasks can be recycled as many times as you want!
+* **Reusability** - tasks can be reused many times within and between pipelines.
+* **Automated Input/Output handling** - no need to worry about input/output 
+location, bionode-watermill does that for you.
+* Ability to **run programs using Unix shell** - As demonstrated by `myTask`.
+ So, there is no need to reinvent the wheel, you can use your previous 
+ scripts and programs within bionode-watermill framework.
+* **Node.js integration** - not explored here, but you can use javascript 
+alongside with bionode-watermill tasks and pipelines and even inside tasks 
+instead of Unix commands.
 * [Streamable tasks](docs/Task.md#streamable-tasks-potential) (still not 
 implemented - Issue [#79](https://github.com/bionode/bionode-watermill/issues/79))
 

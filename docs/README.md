@@ -1,7 +1,11 @@
 ## Table of Contents
 
+* [Quick Start](QuickStart.md)
 * [Beginner Walkthrough](BeginnerWalkthrough.md)
 * [Graph visualization tool](D3Visualization.md)
+* Example Pipelines
+    * [two-mappers](../examples/pipelines/two-mappers/README.md) - a pipeline
+     that uses two mappers for benchmark purposes.
 * API
     * [Task](Task.md)
         - [Lifecycle](TaskLifecycle.md)
@@ -11,6 +15,4 @@
     * [Uids](Uid.md)
     * [Comparison](Comparison.md)
     * [Internals](Internals.md)
-* Example Pipelines
-    * [two-mappers](../examples/pipelines/two-mappers/README.md) - a pipeline
-     that uses two mappers for benchmark purposes.
+
