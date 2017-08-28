@@ -22,12 +22,6 @@ single output file.
 
 ## Example _pipeline_
 
-Imagine the following pipeline:
-
-![](https://github.com/bionode/bionode-watermill/blob/docs_update/docs/imgs/quick-start-img.png)
-
-In bionode-watermill it will look like this:
-
 ```javascript
 // some tasks are defined before defining the pipeline
 const pipeline = join(
@@ -47,6 +41,10 @@ const pipeline = join(
   otherCoolAnalysis // finally a task that does some other cool analysis
 )
 ```
+
+Diagram of the code above:
+
+![](https://github.com/bionode/bionode-watermill/blob/docs_update/docs/imgs/quick-start-img.png)
 
 In the above represented `pipeline`, first bionode-watermill will fetch input
  files using some method that you see fit, then the pipeline will split into
