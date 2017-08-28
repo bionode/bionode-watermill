@@ -223,6 +223,8 @@ const pipeline = join(
 )
 ```
 
+> For more details on multiple inputs check this [link](MultipleInput.md).
+
 The last operator is `fork`. Fork lets you replace one task in your pipeline
 with more than one, and have the downstream tasks duplicated for each task you
 pass into fork. This is useful for comparing tools, options within a tool or 

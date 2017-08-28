@@ -149,3 +149,98 @@ Note that it is quite similar to the example above but returns a `Promise
 .map`, which also return the pipeline executions, instead of just executing the 
 pipeline for each input file. This is one simple way to empower the user to 
 control the resources used by their scripts.
+
+### Pratical example
+
+Imagine we have a couple of samples we want to get from NCBI SRA and map them
+ against a given reference using both `bowtie2` and `bwa`.
+ 
+ So first we have to define a task that needs to fetch the reference data and
+  this task must be run just once:
+  
+  ```javascript
+  // some config variables that will be used in this pipeline
+const config = {
+  name: 'Streptococcus pneumoniae',
+  sraAccession: ['ERR045788', 'ERR016633'],
+  referenceURL: 'http://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/007/045/GCF_000007045.1_ASM704v1/GCF_000007045.1_ASM704v1_genomic.fna.gz'
+}
+
+// === TASKS ===
+
+// first lets get the reference genome for our mapping
+const getReference = task({
+  params: { url: config.referenceURL },
+  output: '*_genomic.fna.gz',
+  dir: process.cwd(),   // this sets directory for outputs!
+  name: `Download reference genome for ${config.name}`
+}, ({ params, dir }) => {
+  const { url } = params
+  const outfile = url.split('/').pop()
+
+  // essentially curl -O
+  return request(url).pipe(fs.createWriteStream(outfile))
+})
+```
+
+Then what we need is a way for all other tasks to occur after `getReference` 
+task:
+
+```javascript
+// task that defines how we get samples
+//then get samples to work with
+const getSamples = (sraAccession) => task({
+  params: {
+    db: 'sra',
+    accession: sraAccession
+  },
+  output: '**/*.sra',
+  dir: process.cwd(), // Set dir to resolve input/output from
+  name: `Download SRA ${sraAccession}`
+}, ({ params }) => `bionode-ncbi download ${params.db} ${params.accession}`
+)
+
+// ...other tasks...
+// the pipeline can be then called like this
+getReference().then(results => {
+  const pipeline = (sraAccession) => join(
+    getSamples(sraAccession),
+    fastqDump,
+    gunzipIt,
+    fork(
+      join(indexReferenceBwa, bwaMapper),
+      join(indexReferenceBowtie2, bowtieMapper)
+    )
+  )
+// then fetches the samples and executes the remaining pipeline
+  for (const sra of config.sraAccession) {
+    const pipelineMaster = pipeline(sra)
+    pipelineMaster().then(results => console.log("Results: ", results))
+  }
+})
+```
+
+Notice how the pipeline is ran twice (given that we have two inputs in an 
+array (`config.sraAccession`)). And notice that we have passed an argument to
+`getSamples` task which is each `config.sraAccession`.
+
+This behavior will result in one vertex with the `getReference` task, which 
+outputs become available to  each `pipeline` that each sra sample triggers. 
+So, we end up with a `pipeline` for each sample as well (two in this case).
+
+> This is possible because we rely on the `getReference` task to save the 
+outputs on current woring directory. Then the api searches first for outputs 
+that are generated within each bionode-watermill pipeline `currentCollection`
+ and then in the current working directory for a matching file (with the 
+ expected glob pattern).
+>
+> This matching is done by the `matchee` function in 
+`lib/lifecycle/resolve-input.js`.
+>
+> The fact that bionode-watermill also searches for inputs under current 
+working directory is what allows to run a pipeline after another and still 
+get reference to the previous pipeline (in the example given above). 
+Therefore, use it as you please but take into account that **bionode-watermill 
+cannot map every folder within your file system** and **`currentCollection` 
+just 
+saves reference to the files that were run within a pipeline**.
