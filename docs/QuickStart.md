@@ -22,6 +22,12 @@ single output file.
 
 ## Example _pipeline_
 
+Imagine the following pipeline:
+
+![](https://github.com/bionode/bionode-watermill/blob/docs_update/docs/imgs/quick-start-img.png)
+
+In bionode-watermill it will look like this:
+
 ```javascript
 // some tasks are defined before defining the pipeline
 const pipeline = join(
