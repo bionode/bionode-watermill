@@ -76,4 +76,4 @@ After having making your own script named `pipeline.js` (or whatever you want
 node pipeline.js
 ```
 
-> There some other logging options that you can explore [here](Loggers.md).
+> There are some other logging options that you can explore [here](Loggers.md).
