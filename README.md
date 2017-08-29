@@ -88,7 +88,7 @@ Global installation:
 
 ## Documentation
 
-Our documentation is available [here](https://thejmazz.gitbooks.io/bionode-watermill/content/). 
+Our documentation is available [here](https://bionode.gitbooks.io/bionode-watermill/content/). 
 There you may find how to **use** bionode-watermill to construct and **run** 
 your 
 pipelines. Moreover, you will also find the description of the API to help 

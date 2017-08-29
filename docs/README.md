@@ -6,6 +6,7 @@
 * Example Pipelines
     * [two-mappers](../examples/pipelines/two-mappers/README.md) - a pipeline
      that uses two mappers for benchmark purposes.
+* [Loggers](Loggers.md)
 * API
     * [Task](Task.md)
         - [Lifecycle](TaskLifecycle.md)
