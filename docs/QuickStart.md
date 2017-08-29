@@ -66,3 +66,14 @@ In the above represented `pipeline`, first bionode-watermill will fetch input
     is wrapping everything else! It is in fact making sure everything is run 
     in the order you desire. **Commas are like pauses in join**, it makes 
     sure the pipeline waits for the task before to be finished.
+
+## Running a pipeline
+
+After having making your own script named `pipeline.js` (or whatever you want
+ the name to be), just run the following command on your Unix terminal.
+
+```shell
+node pipeline.js
+```
+
+> There are some other logging options that you can explore [here](Loggers.md).

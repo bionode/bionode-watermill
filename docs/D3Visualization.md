@@ -7,11 +7,16 @@ the scripts in `localhost:8084`. Visualization script is available in
 
 ## Enabling visualization
 
-Just paste `localhost:8084` on your browser URL.
+Pass the following environmental variable before running the desired 
+pipeline: `D3_LOGGER=1`. Then, just paste `localhost:8084` on 
+your browser URL.
+
+> For more information on the usage of environmental variables, please refer 
+to this [section](Loggers.md).
 
 ## Canceling
 
-Now, this tool hangs each script at its end and in order to exit it, just 
+This tool hangs each script at its end and in order to exit it, just 
 hit: `ctrl + c` in the shell terminal where the pipeline script is running. 
 Hitting `ctrl + c` will close the connection between the browser and 
 `lib/reducers/collections.js`.
