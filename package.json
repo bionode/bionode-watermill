@@ -76,9 +76,9 @@
     "redux-logger": "^2.10.2",
     "redux-saga": "^0.11.0",
     "redux-thunk": "^2.1.0",
+    "snyk": "^1.40.1",
     "socket.io": "^2.0.3",
-    "stream-from-promise": "^1.0.0",
-    "snyk": "^1.36.2"
+    "stream-from-promise": "^1.0.0"
   },
   "snyk": true
 }
