@@ -1,4 +1,4 @@
-FROM bionode-watermill:latest
+FROM bionode/bionode-watermill:dev
 
 # tool installs taken from biocontainers
 
