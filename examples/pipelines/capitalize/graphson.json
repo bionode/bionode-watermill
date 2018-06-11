@@ -1,0 +1,18 @@
+{
+  "graph": {
+    "mode": "NORMAL",
+    "vertices": [
+      {
+        "_id": "a022b2d1413314aa38d4facdef16cc947b27c84e17dcf4a5c540ec96ed50298e",
+        "_type": "vertex",
+        "values": {
+          "type": "collection/add-output",
+          "name": "Capitalize alphabet",
+          "resolvedOutput": "/home/evoxtorm/Desktop/Main bionode-watermill/bionode-watermill/examples/pipelines/capitalize/data/a022b2d/alphabet.sink.txt",
+          "params": {}
+        }
+      }
+    ],
+    "edges": []
+  }
+}
