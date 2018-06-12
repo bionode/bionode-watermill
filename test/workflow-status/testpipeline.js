@@ -12,7 +12,6 @@ const anotherTask = task({
   output: 'ran.txt'
 }, () => `node wait-error.js && touch ran.txt`)
 
-
 anotherTask()
 
 
