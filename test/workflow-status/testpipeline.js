@@ -1,6 +1,7 @@
 'use strict'
 
-const { task, join } = require('../../..')
+const { task, join } = require('../..')
+const { waiterror } = require('./wait-error.js')
 
 
 const anotherTask = task({
