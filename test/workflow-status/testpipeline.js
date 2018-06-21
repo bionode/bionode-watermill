@@ -26,7 +26,7 @@ const anotherTask = task({
 
 anotherTask()
 
-Testing the work-flow Status
+//Testing the work-flow Status
 
 describe("Failed pipeline", function() {
   it("Should have permanentFailure", done =>
